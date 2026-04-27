@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Operações In Store Turbo - 27/04/2026</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">Weekly - Coordenadores Turbo</p>
+        <h1>Operações In Store Turbo</h1>
+        <p class="meta">Semana de referência: segunda-feira, 27/04/2026 · Dados: OKRS mês, OKRS semanal, simulador de pickers e escala</p>
+        <p class="update-stamp" id="data-updated-at">Última atualização dos dados: carregando...</p>
+      </div>
+      <nav class="tabs" aria-label="Seções do dashboard">
+        <a href="#br">BR Gerencial</a>
+        <a href="#escala">Escala</a>
+        <a href="#coords">Coordenadores</a>
+      </nav>
+    </header>
+
+    <main>
+      <section id="br" class="section">
+        <div class="section-title">
+          <div>
+            <p class="eyebrow">Parte 1</p>
+            <h2>Indicadores BR Gerencial</h2>
+          </div>
+          <p class="section-note">Visão mês vs última semana com foco em produtividade, qualidade, disponibilidade e ofensores.</p>
+        </div>
+
+        <div class="kpi-grid dense" id="br-kpis"></div>
+
+        <article class="panel br-compare-panel">
+          <div class="panel-head">
+            <h3>Mês x Última Semana</h3>
+            <span class="pill">BR</span>
+          </div>
+          <p class="chart-note">Comparação entre Abril MTD e última semana fechada, com delta absoluto e direção operacional.</p>
+          <div class="table-wrap compare-table-wrap">
+            <table id="br-compare-table" class="compare-table"></table>
+          </div>
+        </article>
+
+        <article class="panel insight-panel">
+          <div class="panel-head">
+            <h3>Principais insights</h3>
+            <span class="pill danger">Atenção</span>
+          </div>
+          <ul id="br-insights" class="insight-list"></ul>
+        </article>
+
+        <article class="panel">
+          <div class="panel-head">
+            <h3>Prioridades de lojas ofensoras</h3>
+            <span class="pill">Mês + semana + escala</span>
+          </div>
+          <div class="table-wrap">
+            <table id="offenders-table"></table>
+          </div>
+        </article>
+      </section>
+
+      <section id="escala" class="section">
+        <div class="section-title">
+          <div>
+            <p class="eyebrow">Parte 1.2</p>
+            <h2>Pickers, forecast e escala</h2>
+          </div>
+          <p class="section-note">A visão usa a fórmula customizada de pickers necessários, considerando tempo em loja, orders por hora e apoio de recebimento.</p>
+        </div>
+
+        <article class="panel gap-panel">
+            <div class="panel-head">
+              <h3>Gap gerencial por loja</h3>
+              <span class="pill warning">Todas as lojas</span>
+            </div>
+            <div class="chart-shell extra-tall">
+              <canvas id="pickerGapChart" height="720"></canvas>
+            </div>
+            <div class="table-wrap">
+              <table id="picker-gap-table" class="compact-table"></table>
+            </div>
+        </article>
+
+        <article class="panel">
+          <div class="panel-head">
+            <h3>Modelo BR por dia e hora</h3>
+            <span class="pill">Última semana</span>
+          </div>
+          <div class="matrix-legend">
+            <span><i class="heat bad"></i> Delta negativo</span>
+            <span><i class="heat ok"></i> Cobertura neutra</span>
+            <span><i class="heat good"></i> Sobra de cobertura</span>
+          </div>
+          <div class="table-wrap matrix-wrap">
+            <table id="hourly-matrix" class="matrix-table"></table>
+          </div>
+        </article>
+
+        <article class="panel">
+          <div class="panel-head">
+            <h3>Escala por loja ofensora em InStore</h3>
+            <span class="pill danger">Fora do InStore</span>
+          </div>
+          <div class="table-wrap">
+            <table id="scale-priority-table" class="matrix-table store-matrix"></table>
+          </div>
+        </article>
+      </section>
+
+      <section id="coords" class="section">
+        <div class="section-title">
+          <div>
+            <p class="eyebrow">Parte 2</p>
+            <h2>Visão por coordenadores</h2>
+          </div>
+          <p class="section-note">Indicadores mês e última semana, leitura semana x semana, escala/headcount e sugestões práticas.</p>
+        </div>
+
+        <div id="coord-grid" class="coord-grid"></div>
+      </section>
+    </main>
+
+    <script src="./scale_data.js"></script>
+    <script src="./app.js"></script>
+  </body>
+</html>
