@@ -1,0 +1,228 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Operações In Store Turbo - 27/04/2026</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">Dashboard - Coordenadores Turbo</p>
+        <h1>Operações In Store Turbo</h1>
+        <p class="meta">Visão mensal BR, gerencial semanal e daily loja a loja · OKRS, escala, saturação e produtividade</p>
+        <p class="update-stamp" id="data-updated-at">Última atualização dos dados: carregando...</p>
+      </div>
+      <nav class="tabs" aria-label="Seções do dashboard">
+        <a href="#home">Início</a>
+        <a href="#br">BR Gerencial</a>
+        <a href="#daily">Daily Lojas</a>
+      </nav>
+    </header>
+
+    <main>
+      <section id="home" class="section home-section">
+        <div class="section-title">
+          <div>
+            <p class="eyebrow">Parte 1</p>
+            <h2>Indicadores BR Gerencial</h2>
+          </div>
+          <p class="section-note">Resultado do mês atual em nível BR. A navegação abaixo leva para a visão gerencial semanal ou para o detalhe diário por loja.</p>
+        </div>
+        <div class="kpi-grid dense" id="month-kpis"></div>
+        <div class="home-grid">
+          <a class="home-card" href="#br">
+            <span>Página 2</span>
+            <strong>BR Gerencial</strong>
+            <em>Indicadores semanais, escala, ofensores e coordenadores</em>
+          </a>
+          <a class="home-card" href="#daily">
+            <span>Página 3</span>
+            <strong>Daily Lojas</strong>
+            <em>OKRS, pedidos, qualidade, produtividade e saturação</em>
+          </a>
+          <div class="home-card home-card-static">
+            <span>Status</span>
+            <strong id="home-update-card">Dados carregados</strong>
+            <em>Atualização exibida no topo do dashboard</em>
+          </div>
+        </div>
+      </section>
+
+      <section id="br" class="section">
+        <div class="section-title">
+          <div>
+            <p class="eyebrow">Parte 1</p>
+            <h2>Indicadores BR Gerencial</h2>
+          </div>
+          <p class="section-note">Visão mês vs última semana com foco em produtividade, qualidade, disponibilidade e ofensores.</p>
+        </div>
+
+        <div class="kpi-grid dense" id="br-kpis"></div>
+
+        <article class="panel br-compare-panel">
+          <div class="panel-head">
+            <h3>Mês x Última Semana</h3>
+            <span class="pill">BR</span>
+          </div>
+          <p class="chart-note">Comparação entre Abril MTD e última semana fechada, com delta absoluto e direção operacional.</p>
+          <div class="table-wrap compare-table-wrap">
+            <table id="br-compare-table" class="compare-table"></table>
+          </div>
+        </article>
+
+        <article class="panel insight-panel">
+          <div class="panel-head">
+            <h3>Principais insights</h3>
+            <span class="pill danger">Atenção</span>
+          </div>
+          <ul id="br-insights" class="insight-list"></ul>
+        </article>
+
+        <article class="panel">
+          <div class="panel-head">
+            <h3>Prioridades de lojas ofensoras</h3>
+            <span class="pill">Mês + semana + escala</span>
+          </div>
+          <div class="table-wrap">
+            <table id="offenders-table"></table>
+          </div>
+        </article>
+      </section>
+
+      <section id="daily" class="section">
+        <div class="section-title">
+          <div>
+            <p class="eyebrow">Daily</p>
+            <h2>Loja a loja D-1</h2>
+          </div>
+          <p class="section-note">Painel por loja com resultado do dia anterior, detalhes operacionais e leitura de saturação quando disponível.</p>
+        </div>
+
+        <article class="panel">
+          <div class="panel-head">
+            <h3>Resumo D-1 por loja</h3>
+            <span class="pill" id="daily-date-pill">D-1</span>
+          </div>
+          <div class="daily-controls">
+            <label for="daily-store-select">Loja</label>
+            <select id="daily-store-select"></select>
+          </div>
+          <div class="kpi-grid dense" id="daily-kpis"></div>
+          <div id="daily-store-detail" class="daily-detail"></div>
+        </article>
+
+        <article class="panel">
+          <div class="panel-head">
+            <h3>Tempos por picker</h3>
+            <span class="pill danger">Ofensores da loja</span>
+          </div>
+          <div class="table-wrap">
+            <table id="daily-picker-table" class="compact-table"></table>
+          </div>
+        </article>
+
+        <article class="panel">
+          <div class="panel-head">
+            <h3>Saturação da semana</h3>
+            <span class="pill">Loja selecionada</span>
+          </div>
+          <div class="table-wrap">
+            <table id="daily-saturation-table" class="compact-table"></table>
+          </div>
+        </article>
+
+        <article class="panel">
+          <div class="panel-head">
+            <h3>Escala da loja por dia e hora</h3>
+            <span class="pill">Última semana</span>
+          </div>
+          <div class="matrix-legend">
+            <span><i class="heat bad"></i> Delta negativo</span>
+            <span><i class="heat ok"></i> Cobertura neutra</span>
+            <span><i class="heat good"></i> Sobra de cobertura</span>
+          </div>
+          <div class="table-wrap matrix-wrap">
+            <table id="daily-store-scale-table" class="matrix-table store-matrix"></table>
+          </div>
+        </article>
+
+        <article class="panel">
+          <div class="panel-head">
+            <h3>Ranking de atenção D-1</h3>
+            <span class="pill danger">Todas as lojas</span>
+          </div>
+          <div class="table-wrap">
+            <table id="daily-table" class="compact-table"></table>
+          </div>
+        </article>
+      </section>
+
+      <section id="escala" class="section">
+        <div class="section-title">
+          <div>
+            <p class="eyebrow">Parte 1.2</p>
+            <h2>Pickers, forecast e escala</h2>
+          </div>
+          <p class="section-note">A visão usa a fórmula customizada de pickers necessários, considerando tempo em loja, orders por hora e apoio de recebimento.</p>
+        </div>
+
+        <article class="panel gap-panel">
+            <div class="panel-head">
+              <h3>Gap gerencial por loja</h3>
+              <span class="pill warning">Todas as lojas</span>
+            </div>
+            <div class="chart-shell extra-tall">
+              <canvas id="pickerGapChart" height="720"></canvas>
+            </div>
+            <div class="table-wrap">
+              <table id="picker-gap-table" class="compact-table"></table>
+            </div>
+        </article>
+
+        <article class="panel">
+          <div class="panel-head">
+            <h3>Modelo BR por dia e hora</h3>
+            <span class="pill">Última semana</span>
+          </div>
+          <div class="matrix-legend">
+            <span><i class="heat bad"></i> Delta negativo</span>
+            <span><i class="heat ok"></i> Cobertura neutra</span>
+            <span><i class="heat good"></i> Sobra de cobertura</span>
+          </div>
+          <div class="table-wrap matrix-wrap">
+            <table id="hourly-matrix" class="matrix-table"></table>
+          </div>
+        </article>
+
+        <article class="panel">
+          <div class="panel-head">
+            <h3>Escala por loja ofensora em InStore</h3>
+            <span class="pill danger">Fora do InStore</span>
+          </div>
+          <div class="table-wrap">
+            <table id="scale-priority-table" class="matrix-table store-matrix"></table>
+          </div>
+        </article>
+      </section>
+
+      <section id="coords" class="section">
+        <div class="section-title">
+          <div>
+            <p class="eyebrow">Parte 2</p>
+            <h2>Visão por coordenadores</h2>
+          </div>
+          <p class="section-note">Indicadores mês e última semana, leitura semana x semana, escala/headcount e sugestões práticas.</p>
+        </div>
+
+        <div id="coord-grid" class="coord-grid"></div>
+      </section>
+    </main>
+
+    <script src="./scale_data.js"></script>
+    <script src="./okrs_data.js"></script>
+    <script src="./daily_data.js"></script>
+    <script src="./app.js"></script>
+  </body>
+</html>
