@@ -426,14 +426,21 @@ function renderDailyStore(storeName) {
 }
 
 function pickerScore(row) {
-  return Number(row.inStore || 0) * 2 + Number(row.handoff || 0) + Number(row.assign || 0) * 0.35 + Number(row.picking || 0) * 0.35;
+  const orders = Number(row.orders || 0);
+  const volumeWeight = 0.5 + 0.5 * Math.min(1, orders / 50);
+  const base =
+    Number(row.inStore || 0) * 2
+    + Number(row.assign || 0) * 0.35
+    + Number(row.picking || 0) * 0.35
+    + Number(row.packing || 0) * 0.35;
+  return base * volumeWeight;
 }
 
 function pickerInsight(row) {
-  if (row.handoff >= 8) return "Handoff muito alto; validar fila, retirada e apoio no pico.";
   if (row.inStore >= 3) return "InStore alto; observar execução e aderência ao processo.";
   if (row.picking >= 2.4) return "Picking alto; revisar layout, ruptura e familiaridade com loja.";
   if (row.assign >= 1.2) return "Assign alto; checar distribuição/aceite e latência operacional.";
+  if (row.packing >= 0.8) return "Packing alto; checar conferência, embalagem e gargalos no fechamento.";
   return "Monitorar na próxima atualização.";
 }
 
@@ -449,7 +456,7 @@ function renderDailyPickers(storeName) {
     table.innerHTML = `<tbody><tr><td>Sem dados de picker para esta loja no recorte carregado.</td></tr></tbody>`;
     return;
   }
-  const head = ["Picker", "Pedidos", "Assign", "Picking", "Packing", "Handoff", "InStore", "Leitura"];
+  const head = ["Picker", "Pedidos", "Assign", "Picking", "Packing", "InStore", "Leitura"];
   table.innerHTML = `
     <thead><tr>${head.map((h) => `<th>${h}</th>`).join("")}</tr></thead>
     <tbody>${rows
@@ -460,7 +467,6 @@ function renderDailyPickers(storeName) {
           <td>${Number(row.assign).toFixed(2)}</td>
           <td>${Number(row.picking).toFixed(2)}</td>
           <td>${Number(row.packing).toFixed(2)}</td>
-          <td>${status(Number(row.handoff).toFixed(2), "inStore", "", "down", 3)}</td>
           <td>${status(Number(row.inStore).toFixed(2), "inStore", "", "down", 2.19)}</td>
           <td>${pickerInsight(row)}</td>
         </tr>`,
