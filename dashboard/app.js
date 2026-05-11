@@ -230,9 +230,9 @@ const ABSENTEEISM_RATE = 0.2;
 const TURNOVER_RATE = 0.2;
 const EFFECTIVE_HC_RATE = (1 - ABSENTEEISM_RATE) * (1 - TURNOVER_RATE);
 const shiftBlocks = [
-  { key: "mad", start: 0, end: 5 },
-  { key: "dia", start: 6, end: 13 },
-  { key: "noite", start: 14, end: 23 },
+  { key: "mad", label: "Madrugada", start: "22:00", end: "05:20" },
+  { key: "dia", label: "AM", start: "06:00", end: "13:20" },
+  { key: "noite", label: "PM", start: "14:00", end: "21:20" },
 ];
 const weekDays = [
   { label: "Segunda", date: "04/05/2026", orderShare: 0.18, attendance: 0.89, programFactor: 1.04 },
@@ -903,7 +903,9 @@ function storeScaleRows(storeName) {
 }
 
 function shiftForHour(hour) {
-  return shiftBlocks.find((shift) => hour >= shift.start && hour <= shift.end)?.key || "noite";
+  if (hour >= 22 || hour <= 5) return "mad";
+  if (hour >= 6 && hour <= 13) return "dia";
+  return "noite";
 }
 
 function hcNeedForStore(storeName) {
@@ -928,14 +930,17 @@ function hcNeedForStore(storeName) {
     neededHours += need;
     connectedHours += slot.connected;
     const shift = shiftForHour(slot.hour);
-    if (!dayShifts.has(slot.date)) dayShifts.set(slot.date, { mad: 0, dia: 0, noite: 0 });
+    if (!dayShifts.has(slot.date)) dayShifts.set(slot.date, { mad: 0, dia: 0, noite: 0, connectedMad: 0, connectedDia: 0, connectedNoite: 0 });
     const current = dayShifts.get(slot.date);
     current[shift] = Math.max(current[shift], need);
+    const connectedKey = `connected${shift.charAt(0).toUpperCase()}${shift.slice(1)}`;
+    current[connectedKey] = Math.max(current[connectedKey], slot.connected);
   });
   const shiftNeeds = [...dayShifts.entries()].map(([date, shifts]) => ({
     date,
     shifts,
-    total: sum(Object.values(shifts)),
+    total: shifts.mad + shifts.dia + shifts.noite,
+    connectedTotal: shifts.connectedMad + shifts.connectedDia + shifts.connectedNoite,
   }));
   const weeklyShiftNeed = sum(shiftNeeds.map((day) => day.total));
   const sundayShiftNeed = sum(shiftNeeds.filter((day) => weekdayPt(day.date) === "Domingo").map((day) => day.total));
@@ -949,6 +954,7 @@ function hcNeedForStore(storeName) {
     connectedHours,
     weeklyShiftNeed,
     sundayShiftNeed,
+    shiftNeeds,
     baseHcNeeded,
     hcNeeded,
     pickerDeltaHours: connectedHours - neededHours,
@@ -1058,6 +1064,71 @@ function renderHcAdjustment() {
         ? moves.map((move) => `<tr><td>${move.from}</td><td><strong>${storeLink(move.to)}</strong></td><td>${fmtInt(move.amount)}</td><td>${move.note}</td></tr>`).join("")
         : `<tr><td colspan="4">Após aplicar 6x1, folga de domingo, absenteísmo e turnover, não há loja com plano doável. Recomendação: abrir ask de HC nas lojas com gap e revisar distribuição horária antes de reduzir plano.</td></tr>`
     }</tbody>`;
+}
+
+function dayLabelWithDate(date) {
+  return `${weekdayPt(date)} · ${date}`;
+}
+
+function buildScheduleSuggestionRows() {
+  const adjustmentByStore = new Map(buildHcAdjustmentRows().map((row) => [normalizeStore(row.store), row]));
+  const offenders = (scaleQueryRows.length ? topInStoreStoresFromQuery().slice(0, 5) : [...allStores].sort((a, b) => b.inStore - a.inStore).slice(0, 5))
+    .map((row) => {
+      const base = allStores.find((store) => normalizeStore(store.store) === normalizeStore(row.store)) || row;
+      return adjustmentByStore.get(normalizeStore(row.store)) || { ...base, ...hcNeedForStore(base.store) };
+    });
+
+  return offenders.flatMap((store) =>
+    store.shiftNeeds.map((day) => {
+      const isSunday = weekdayPt(day.date) === "Domingo";
+      const folgas = isSunday ? Math.ceil(num(store.hcNeeded) * 0.3) : Math.max(0, Math.round((num(store.hcNeeded) - day.total) / 6));
+      const shifts = shiftBlocks
+        .map((shift) => {
+          const count = num(day.shifts[shift.key]);
+          const connectedKey = `connected${shift.key.charAt(0).toUpperCase()}${shift.key.slice(1)}`;
+          const gap = count - num(day.shifts[connectedKey]);
+          return `${shift.label} ${shift.start}-${shift.end}: ${fmtInt(count)}${gap > 0 ? ` (gap ${fmtInt(gap)})` : ""}`;
+        })
+        .join(" · ");
+      const ask = Math.max(0, num(store.hcNeeded) - num(store.real));
+      return {
+        store: store.store,
+        coord: store.coord,
+        date: day.date,
+        dayLabel: dayLabelWithDate(day.date),
+        hcNeeded: store.hcNeeded,
+        plan: store.plan,
+        real: store.real,
+        folgas,
+        total: day.total,
+        shifts,
+        action: ask > 0 ? `Escalar ${fmtInt(day.total)} no dia e abrir/repor ${fmtInt(ask)} HC. ${isSunday ? "Domingo limitado a 70% do time ativo." : "Manter folgas fora dos picos."}` : "Plano cobre a necessidade; revisar aderência e presença conectada por turno.",
+      };
+    }),
+  );
+}
+
+function renderOffenderScheduleSuggestions() {
+  const table = document.querySelector("#offender-schedule-table");
+  if (!table) return;
+  const rows = buildScheduleSuggestionRows();
+  const head = ["Loja", "Dia", "HC need", "Plan", "Real", "Folgas", "Escala sugerida", "Ask / ação"];
+  table.innerHTML = `
+    <thead><tr>${head.map((h) => `<th>${h}</th>`).join("")}</tr></thead>
+    <tbody>${rows
+      .map(
+        (row, index) => `<tr>
+          <td><strong>${index % 7 === 0 ? storeLink(row.store) : row.store}</strong><br><span>${row.coord}</span></td>
+          <td>${row.dayLabel}</td>
+          <td>${fmtInt(row.hcNeeded)}</td>
+          <td>${fmtInt(row.plan)}</td>
+          <td>${fmtInt(row.real)}</td>
+          <td>${fmtInt(row.folgas)}</td>
+          <td>${row.shifts}</td>
+          <td>${row.action}</td>
+        </tr>`,
+      )
+      .join("")}</tbody>`;
 }
 
 function renderCoordinatorCards() {
@@ -1282,6 +1353,7 @@ function init() {
   renderHourlyMatrix();
   renderPickerGapTable();
   renderHcAdjustment();
+  renderOffenderScheduleSuggestions();
   renderCoordinatorCards();
   renderCharts();
   handleHashNavigation();
