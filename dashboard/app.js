@@ -225,6 +225,15 @@ const stores24h = new Set([
   "botafogo ii",
   "vila mascote",
 ]);
+const SUNDAY_AVAILABLE_RATE = 0.7;
+const ABSENTEEISM_RATE = 0.2;
+const TURNOVER_RATE = 0.2;
+const EFFECTIVE_HC_RATE = (1 - ABSENTEEISM_RATE) * (1 - TURNOVER_RATE);
+const shiftBlocks = [
+  { key: "mad", start: 0, end: 5 },
+  { key: "dia", start: 6, end: 13 },
+  { key: "noite", start: 14, end: 23 },
+];
 const weekDays = [
   { label: "Segunda", date: "04/05/2026", orderShare: 0.18, attendance: 0.89, programFactor: 1.04 },
   { label: "Terça", date: "05/05/2026", orderShare: 0.15, attendance: 0.91, programFactor: 1 },
@@ -893,31 +902,55 @@ function storeScaleRows(storeName) {
   return scaleQueryRows.filter((row) => normalizeStore(row.WAREHOUSENAME) === target);
 }
 
+function shiftForHour(hour) {
+  return shiftBlocks.find((shift) => hour >= shift.start && hour <= shift.end)?.key || "noite";
+}
+
 function hcNeedForStore(storeName) {
   const rows = storeScaleRows(storeName);
   const is24h = stores24h.has(normalizeStore(storeName));
   const bySlot = new Map();
   rows.forEach((row) => {
-    const key = `${dateKey(row.DATE)}-${num(row.HORA, -1)}`;
-    if (!bySlot.has(key)) bySlot.set(key, { orders: 0, connected: 0, hour: num(row.HORA, -1) });
+    const date = dateKey(row.DATE);
+    const key = `${date}-${num(row.HORA, -1)}`;
+    if (!bySlot.has(key)) bySlot.set(key, { date, orders: 0, connected: 0, hour: num(row.HORA, -1) });
     const slot = bySlot.get(key);
     slot.orders += num(row.TOTAL_ORDENES_HISTORICO || row.ORDERS);
     slot.connected += num(row.PICKERS_CONECTED || row.PICKERS_CONNECTED);
   });
   let neededHours = 0;
   let connectedHours = 0;
+  const dayShifts = new Map();
   bySlot.forEach((slot) => {
     let need = pickerNeed(slot.orders, slot.hour >= 8 && slot.hour <= 21 ? 1 : 0, 3.27, 1);
+    if (slot.orders > 0) need = Math.max(3, need);
     if (is24h && slot.hour >= 0 && slot.hour <= 5) need = Math.max(3, need);
     neededHours += need;
     connectedHours += slot.connected;
+    const shift = shiftForHour(slot.hour);
+    if (!dayShifts.has(slot.date)) dayShifts.set(slot.date, { mad: 0, dia: 0, noite: 0 });
+    const current = dayShifts.get(slot.date);
+    current[shift] = Math.max(current[shift], need);
   });
-  const hcFromHours = Math.ceil(neededHours / 48);
+  const shiftNeeds = [...dayShifts.entries()].map(([date, shifts]) => ({
+    date,
+    shifts,
+    total: sum(Object.values(shifts)),
+  }));
+  const weeklyShiftNeed = sum(shiftNeeds.map((day) => day.total));
+  const sundayShiftNeed = sum(shiftNeeds.filter((day) => weekdayPt(day.date) === "Domingo").map((day) => day.total));
+  const hcFrom6x1 = Math.ceil(weeklyShiftNeed / 6);
+  const hcForSunday = Math.ceil(sundayShiftNeed / SUNDAY_AVAILABLE_RATE);
   const minimum = is24h ? 11 : 7;
+  const baseHcNeeded = Math.max(minimum, hcFrom6x1, hcForSunday);
+  const hcNeeded = Math.ceil(baseHcNeeded / EFFECTIVE_HC_RATE);
   return {
     neededHours,
     connectedHours,
-    hcNeeded: Math.max(minimum, hcFromHours),
+    weeklyShiftNeed,
+    sundayShiftNeed,
+    baseHcNeeded,
+    hcNeeded,
     pickerDeltaHours: connectedHours - neededHours,
     is24h,
   };
@@ -1007,20 +1040,24 @@ function renderHcAdjustment() {
 
   const receivers = rows.filter((row) => row.currentGap > 0).slice(0, 8);
   const donors = rows.filter((row) => row.donor > 0).sort((a, b) => b.donor - a.donor);
-  const moves = receivers.map((receiver, index) => {
-    const donor = donors[index % Math.max(1, donors.length)];
-    return {
-      from: donor?.store || "Sem loja doadora suficiente",
-      to: receiver.store,
-      amount: Math.min(receiver.currentGap, donor?.donor || receiver.currentGap),
-      note: donor ? `Reduzir plano da origem e realocar antes de abrir ${receiver.ask || receiver.currentGap} vaga(s).` : "Não há sobra suficiente no plano; abrir ask de HC.",
-    };
-  });
+  const moves = donors.length
+    ? receivers.map((receiver, index) => {
+        const donor = donors[index % donors.length];
+        return {
+          from: donor.store,
+          to: receiver.store,
+          amount: Math.min(receiver.currentGap, donor.donor),
+          note: `Reduzir plano da origem e realocar antes de abrir ${receiver.ask || receiver.currentGap} vaga(s).`,
+        };
+      })
+    : [];
   transfer.innerHTML = `
     <thead><tr><th>Origem sugerida</th><th>Destino</th><th>Pickers</th><th>Leitura</th></tr></thead>
-    <tbody>${moves
-      .map((move) => `<tr><td>${move.from}</td><td><strong>${storeLink(move.to)}</strong></td><td>${fmtInt(move.amount)}</td><td>${move.note}</td></tr>`)
-      .join("")}</tbody>`;
+    <tbody>${
+      moves.length
+        ? moves.map((move) => `<tr><td>${move.from}</td><td><strong>${storeLink(move.to)}</strong></td><td>${fmtInt(move.amount)}</td><td>${move.note}</td></tr>`).join("")
+        : `<tr><td colspan="4">Após aplicar 6x1, folga de domingo, absenteísmo e turnover, não há loja com plano doável. Recomendação: abrir ask de HC nas lojas com gap e revisar distribuição horária antes de reduzir plano.</td></tr>`
+    }</tbody>`;
 }
 
 function renderCoordinatorCards() {
