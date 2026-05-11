@@ -908,6 +908,23 @@ function shiftForHour(hour) {
   return "noite";
 }
 
+function activeNeedForDay(shifts, is24h) {
+  const nightNeed = is24h ? Math.min(Math.max(num(shifts.mad), 3), 4) : 0;
+  const amNeed = Math.max(num(shifts.dia), 3);
+  const pmNeed = Math.max(num(shifts.noite), 3);
+  const peak = Math.max(amNeed, pmNeed);
+  const intermediates = Math.min(2, Math.max(0, peak - 8));
+  const amBase = Math.max(3, amNeed - intermediates);
+  const pmBase = Math.max(3, pmNeed - intermediates);
+  return {
+    activeNeed: nightNeed + amBase + pmBase + intermediates,
+    nightNeed,
+    amBase,
+    pmBase,
+    intermediates,
+  };
+}
+
 function hcNeedForStore(storeName) {
   const rows = storeScaleRows(storeName);
   const is24h = stores24h.has(normalizeStore(storeName));
@@ -936,19 +953,25 @@ function hcNeedForStore(storeName) {
     const connectedKey = `connected${shift.charAt(0).toUpperCase()}${shift.slice(1)}`;
     current[connectedKey] = Math.max(current[connectedKey], slot.connected);
   });
-  const shiftNeeds = [...dayShifts.entries()].map(([date, shifts]) => ({
-    date,
-    shifts,
-    total: shifts.mad + shifts.dia + shifts.noite,
-    connectedTotal: shifts.connectedMad + shifts.connectedDia + shifts.connectedNoite,
-  }));
-  const weeklyShiftNeed = sum(shiftNeeds.map((day) => day.total));
-  const sundayShiftNeed = sum(shiftNeeds.filter((day) => weekdayPt(day.date) === "Domingo").map((day) => day.total));
-  const hcFrom6x1 = Math.ceil(weeklyShiftNeed / 6);
+  const shiftNeeds = [...dayShifts.entries()].map(([date, shifts]) => {
+    const active = activeNeedForDay(shifts, is24h);
+    return {
+      date,
+      shifts,
+      ...active,
+      total: active.activeNeed,
+      connectedTotal: shifts.connectedMad + shifts.connectedDia + shifts.connectedNoite,
+    };
+  });
+  const weeklyShiftNeed = Math.max(...shiftNeeds.map((day) => day.total), 0);
+  const sundayShiftNeed = Math.max(...shiftNeeds.filter((day) => weekdayPt(day.date) === "Domingo").map((day) => day.total), 0);
+  const weekdayNeed = Math.max(...shiftNeeds.filter((day) => weekdayPt(day.date) !== "Domingo").map((day) => day.total), 0);
+  const hcFrom6x1 = Math.ceil(weekdayNeed / (6 / 7));
   const hcForSunday = Math.ceil(sundayShiftNeed / SUNDAY_AVAILABLE_RATE);
   const minimum = is24h ? 11 : 7;
   const baseHcNeeded = Math.max(minimum, hcFrom6x1, hcForSunday);
-  const hcNeeded = Math.ceil(baseHcNeeded / EFFECTIVE_HC_RATE);
+  const riskBuffer = Math.ceil(baseHcNeeded * (ABSENTEEISM_RATE + TURNOVER_RATE));
+  const hcNeeded = baseHcNeeded;
   return {
     neededHours,
     connectedHours,
@@ -956,6 +979,8 @@ function hcNeedForStore(storeName) {
     sundayShiftNeed,
     shiftNeeds,
     baseHcNeeded,
+    riskBuffer,
+    riskHcNeeded: baseHcNeeded + riskBuffer,
     hcNeeded,
     pickerDeltaHours: connectedHours - neededHours,
     is24h,
@@ -983,9 +1008,10 @@ function buildHcAdjustmentRows() {
       const planGap = need.hcNeeded - store.plan;
       let action = "Manter e monitorar curva horária.";
       if (currentGap > 0 && gapCovered) action = `Cobrir gap atual: recompor ${fmtInt(currentGap)} picker(s) até o plano.`;
-      if (currentGap > 0 && !gapCovered) action = `Abrir ask de ${fmtInt(planGap)} acima do plano e recompor ${fmtInt(Math.max(0, store.plan - store.real))} vaga(s).`;
+      if (currentGap > 0 && !gapCovered) action = `Abrir ask base de ${fmtInt(planGap)} acima do plano e recompor ${fmtInt(Math.max(0, store.plan - store.real))} vaga(s).`;
       if (store.plan - need.hcNeeded >= 2) action = `Pode reduzir até ${fmtInt(store.plan - need.hcNeeded)} picker(s) do plano e realocar para lojas com ask.`;
       if (need.is24h && currentGap > 0) action += " Prioridade: proteger madrugada com mínimo 3.";
+      if (need.riskBuffer > 0 && currentGap > 0) action += ` Buffer risco abs/turnover: ${fmtInt(need.riskBuffer)}.`;
       return {
         ...store,
         ...need,
@@ -1013,18 +1039,18 @@ function renderHcAdjustment() {
   const totalReal = sum(rows.map((row) => row.real));
   const totalAsk = sum(rows.map((row) => row.ask));
   const totalDonor = sum(rows.map((row) => row.donor));
+  const totalRiskBuffer = sum(rows.map((row) => row.riskBuffer));
   const deltaBrHours = sum(rows.map((row) => row.pickerDeltaHours));
-  const corr = pearson(rows, "pickerShortageHc", "hcGap");
   summary.innerHTML = [
     ["Delta BR", `${fmtInt(deltaBrHours)} h`, "Pickers conectados - necessários na semana", deltaBrHours < 0 ? "red" : "green"],
     ["HC necessário", fmtInt(totalNeed), `Plano ${fmtInt(totalPlan)} · Real ${fmtInt(totalReal)}`, totalReal >= totalNeed ? "green" : "red"],
     ["Ask líquido", fmtInt(Math.max(0, totalNeed - totalPlan)), `Ask bruto ${fmtInt(totalAsk)} · Plano doável ${fmtInt(totalDonor)}`, totalAsk > totalDonor ? "amber" : "green"],
-    ["Correlação", fixed(corr, 2), "Shortage horário x gap HC real vs plan", corr < -0.25 ? "red" : "amber"],
+    ["Buffer risco", fmtInt(totalRiskBuffer), "20% absenteísmo + 20% turnover, fora do ask base", "amber"],
   ]
     .map(([label, value, sub, cls]) => `<article class="kpi ${cls}"><p class="label">${label}</p><p class="value">${value}</p><p class="sub">${sub}</p></article>`)
     .join("");
 
-  const head = ["Loja", "24h", "Need HC", "Plan", "Real", "Gap plan", "Delta h", "Cobre?", "Ask", "Sugestão"];
+  const head = ["Loja", "24h", "Need HC", "Buffer", "Plan", "Real", "Gap plan", "Delta h", "Cobre?", "Ask", "Sugestão"];
   table.innerHTML = `
     <thead><tr>${head.map((h) => `<th>${h}</th>`).join("")}</tr></thead>
     <tbody>${rows
@@ -1033,6 +1059,7 @@ function renderHcAdjustment() {
           <td><strong>${storeLink(row.store)}</strong><br><span>${row.coord}</span></td>
           <td>${row.is24h ? "Sim" : "Não"}</td>
           <td>${fmtInt(row.hcNeeded)}</td>
+          <td>${fmtInt(row.riskBuffer)}</td>
           <td>${fmtInt(row.plan)}</td>
           <td>${fmtInt(row.real)}</td>
           <td>${status(row.diff, "delta")}</td>
@@ -1082,15 +1109,14 @@ function buildScheduleSuggestionRows() {
     store.shiftNeeds.map((day) => {
       const isSunday = weekdayPt(day.date) === "Domingo";
       const folgas = isSunday ? Math.ceil(num(store.hcNeeded) * 0.3) : Math.max(0, Math.round((num(store.hcNeeded) - day.total) / 6));
-      const shifts = shiftBlocks
-        .map((shift) => {
-          const count = num(day.shifts[shift.key]);
-          const connectedKey = `connected${shift.key.charAt(0).toUpperCase()}${shift.key.slice(1)}`;
-          const gap = count - num(day.shifts[connectedKey]);
-          return `${shift.label} ${shift.start}-${shift.end}: ${fmtInt(count)}${gap > 0 ? ` (gap ${fmtInt(gap)})` : ""}`;
-        })
-        .join(" · ");
-      const ask = Math.max(0, num(store.hcNeeded) - num(store.real));
+      const shifts = [
+        `Madrugada 22:00-05:20: ${fmtInt(day.nightNeed)}`,
+        `AM 06:00-13:20: ${fmtInt(day.amBase)}`,
+        `Interm. 10:40-18:00: ${fmtInt(day.intermediates)}`,
+        `PM 14:00-21:20: ${fmtInt(day.pmBase)}`,
+      ].join(" · ");
+      const currentGap = Math.max(0, num(store.hcNeeded) - num(store.real));
+      const planAsk = Math.max(0, num(store.hcNeeded) - num(store.plan));
       return {
         store: store.store,
         coord: store.coord,
@@ -1102,7 +1128,7 @@ function buildScheduleSuggestionRows() {
         folgas,
         total: day.total,
         shifts,
-        action: ask > 0 ? `Escalar ${fmtInt(day.total)} no dia e abrir/repor ${fmtInt(ask)} HC. ${isSunday ? "Domingo limitado a 70% do time ativo." : "Manter folgas fora dos picos."}` : "Plano cobre a necessidade; revisar aderência e presença conectada por turno.",
+        action: currentGap > 0 ? `Escalar ${fmtInt(day.total)} no dia; repor ${fmtInt(currentGap)} até o need e abrir ask acima do plano de ${fmtInt(planAsk)}. Buffer risco: ${fmtInt(store.riskBuffer)}. ${isSunday ? "Domingo limitado a 70% do time ativo." : "Manter folgas fora dos picos."}` : "Plano cobre a necessidade; revisar aderência e presença conectada por turno.",
       };
     }),
   );
