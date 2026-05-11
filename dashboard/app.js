@@ -229,7 +229,7 @@ const SUNDAY_AVAILABLE_RATE = 0.7;
 const HELPPI_DAY_COST = 200;
 const FIXED_PICKER_MONTH_COST = 5600;
 const WEEKS_PER_MONTH = 4;
-const MAX_HELPPI_PER_DAY = 2;
+const MAX_HELPPI_PER_DAY = 3;
 const MAX_HELPPI_PER_WEEK = 6;
 const shiftBlocks = [
   { key: "mad", label: "Madrugada", start: "22:00", end: "05:20" },
@@ -985,8 +985,31 @@ function activeNeedForDay(shifts, is24h) {
 }
 
 function availableFixedByDay(fixedHc, date) {
-  const availability = weekdayPt(date) === "Domingo" ? SUNDAY_AVAILABLE_RATE : 6 / 7;
+  const day = weekdayPt(date);
+  const availability = day === "Domingo" ? SUNDAY_AVAILABLE_RATE : day === "Sábado" ? 1 : 0.8;
   return Math.floor(num(fixedHc) * availability);
+}
+
+function fixedCoverageForDay(fixedHc, day, is24h) {
+  const available = availableFixedByDay(fixedHc, day.date);
+  const nightTarget = is24h ? Math.min(Math.max(num(day.shifts.mad), 3), 4) : 0;
+  const nightFixed = Math.min(nightTarget, available);
+  let remaining = Math.max(0, available - nightFixed);
+  const intermediates = Math.min(2, Math.max(0, remaining - 6));
+  remaining -= intermediates;
+  let amBase = Math.min(Math.max(3, Math.floor(remaining / 2)), remaining);
+  let pmBase = Math.max(0, remaining - amBase);
+  if (num(day.shifts.noite) > num(day.shifts.dia) && amBase > 3) {
+    amBase -= 1;
+    pmBase += 1;
+  }
+  const amCoverage = amBase + intermediates;
+  const pmCoverage = pmBase + intermediates;
+  const amGap = Math.max(0, num(day.shifts.dia) - amCoverage);
+  const pmGap = Math.max(0, num(day.shifts.noite) - pmCoverage);
+  const nightGap = Math.max(0, nightTarget - nightFixed);
+  const helppi = Math.max(amGap, pmGap) + nightGap;
+  return { ...day, fixedAvailable: available, nightFixed, amBase, pmBase, intermediates, amCoverage, pmCoverage, helppi };
 }
 
 function helppiWindowsForDay(day, helppiTotal = Infinity) {
@@ -1007,14 +1030,11 @@ function helppiWindowsForDay(day, helppiTotal = Infinity) {
 }
 
 function optimizeFixedAndHelppi(shiftNeeds, minimum) {
-  const maxNeed = Math.max(minimum, ...shiftNeeds.map((day) => Math.ceil(day.total / (weekdayPt(day.date) === "Domingo" ? SUNDAY_AVAILABLE_RATE : 6 / 7))));
+  const is24h = shiftNeeds.some((day) => day.nightNeed > 0);
+  const maxNeed = Math.max(minimum, ...shiftNeeds.map((day) => Math.ceil((day.nightNeed + day.shifts.dia + day.shifts.noite) / (weekdayPt(day.date) === "Domingo" ? SUNDAY_AVAILABLE_RATE : 0.8))));
   let best = null;
   for (let fixed = minimum; fixed <= maxNeed + 8; fixed += 1) {
-    const helppiByDay = shiftNeeds.map((day) => {
-      const available = availableFixedByDay(fixed, day.date);
-      const helppi = Math.max(0, day.total - available);
-      return { ...day, fixedAvailable: available, helppi };
-    });
+    const helppiByDay = shiftNeeds.map((day) => fixedCoverageForDay(fixed, day, is24h));
     const weeklyHelppi = sum(helppiByDay.map((day) => day.helppi));
     const feasibleHelppi = weeklyHelppi <= MAX_HELPPI_PER_WEEK && helppiByDay.every((day) => day.helppi <= MAX_HELPPI_PER_DAY);
     if (!feasibleHelppi) continue;
@@ -1027,7 +1047,7 @@ function optimizeFixedAndHelppi(shiftNeeds, minimum) {
   }
   return best || {
     fixed: maxNeed,
-    helppiByDay: shiftNeeds.map((day) => ({ ...day, fixedAvailable: availableFixedByDay(maxNeed, day.date), helppi: Math.max(0, day.total - availableFixedByDay(maxNeed, day.date)) })),
+    helppiByDay: shiftNeeds.map((day) => fixedCoverageForDay(maxNeed, day, is24h)),
     weeklyHelppi: 0,
     monthlyHelppiCost: 0,
     fixedCost: maxNeed * FIXED_PICKER_MONTH_COST,
@@ -1123,7 +1143,7 @@ function buildHcAdjustmentRows() {
       let action = "Manter e monitorar curva horária.";
       if (currentGap > 0 && gapCovered) action = `Cobrir gap atual: recompor ${fmtInt(currentGap)} picker(s) até o plano.`;
       if (currentGap > 0 && !gapCovered) action = `Abrir ask base de ${fmtInt(planGap)} acima do plano e recompor ${fmtInt(Math.max(0, store.plan - store.real))} vaga(s).`;
-      if (store.plan - need.hcNeeded >= 2) action = `Pode reduzir até ${fmtInt(store.plan - need.hcNeeded)} picker(s) do plano e realocar para lojas com ask.`;
+      if (store.plan - need.hcNeeded >= 2) action = `Plano acima do HC fixo mínimo em ${fmtInt(store.plan - need.hcNeeded)} picker(s); validar curva, presença e uso de Helppi antes de realocar.`;
       if (need.is24h && currentGap > 0) action += " Prioridade: proteger madrugada com mínimo 3.";
       if (need.weeklyHelppi > 0) action += ` Usar ${fmtInt(need.weeklyHelppi)} Helppi(s)/semana nos picos por R$ ${fmtInt(need.monthlyHelppiCost)}/mês.`;
       return {
@@ -1160,12 +1180,12 @@ function renderHcAdjustment() {
     ["Delta BR", `${fmtInt(deltaBrHours)} h`, "Pickers conectados - necessários na semana", deltaBrHours < 0 ? "red" : "green"],
     ["HC necessário", fmtInt(totalNeed), `Plano ${fmtInt(totalPlan)} · Real ${fmtInt(totalReal)}`, totalReal >= totalNeed ? "green" : "red"],
     ["Helppi", fmtInt(totalHelppi), `R$ ${fmtInt(totalHelppiCost)}/mês nos picos`, totalHelppi ? "amber" : "green"],
-    ["Custo fixo", `R$ ${fmtInt(sum(rows.map((row) => row.hcNeeded * FIXED_PICKER_MONTH_COST)))}`, "HC fixo necessário x R$ 5.600/mês", "amber"],
+    ["Ask líquido", fmtInt(Math.max(0, totalNeed - totalPlan)), `Ask bruto ${fmtInt(totalAsk)} · Plano acima ${fmtInt(totalDonor)}`, totalNeed > totalPlan ? "red" : "green"],
   ]
     .map(([label, value, sub, cls]) => `<article class="kpi ${cls}"><p class="label">${label}</p><p class="value">${value}</p><p class="sub">${sub}</p></article>`)
     .join("");
 
-  const head = ["Loja", "24h", "HC fixo", "Helppi/sem", "Custo Helppi", "Plan", "Real", "Ask", "Sugestão"];
+  const head = ["Loja", "24h", "HC fixo mín.", "Helppi/sem", "Custo Helppi", "Plan", "Real", "Ask", "Sugestão"];
   table.innerHTML = `
     <thead><tr>${head.map((h) => `<th>${h}</th>`).join("")}</tr></thead>
     <tbody>${rows
@@ -1221,18 +1241,18 @@ function buildScheduleSuggestionRows() {
   return offenders.flatMap((store) =>
     store.shiftNeeds.map((day) => {
       const isSunday = weekdayPt(day.date) === "Domingo";
-      const helppiDay = store.helppiByDay?.find((item) => item.date === day.date) || { helppi: 0, fixedAvailable: availableFixedByDay(store.hcNeeded, day.date) };
+      const helppiDay = store.helppiByDay?.find((item) => item.date === day.date) || fixedCoverageForDay(store.hcNeeded, day, store.is24h);
       const folgas = Math.max(0, num(store.hcNeeded) - num(helppiDay.fixedAvailable));
       const shifts = [
-        `Madrugada 22:00-05:20: ${fmtInt(day.nightNeed)}`,
-        `AM 06:00-13:20: ${fmtInt(day.amBase)}`,
-        `Interm. 10:40-18:00: ${fmtInt(day.intermediates)}`,
-        `PM 14:00-21:20: ${fmtInt(day.pmBase)}`,
+        `Madrugada 22:00-05:20: ${fmtInt(helppiDay.nightFixed || day.nightNeed)}`,
+        `AM 06:00-13:20: ${fmtInt(helppiDay.amBase)}`,
+        `Interm. 10:40-18:00: ${fmtInt(helppiDay.intermediates)}`,
+        `PM 14:00-21:20: ${fmtInt(helppiDay.pmBase)}`,
       ].join(" · ");
       const currentGap = Math.max(0, num(store.hcNeeded) - num(store.real));
       const planAsk = Math.max(0, num(store.hcNeeded) - num(store.plan));
       const helppiWindows = helppiDay.helppi
-        ? helppiWindowsForDay(day, helppiDay.helppi)
+        ? helppiWindowsForDay(helppiDay, helppiDay.helppi)
             .map((item) => `${fmtInt(item.amount)} Helppi ${item.window}`)
             .join(" · ")
         : "Sem Helppi";
