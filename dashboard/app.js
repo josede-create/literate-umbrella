@@ -196,9 +196,22 @@ if (Array.isArray(window.OKRS_DATA?.coordinators)) {
 
 const allStores = [...storeResults, ...extraStoreResults].sort((a, b) => a.store.localeCompare(b.store));
 const scaleQueryRows = Array.isArray(window.SCALE_QUERY_ROWS) ? window.SCALE_QUERY_ROWS : [];
+const hcGapRows = Array.isArray(window.HC_GAP_DATA?.rows) ? window.HC_GAP_DATA.rows : [];
 const dailyStores = Array.isArray(window.DAILY_DATA?.stores) ? [...window.DAILY_DATA.stores].sort((a, b) => a.store.localeCompare(b.store)) : [];
 const dailyOps = window.DAILY_OPS || {};
 const dailyPickers = Array.isArray(window.DAILY_PICKERS) ? window.DAILY_PICKERS : [];
+
+if (hcGapRows.length) {
+  const gapByStore = new Map(hcGapRows.map((row) => [normalizeStore(row.store), row]));
+  allStores.forEach((store) => {
+    const gap = gapByStore.get(normalizeStore(store.store));
+    if (!gap) return;
+    store.plan = num(gap.plan);
+    store.real = num(gap.real);
+    store.diff = num(gap.diff, store.real - store.plan);
+    store.hcSource = window.HC_GAP_DATA?.source || "Follow up HC Preview";
+  });
+}
 
 const hourlyCurve = [0.01, 0.01, 0.006, 0.005, 0.004, 0.005, 0.012, 0.025, 0.04, 0.05, 0.055, 0.063, 0.067, 0.067, 0.064, 0.059, 0.062, 0.07, 0.078, 0.09, 0.09, 0.073, 0.045, 0.021];
 const shiftCoverage = [0.22, 0.18, 0.14, 0.11, 0.09, 0.12, 0.2, 0.38, 0.56, 0.66, 0.72, 0.76, 0.78, 0.76, 0.77, 0.75, 0.78, 0.84, 0.92, 1, 0.98, 0.88, 0.66, 0.4];
@@ -1065,7 +1078,7 @@ function handleHashNavigation() {
 }
 
 function latestUpdateStamp() {
-  const dates = [window.OKRS_DATA_UPDATED_AT, window.DAILY_DATA_UPDATED_AT, window.SCALE_DATA_UPDATED_AT]
+  const dates = [window.OKRS_DATA_UPDATED_AT, window.DAILY_DATA_UPDATED_AT, window.SCALE_DATA_UPDATED_AT, window.HC_GAP_DATA_UPDATED_AT]
     .filter(Boolean)
     .map((value) => new Date(value))
     .filter((date) => !Number.isNaN(date.getTime()));
