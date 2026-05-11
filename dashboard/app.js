@@ -1,6 +1,6 @@
 const PERIODS = {
-  month: "Abril MTD",
-  week: "20/04 a 26/04",
+  month: "Maio MTD",
+  week: "04/05 a 10/05",
 };
 
 const brMonth = {
@@ -50,7 +50,7 @@ const indicatorDefs = [
   { key: "hotDrink", label: "Bebida quente", type: "pct", target: 2.4, direction: "down" },
 ];
 
-const coordinators = [
+let coordinators = [
   {
     name: "Henrique Brasil",
     short: "Henrique",
@@ -118,7 +118,7 @@ const coordinators = [
   },
 ];
 
-const storeResults = [
+let storeResults = [
   { store: "Vila Madalena", coord: "Henrique", plan: 25, real: 27, diff: 2, prod: 72.4, orders: 39820, okrsMonth: 98.8, okrsWeek: 99.1, defect: 0.74, cancel: 0.04, availability: 98.6, stockout: 0.06, inStore: 2.22 },
   { store: "Bela Vista", coord: "Henrique", plan: 18, real: 16, diff: -2, prod: 74.48, orders: 28420, okrsMonth: 89.53, okrsWeek: 98.12, defect: 0.92, cancel: 0.12, availability: 97.8, stockout: 0.08, inStore: 3.01 },
   { store: "Brooklin II", coord: "Henrique", plan: 17, real: 13, diff: -4, prod: 81.0, orders: 25776, okrsMonth: 94.1, okrsWeek: 97.9, defect: 0.88, cancel: 0.06, availability: 98.2, stockout: 0.09, inStore: 2.57 },
@@ -144,7 +144,7 @@ const storeResults = [
   { store: "Estoril", coord: "Francisco", plan: 11, real: 10, diff: -1, prod: 58.7, orders: 14280, okrsMonth: 93.2, okrsWeek: 98.4, defect: 0.8, cancel: 0.05, availability: 97.9, stockout: 0.06, inStore: 2.01 },
 ];
 
-const extraStoreResults = [
+let extraStoreResults = [
   { store: "Aflitos", coord: "Francisco", plan: 16, real: 16, diff: 0, prod: 61.8, orders: 18520, okrsMonth: 94.7, okrsWeek: 97.8, defect: 0.86, cancel: 0.06, availability: 97.4, stockout: 0.08, inStore: 2.18 },
   { store: "Vila Izabel", coord: "Francisco", plan: 8, real: 8, diff: 0, prod: 59.4, orders: 9360, okrsMonth: 91.8, okrsWeek: 96.1, defect: 0.83, cancel: 0.05, availability: 96.8, stockout: 0.07, inStore: 2.08 },
   { store: "Ipanema", coord: "Guaracyaba", plan: 9, real: 8, diff: -1, prod: 62.7, orders: 10980, okrsMonth: 92.4, okrsWeek: 96.9, defect: 0.9, cancel: 0.04, availability: 97.1, stockout: 0.12, inStore: 2.42 },
@@ -162,6 +162,38 @@ const extraStoreResults = [
   { store: "Nova Recreio", coord: "Guaracyaba", plan: 5, real: 5, diff: 0, prod: 61.2, orders: 6980, okrsMonth: 91.9, okrsWeek: 96.3, defect: 0.91, cancel: 0.05, availability: 96.9, stockout: 0.1, inStore: 2.32 },
 ];
 
+if (Array.isArray(window.OKRS_DATA?.coordinators)) {
+  coordinators = window.OKRS_DATA.coordinators.map((coord) => ({
+    ...coord,
+    scale: coord.scale || "Atualizado via base semanal",
+    suggestions: coord.suggestions || [
+      "Priorizar lojas com InStore e cancel acima da meta.",
+      "Cruzar escala por hora com picos de orders e presença conectada.",
+      "Separar causa de processo de loja versus execução de picker.",
+    ],
+  }));
+}
+
+if (Array.isArray(window.OKRS_DATA?.stores)) {
+  storeResults = window.OKRS_DATA.stores.map((store) => ({
+    ...store,
+    okrsMonth: store.okrsMonth ?? store.okrsWeek,
+  }));
+  extraStoreResults = [];
+}
+
+if (Array.isArray(window.OKRS_DATA?.coordinators)) {
+  coordinators = window.OKRS_DATA.coordinators.map((coord) => ({
+    ...coord,
+    scale: coord.scale || "Atualizado via base semanal",
+    suggestions: coord.suggestions || [
+      "Priorizar lojas com InStore e cancel acima da meta.",
+      "Cruzar escala por hora com picos de orders e presença conectada.",
+      "Separar causa de processo de loja versus execução de picker.",
+    ],
+  }));
+}
+
 const allStores = [...storeResults, ...extraStoreResults].sort((a, b) => a.store.localeCompare(b.store));
 const scaleQueryRows = Array.isArray(window.SCALE_QUERY_ROWS) ? window.SCALE_QUERY_ROWS : [];
 const dailyStores = Array.isArray(window.DAILY_DATA?.stores) ? [...window.DAILY_DATA.stores].sort((a, b) => a.store.localeCompare(b.store)) : [];
@@ -171,13 +203,13 @@ const dailyPickers = Array.isArray(window.DAILY_PICKERS) ? window.DAILY_PICKERS 
 const hourlyCurve = [0.01, 0.01, 0.006, 0.005, 0.004, 0.005, 0.012, 0.025, 0.04, 0.05, 0.055, 0.063, 0.067, 0.067, 0.064, 0.059, 0.062, 0.07, 0.078, 0.09, 0.09, 0.073, 0.045, 0.021];
 const shiftCoverage = [0.22, 0.18, 0.14, 0.11, 0.09, 0.12, 0.2, 0.38, 0.56, 0.66, 0.72, 0.76, 0.78, 0.76, 0.77, 0.75, 0.78, 0.84, 0.92, 1, 0.98, 0.88, 0.66, 0.4];
 const weekDays = [
-  { label: "Segunda", date: "20/04/2026", orderShare: 0.18, attendance: 0.89, programFactor: 1.04 },
-  { label: "Terça", date: "21/04/2026", orderShare: 0.15, attendance: 0.91, programFactor: 1 },
-  { label: "Quarta", date: "22/04/2026", orderShare: 0.16, attendance: 0.93, programFactor: 1.03 },
-  { label: "Quinta", date: "23/04/2026", orderShare: 0.16, attendance: 0.9, programFactor: 0.98 },
-  { label: "Sexta", date: "24/04/2026", orderShare: 0.18, attendance: 0.87, programFactor: 1.06 },
-  { label: "Sábado", date: "25/04/2026", orderShare: 0.11, attendance: 0.82, programFactor: 0.82 },
-  { label: "Domingo", date: "26/04/2026", orderShare: 0.06, attendance: 0.78, programFactor: 0.62 },
+  { label: "Segunda", date: "04/05/2026", orderShare: 0.18, attendance: 0.89, programFactor: 1.04 },
+  { label: "Terça", date: "05/05/2026", orderShare: 0.15, attendance: 0.91, programFactor: 1 },
+  { label: "Quarta", date: "06/05/2026", orderShare: 0.16, attendance: 0.93, programFactor: 1.03 },
+  { label: "Quinta", date: "07/05/2026", orderShare: 0.16, attendance: 0.9, programFactor: 0.98 },
+  { label: "Sexta", date: "08/05/2026", orderShare: 0.18, attendance: 0.87, programFactor: 1.06 },
+  { label: "Sábado", date: "09/05/2026", orderShare: 0.11, attendance: 0.82, programFactor: 0.82 },
+  { label: "Domingo", date: "10/05/2026", orderShare: 0.06, attendance: 0.78, programFactor: 0.62 },
 ];
 
 function fmtInt(value) {
