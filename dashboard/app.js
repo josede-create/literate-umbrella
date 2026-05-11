@@ -228,7 +228,11 @@ const stores24h = new Set([
 const SUNDAY_AVAILABLE_RATE = 0.7;
 const ABSENTEEISM_RATE = 0.2;
 const TURNOVER_RATE = 0.2;
-const EFFECTIVE_HC_RATE = (1 - ABSENTEEISM_RATE) * (1 - TURNOVER_RATE);
+const HELPPI_DAY_COST = 200;
+const FIXED_PICKER_MONTH_COST = 5600;
+const WEEKS_PER_MONTH = 4;
+const MAX_HELPPI_PER_DAY = 2;
+const MAX_HELPPI_PER_WEEK = 6;
 const shiftBlocks = [
   { key: "mad", label: "Madrugada", start: "22:00", end: "05:20" },
   { key: "dia", label: "AM", start: "06:00", end: "13:20" },
@@ -443,6 +447,55 @@ function renderDailyTable() {
       .join("")}</tbody>`;
 }
 
+function aggregateDailyBr() {
+  const totals = dailyStores.reduce(
+    (acc, row) => {
+      acc.rappi += num(row.rappi);
+      acc.ze += num(row.ze);
+      acc.orders += num(row.orders);
+      acc.defect += num(row.defect) * num(row.rappi);
+      acc.cancel += num(row.cancel) * num(row.rappi);
+      acc.availability += num(row.availability) * num(row.rappi);
+      acc.stockout += num(row.stockout) * num(row.rappi);
+      acc.inStore += num(row.inStore) * num(row.orders);
+      acc.productivity += num(row.productivity) * num(row.orders);
+      acc.okrs += num(row.okrs) * num(row.orders);
+      return acc;
+    },
+    { rappi: 0, ze: 0, orders: 0, defect: 0, cancel: 0, availability: 0, stockout: 0, inStore: 0, productivity: 0, okrs: 0 },
+  );
+  return {
+    ...totals,
+    defect: totals.rappi ? totals.defect / totals.rappi : 0,
+    cancel: totals.rappi ? totals.cancel / totals.rappi : 0,
+    availability: totals.rappi ? totals.availability / totals.rappi : 0,
+    stockout: totals.rappi ? totals.stockout / totals.rappi : 0,
+    inStore: totals.orders ? totals.inStore / totals.orders : 0,
+    productivity: totals.orders ? totals.productivity / totals.orders : 0,
+    okrs: totals.orders ? totals.okrs / totals.orders : 0,
+  };
+}
+
+function renderDailyBr() {
+  const target = document.querySelector("#daily-br-kpis");
+  if (!target || !dailyStores.length) return;
+  const br = aggregateDailyBr();
+  document.querySelector("#daily-br-date-pill").textContent = window.DAILY_DATA?.date ? `D-1 · ${window.DAILY_DATA.date}` : "D-1";
+  const kpis = [
+    ["Orders", fmtInt(br.orders), `${fmtInt(br.rappi)} Rappi · ${fmtInt(br.ze)} Zé`, "neutral"],
+    ["OKRS", `${fixed(br.okrs)}%`, "Resultado ponderado por orders", statusClass(br.okrs, "okrs")],
+    ["DR", `${fixed(br.defect)}%`, "meta D-1: 0,78%", statusClass(br.defect, "defect", "down", 0.78)],
+    ["Cancel", `${fixed(br.cancel)}%`, "meta D-1: 0,50%", statusClass(br.cancel, "cancel", "down", 0.5)],
+    ["SA", `${fixed(br.availability)}%`, "meta D-1: 99,50%", statusClass(br.availability, "availability", "up", 99.5)],
+    ["Stockout", `${fixed(br.stockout)}%`, "meta D-1: 0,13%", statusClass(br.stockout, "stockout", "down", 0.13)],
+    ["InStore", fixed(br.inStore), "meta D-1: 2,19", statusClass(br.inStore, "inStore", "down", 2.19)],
+    ["Prod.", fixed(br.productivity), "meta D-1: 62,50", statusClass(br.productivity, "prod")],
+  ];
+  target.innerHTML = kpis
+    .map(([label, value, sub, cls]) => `<article class="kpi ${cls}"><p class="label">${label}</p><p class="value">${value}</p><p class="sub">${sub}</p></article>`)
+    .join("");
+}
+
 function renderDailyStore(storeName) {
   if (!dailyStores.length) return;
   const row = findDailyStore(storeName);
@@ -649,6 +702,7 @@ function renderDaily() {
     renderDailyStore(select.value);
     document.querySelector("#daily").scrollIntoView({ behavior: "smooth", block: "start" });
   });
+  renderDailyBr();
   renderDailyTable();
   renderDailyStore(dailyStores[0].store);
 }
@@ -925,6 +979,57 @@ function activeNeedForDay(shifts, is24h) {
   };
 }
 
+function availableFixedByDay(fixedHc, date) {
+  const availability = weekdayPt(date) === "Domingo" ? SUNDAY_AVAILABLE_RATE : 6 / 7;
+  return Math.floor(num(fixedHc) * availability);
+}
+
+function helppiWindowsForDay(day, helppiTotal = Infinity) {
+  const windows = [];
+  let remaining = helppiTotal;
+  if (day.intermediates > 0) windows.push({ window: "10:40-18:00", amount: day.intermediates });
+  const uncoveredAm = Math.max(0, day.shifts.dia - (day.amBase + day.intermediates));
+  const uncoveredPm = Math.max(0, day.shifts.noite - (day.pmBase + day.intermediates));
+  if (uncoveredAm > 0) windows.push({ window: "06:00-13:20", amount: uncoveredAm });
+  if (uncoveredPm > 0) windows.push({ window: "14:00-21:20", amount: uncoveredPm });
+  return windows
+    .map((item) => {
+      const amount = Math.min(item.amount, remaining);
+      remaining -= amount;
+      return { ...item, amount };
+    })
+    .filter((item) => item.amount > 0);
+}
+
+function optimizeFixedAndHelppi(shiftNeeds, minimum) {
+  const maxNeed = Math.max(minimum, ...shiftNeeds.map((day) => Math.ceil(day.total / (weekdayPt(day.date) === "Domingo" ? SUNDAY_AVAILABLE_RATE : 6 / 7))));
+  let best = null;
+  for (let fixed = minimum; fixed <= maxNeed + 8; fixed += 1) {
+    const helppiByDay = shiftNeeds.map((day) => {
+      const available = availableFixedByDay(fixed, day.date);
+      const helppi = Math.max(0, day.total - available);
+      return { ...day, fixedAvailable: available, helppi };
+    });
+    const weeklyHelppi = sum(helppiByDay.map((day) => day.helppi));
+    const feasibleHelppi = weeklyHelppi <= MAX_HELPPI_PER_WEEK && helppiByDay.every((day) => day.helppi <= MAX_HELPPI_PER_DAY);
+    if (!feasibleHelppi) continue;
+    const monthlyHelppiCost = weeklyHelppi * WEEKS_PER_MONTH * HELPPI_DAY_COST;
+    const fixedCost = fixed * FIXED_PICKER_MONTH_COST;
+    const totalCost = fixedCost + monthlyHelppiCost;
+    if (!best || totalCost < best.totalCost || (totalCost === best.totalCost && weeklyHelppi < best.weeklyHelppi)) {
+      best = { fixed, helppiByDay, weeklyHelppi, monthlyHelppiCost, fixedCost, totalCost };
+    }
+  }
+  return best || {
+    fixed: maxNeed,
+    helppiByDay: shiftNeeds.map((day) => ({ ...day, fixedAvailable: availableFixedByDay(maxNeed, day.date), helppi: Math.max(0, day.total - availableFixedByDay(maxNeed, day.date)) })),
+    weeklyHelppi: 0,
+    monthlyHelppiCost: 0,
+    fixedCost: maxNeed * FIXED_PICKER_MONTH_COST,
+    totalCost: maxNeed * FIXED_PICKER_MONTH_COST,
+  };
+}
+
 function hcNeedForStore(storeName) {
   const rows = storeScaleRows(storeName);
   const is24h = stores24h.has(normalizeStore(storeName));
@@ -970,8 +1075,9 @@ function hcNeedForStore(storeName) {
   const hcForSunday = Math.ceil(sundayShiftNeed / SUNDAY_AVAILABLE_RATE);
   const minimum = is24h ? 11 : 7;
   const baseHcNeeded = Math.max(minimum, hcFrom6x1, hcForSunday);
-  const riskBuffer = Math.ceil(baseHcNeeded * (ABSENTEEISM_RATE + TURNOVER_RATE));
-  const hcNeeded = baseHcNeeded;
+  const optimized = optimizeFixedAndHelppi(shiftNeeds, minimum);
+  const hcNeeded = optimized.fixed;
+  const riskBuffer = Math.ceil(hcNeeded * (ABSENTEEISM_RATE + TURNOVER_RATE));
   return {
     neededHours,
     connectedHours,
@@ -979,9 +1085,15 @@ function hcNeedForStore(storeName) {
     sundayShiftNeed,
     shiftNeeds,
     baseHcNeeded,
+    fixedHcNeeded: hcNeeded,
     riskBuffer,
-    riskHcNeeded: baseHcNeeded + riskBuffer,
+    riskHcNeeded: hcNeeded + riskBuffer,
     hcNeeded,
+    helppiByDay: optimized.helppiByDay,
+    weeklyHelppi: optimized.weeklyHelppi,
+    monthlyHelppiCost: optimized.monthlyHelppiCost,
+    fixedCost: optimized.fixedCost,
+    optimizedCost: optimized.totalCost,
     pickerDeltaHours: connectedHours - neededHours,
     is24h,
   };
@@ -1012,6 +1124,7 @@ function buildHcAdjustmentRows() {
       if (store.plan - need.hcNeeded >= 2) action = `Pode reduzir até ${fmtInt(store.plan - need.hcNeeded)} picker(s) do plano e realocar para lojas com ask.`;
       if (need.is24h && currentGap > 0) action += " Prioridade: proteger madrugada com mínimo 3.";
       if (need.riskBuffer > 0 && currentGap > 0) action += ` Buffer risco abs/turnover: ${fmtInt(need.riskBuffer)}.`;
+      if (need.weeklyHelppi > 0) action += ` Usar ${fmtInt(need.weeklyHelppi)} Helppi(s)/semana nos picos por R$ ${fmtInt(need.monthlyHelppiCost)}/mês.`;
       return {
         ...store,
         ...need,
@@ -1040,17 +1153,19 @@ function renderHcAdjustment() {
   const totalAsk = sum(rows.map((row) => row.ask));
   const totalDonor = sum(rows.map((row) => row.donor));
   const totalRiskBuffer = sum(rows.map((row) => row.riskBuffer));
+  const totalHelppi = sum(rows.map((row) => row.weeklyHelppi));
+  const totalHelppiCost = sum(rows.map((row) => row.monthlyHelppiCost));
   const deltaBrHours = sum(rows.map((row) => row.pickerDeltaHours));
   summary.innerHTML = [
     ["Delta BR", `${fmtInt(deltaBrHours)} h`, "Pickers conectados - necessários na semana", deltaBrHours < 0 ? "red" : "green"],
     ["HC necessário", fmtInt(totalNeed), `Plano ${fmtInt(totalPlan)} · Real ${fmtInt(totalReal)}`, totalReal >= totalNeed ? "green" : "red"],
-    ["Ask líquido", fmtInt(Math.max(0, totalNeed - totalPlan)), `Ask bruto ${fmtInt(totalAsk)} · Plano doável ${fmtInt(totalDonor)}`, totalAsk > totalDonor ? "amber" : "green"],
+    ["Helppi", fmtInt(totalHelppi), `R$ ${fmtInt(totalHelppiCost)}/mês nos picos`, totalHelppi ? "amber" : "green"],
     ["Buffer risco", fmtInt(totalRiskBuffer), "20% absenteísmo + 20% turnover, fora do ask base", "amber"],
   ]
     .map(([label, value, sub, cls]) => `<article class="kpi ${cls}"><p class="label">${label}</p><p class="value">${value}</p><p class="sub">${sub}</p></article>`)
     .join("");
 
-  const head = ["Loja", "24h", "Need HC", "Buffer", "Plan", "Real", "Gap plan", "Delta h", "Cobre?", "Ask", "Sugestão"];
+  const head = ["Loja", "24h", "HC fixo", "Helppi/sem", "Custo Helppi", "Buffer", "Plan", "Real", "Ask", "Sugestão"];
   table.innerHTML = `
     <thead><tr>${head.map((h) => `<th>${h}</th>`).join("")}</tr></thead>
     <tbody>${rows
@@ -1059,12 +1174,11 @@ function renderHcAdjustment() {
           <td><strong>${storeLink(row.store)}</strong><br><span>${row.coord}</span></td>
           <td>${row.is24h ? "Sim" : "Não"}</td>
           <td>${fmtInt(row.hcNeeded)}</td>
+          <td>${fmtInt(row.weeklyHelppi)}</td>
+          <td>R$ ${fmtInt(row.monthlyHelppiCost)}</td>
           <td>${fmtInt(row.riskBuffer)}</td>
           <td>${fmtInt(row.plan)}</td>
           <td>${fmtInt(row.real)}</td>
-          <td>${status(row.diff, "delta")}</td>
-          <td><span class="status ${statusClass(row.pickerDeltaHours, "delta")}">${fmtInt(row.pickerDeltaHours)} h</span></td>
-          <td>${row.real >= row.hcNeeded ? '<span class="status green">Sim</span>' : row.gapCovered ? '<span class="status amber">Com gap coberto</span>' : '<span class="status red">Não</span>'}</td>
           <td>${row.ask ? status(row.ask, "delta") : status(0, "delta")}</td>
           <td>${row.action}</td>
         </tr>`,
@@ -1108,7 +1222,8 @@ function buildScheduleSuggestionRows() {
   return offenders.flatMap((store) =>
     store.shiftNeeds.map((day) => {
       const isSunday = weekdayPt(day.date) === "Domingo";
-      const folgas = isSunday ? Math.ceil(num(store.hcNeeded) * 0.3) : Math.max(0, Math.round((num(store.hcNeeded) - day.total) / 6));
+      const helppiDay = store.helppiByDay?.find((item) => item.date === day.date) || { helppi: 0, fixedAvailable: availableFixedByDay(store.hcNeeded, day.date) };
+      const folgas = Math.max(0, num(store.hcNeeded) - num(helppiDay.fixedAvailable));
       const shifts = [
         `Madrugada 22:00-05:20: ${fmtInt(day.nightNeed)}`,
         `AM 06:00-13:20: ${fmtInt(day.amBase)}`,
@@ -1117,6 +1232,11 @@ function buildScheduleSuggestionRows() {
       ].join(" · ");
       const currentGap = Math.max(0, num(store.hcNeeded) - num(store.real));
       const planAsk = Math.max(0, num(store.hcNeeded) - num(store.plan));
+      const helppiWindows = helppiDay.helppi
+        ? helppiWindowsForDay(day, helppiDay.helppi)
+            .map((item) => `${fmtInt(item.amount)} Helppi ${item.window}`)
+            .join(" · ")
+        : "Sem Helppi";
       return {
         store: store.store,
         coord: store.coord,
@@ -1126,9 +1246,11 @@ function buildScheduleSuggestionRows() {
         plan: store.plan,
         real: store.real,
         folgas,
+        helppi: helppiDay.helppi,
+        helppiWindows,
         total: day.total,
         shifts,
-        action: currentGap > 0 ? `Escalar ${fmtInt(day.total)} no dia; repor ${fmtInt(currentGap)} até o need e abrir ask acima do plano de ${fmtInt(planAsk)}. Buffer risco: ${fmtInt(store.riskBuffer)}. ${isSunday ? "Domingo limitado a 70% do time ativo." : "Manter folgas fora dos picos."}` : "Plano cobre a necessidade; revisar aderência e presença conectada por turno.",
+        action: currentGap > 0 ? `Escalar ${fmtInt(day.total)} no dia; repor ${fmtInt(currentGap)} até o HC fixo e abrir ask acima do plano de ${fmtInt(planAsk)}. ${helppiWindows}. Buffer risco: ${fmtInt(store.riskBuffer)}. ${isSunday ? "Domingo limitado a 70% do time ativo." : "Manter folgas fora dos picos."}` : `${helppiWindows}. Plano cobre a necessidade; revisar aderência e presença conectada por turno.`,
       };
     }),
   );
@@ -1138,7 +1260,7 @@ function renderOffenderScheduleSuggestions() {
   const table = document.querySelector("#offender-schedule-table");
   if (!table) return;
   const rows = buildScheduleSuggestionRows();
-  const head = ["Loja", "Dia", "HC need", "Plan", "Real", "Folgas", "Escala sugerida", "Ask / ação"];
+  const head = ["Loja", "Dia", "HC fixo", "Plan", "Real", "Folgas", "Helppi", "Escala sugerida", "Ask / ação"];
   table.innerHTML = `
     <thead><tr>${head.map((h) => `<th>${h}</th>`).join("")}</tr></thead>
     <tbody>${rows
@@ -1150,6 +1272,7 @@ function renderOffenderScheduleSuggestions() {
           <td>${fmtInt(row.plan)}</td>
           <td>${fmtInt(row.real)}</td>
           <td>${fmtInt(row.folgas)}</td>
+          <td>${fmtInt(row.helppi)}<br><span>${row.helppiWindows}</span></td>
           <td>${row.shifts}</td>
           <td>${row.action}</td>
         </tr>`,

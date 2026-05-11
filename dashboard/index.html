@@ -17,7 +17,7 @@
       <nav class="tabs" aria-label="Seções do dashboard">
         <a href="#home">Início</a>
         <a href="#br">BR Gerencial</a>
-        <a href="#daily">Daily Lojas</a>
+        <a href="#daily">Daily</a>
       </nav>
     </header>
 
@@ -39,7 +39,7 @@
           </a>
           <a class="home-card" href="#daily">
             <span>Página 3</span>
-            <strong>Daily Lojas</strong>
+            <strong>Daily</strong>
             <em>OKRS, pedidos, qualidade, produtividade e saturação</em>
           </a>
           <div class="home-card home-card-static">
@@ -95,10 +95,18 @@
         <div class="section-title">
           <div>
             <p class="eyebrow">Daily</p>
-            <h2>Loja a loja D-1</h2>
+            <h2>Daily</h2>
           </div>
           <p class="section-note">Painel por loja com resultado do dia anterior, detalhes operacionais e leitura de saturação quando disponível.</p>
         </div>
+
+        <article class="panel">
+          <div class="panel-head">
+            <h3>Resultado D-1 BR</h3>
+            <span class="pill" id="daily-br-date-pill">D-1</span>
+          </div>
+          <div class="kpi-grid dense" id="daily-br-kpis"></div>
+        </article>
 
         <article class="panel">
           <div class="panel-head">
@@ -186,7 +194,7 @@
             <h3>Sugestão de ajuste de HC</h3>
             <span class="pill warning">HC Preview + Delta BR</span>
           </div>
-          <p class="chart-note">Need HC considera escala operacional por dia: madrugada, AM, PM e intermediários para picos, jornada 7h20, 6x1 e domingo com 30% do time em folga. Absenteísmo e turnover aparecem como buffer de risco separado do ask base.</p>
+          <p class="chart-note">Need HC considera escala operacional por dia: madrugada, AM, PM e intermediários para picos, jornada 7h20, 6x1 e domingo com 30% do time em folga. Helppi entra só como cobertura pontual de pico, limitado a 2 por dia e 6 por semana por loja; absenteísmo e turnover aparecem como buffer de risco separado do ask base.</p>
           <div class="kpi-grid dense hc-summary" id="hc-adjust-summary"></div>
           <div class="table-wrap">
             <table id="hc-adjust-table" class="compact-table"></table>
