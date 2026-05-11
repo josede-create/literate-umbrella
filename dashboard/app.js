@@ -226,8 +226,6 @@ const stores24h = new Set([
   "vila mascote",
 ]);
 const SUNDAY_AVAILABLE_RATE = 0.7;
-const ABSENTEEISM_RATE = 0.2;
-const TURNOVER_RATE = 0.2;
 const HELPPI_DAY_COST = 200;
 const FIXED_PICKER_MONTH_COST = 5600;
 const WEEKS_PER_MONTH = 4;
@@ -406,6 +404,8 @@ function findDailyStore(storeName) {
   const aliases = {
     "barra 2": "barra da tijuca 2",
     "barra 3": "barra da tijuca 3",
+    buritis: "estoril",
+    "sagrada familia": "santa efigenia",
   };
   const canonical = aliases[normalized] || normalized;
   return (
@@ -854,11 +854,16 @@ function topInStoreStoresFromQuery() {
 }
 
 function normalizeStore(value) {
-  return String(value || "")
+  const normalized = String(value || "")
     .normalize("NFD")
     .replace(/[\u0300-\u036f]/g, "")
     .trim()
     .toLowerCase();
+  const aliases = {
+    buritis: "estoril",
+    "sagrada familia": "santa efigenia",
+  };
+  return aliases[normalized] || normalized;
 }
 
 function dateKey(value) {
@@ -1077,7 +1082,6 @@ function hcNeedForStore(storeName) {
   const baseHcNeeded = Math.max(minimum, hcFrom6x1, hcForSunday);
   const optimized = optimizeFixedAndHelppi(shiftNeeds, minimum);
   const hcNeeded = optimized.fixed;
-  const riskBuffer = Math.ceil(hcNeeded * (ABSENTEEISM_RATE + TURNOVER_RATE));
   return {
     neededHours,
     connectedHours,
@@ -1086,8 +1090,6 @@ function hcNeedForStore(storeName) {
     shiftNeeds,
     baseHcNeeded,
     fixedHcNeeded: hcNeeded,
-    riskBuffer,
-    riskHcNeeded: hcNeeded + riskBuffer,
     hcNeeded,
     helppiByDay: optimized.helppiByDay,
     weeklyHelppi: optimized.weeklyHelppi,
@@ -1123,7 +1125,6 @@ function buildHcAdjustmentRows() {
       if (currentGap > 0 && !gapCovered) action = `Abrir ask base de ${fmtInt(planGap)} acima do plano e recompor ${fmtInt(Math.max(0, store.plan - store.real))} vaga(s).`;
       if (store.plan - need.hcNeeded >= 2) action = `Pode reduzir até ${fmtInt(store.plan - need.hcNeeded)} picker(s) do plano e realocar para lojas com ask.`;
       if (need.is24h && currentGap > 0) action += " Prioridade: proteger madrugada com mínimo 3.";
-      if (need.riskBuffer > 0 && currentGap > 0) action += ` Buffer risco abs/turnover: ${fmtInt(need.riskBuffer)}.`;
       if (need.weeklyHelppi > 0) action += ` Usar ${fmtInt(need.weeklyHelppi)} Helppi(s)/semana nos picos por R$ ${fmtInt(need.monthlyHelppiCost)}/mês.`;
       return {
         ...store,
@@ -1152,7 +1153,6 @@ function renderHcAdjustment() {
   const totalReal = sum(rows.map((row) => row.real));
   const totalAsk = sum(rows.map((row) => row.ask));
   const totalDonor = sum(rows.map((row) => row.donor));
-  const totalRiskBuffer = sum(rows.map((row) => row.riskBuffer));
   const totalHelppi = sum(rows.map((row) => row.weeklyHelppi));
   const totalHelppiCost = sum(rows.map((row) => row.monthlyHelppiCost));
   const deltaBrHours = sum(rows.map((row) => row.pickerDeltaHours));
@@ -1160,12 +1160,12 @@ function renderHcAdjustment() {
     ["Delta BR", `${fmtInt(deltaBrHours)} h`, "Pickers conectados - necessários na semana", deltaBrHours < 0 ? "red" : "green"],
     ["HC necessário", fmtInt(totalNeed), `Plano ${fmtInt(totalPlan)} · Real ${fmtInt(totalReal)}`, totalReal >= totalNeed ? "green" : "red"],
     ["Helppi", fmtInt(totalHelppi), `R$ ${fmtInt(totalHelppiCost)}/mês nos picos`, totalHelppi ? "amber" : "green"],
-    ["Buffer risco", fmtInt(totalRiskBuffer), "20% absenteísmo + 20% turnover, fora do ask base", "amber"],
+    ["Custo fixo", `R$ ${fmtInt(sum(rows.map((row) => row.hcNeeded * FIXED_PICKER_MONTH_COST)))}`, "HC fixo necessário x R$ 5.600/mês", "amber"],
   ]
     .map(([label, value, sub, cls]) => `<article class="kpi ${cls}"><p class="label">${label}</p><p class="value">${value}</p><p class="sub">${sub}</p></article>`)
     .join("");
 
-  const head = ["Loja", "24h", "HC fixo", "Helppi/sem", "Custo Helppi", "Buffer", "Plan", "Real", "Ask", "Sugestão"];
+  const head = ["Loja", "24h", "HC fixo", "Helppi/sem", "Custo Helppi", "Plan", "Real", "Ask", "Sugestão"];
   table.innerHTML = `
     <thead><tr>${head.map((h) => `<th>${h}</th>`).join("")}</tr></thead>
     <tbody>${rows
@@ -1176,7 +1176,6 @@ function renderHcAdjustment() {
           <td>${fmtInt(row.hcNeeded)}</td>
           <td>${fmtInt(row.weeklyHelppi)}</td>
           <td>R$ ${fmtInt(row.monthlyHelppiCost)}</td>
-          <td>${fmtInt(row.riskBuffer)}</td>
           <td>${fmtInt(row.plan)}</td>
           <td>${fmtInt(row.real)}</td>
           <td>${row.ask ? status(row.ask, "delta") : status(0, "delta")}</td>
@@ -1203,7 +1202,7 @@ function renderHcAdjustment() {
     <tbody>${
       moves.length
         ? moves.map((move) => `<tr><td>${move.from}</td><td><strong>${storeLink(move.to)}</strong></td><td>${fmtInt(move.amount)}</td><td>${move.note}</td></tr>`).join("")
-        : `<tr><td colspan="4">Após aplicar 6x1, folga de domingo, absenteísmo e turnover, não há loja com plano doável. Recomendação: abrir ask de HC nas lojas com gap e revisar distribuição horária antes de reduzir plano.</td></tr>`
+        : `<tr><td colspan="4">Após aplicar 6x1, folga de domingo e cobertura pontual com Helppi, não há loja com plano doável. Recomendação: abrir ask de HC nas lojas com gap e revisar distribuição horária antes de reduzir plano.</td></tr>`
     }</tbody>`;
 }
 
@@ -1250,7 +1249,7 @@ function buildScheduleSuggestionRows() {
         helppiWindows,
         total: day.total,
         shifts,
-        action: currentGap > 0 ? `Escalar ${fmtInt(day.total)} no dia; repor ${fmtInt(currentGap)} até o HC fixo e abrir ask acima do plano de ${fmtInt(planAsk)}. ${helppiWindows}. Buffer risco: ${fmtInt(store.riskBuffer)}. ${isSunday ? "Domingo limitado a 70% do time ativo." : "Manter folgas fora dos picos."}` : `${helppiWindows}. Plano cobre a necessidade; revisar aderência e presença conectada por turno.`,
+        action: currentGap > 0 ? `Escalar ${fmtInt(day.total)} no dia; repor ${fmtInt(currentGap)} até o HC fixo e abrir ask acima do plano de ${fmtInt(planAsk)}. ${helppiWindows}. ${isSunday ? "Domingo limitado a 70% do time ativo." : "Manter folgas fora dos picos."}` : `${helppiWindows}. Plano cobre a necessidade; revisar aderência e presença conectada por turno.`,
       };
     }),
   );
@@ -1417,7 +1416,7 @@ function drawHorizontalChart(canvas, rows, key) {
   const width = rect.width;
   const height = desiredHeight;
   ctx.clearRect(0, 0, width, height);
-  const pad = { top: 24, right: 40, bottom: 18, left: 150 };
+  const pad = { top: 24, right: 72, bottom: 18, left: 180 };
   const min = Math.min(...rows.map((r) => r[key]), 0);
   const max = Math.max(...rows.map((r) => r[key]), 0);
   const absMax = Math.max(Math.abs(min), Math.abs(max), 1);
@@ -1431,7 +1430,9 @@ function drawHorizontalChart(canvas, rows, key) {
   rows.forEach((row, i) => {
     const y = pad.top + i * rowH + rowH * 0.18;
     const value = row[key];
-    const barW = ((width - pad.left - pad.right) / 2) * (Math.abs(value) / absMax);
+    const rawBarW = ((width - pad.left - pad.right) / 2) * (Math.abs(value) / absMax);
+    const labelGap = 32;
+    const barW = Math.max(value === 0 ? 2 : rawBarW - labelGap, 2);
     const x = value < 0 ? center - barW : center;
     ctx.fillStyle = value < 0 ? "#b42318" : value > 0 ? "#b7791f" : "#607080";
     ctx.fillRect(x, y, Math.max(value === 0 ? 2 : barW, 2), rowH * 0.58);
@@ -1439,7 +1440,8 @@ function drawHorizontalChart(canvas, rows, key) {
     ctx.font = "12px Inter, sans-serif";
     ctx.textAlign = "left";
     ctx.fillText(`${row.store} (${row.coord})`, 8, y + rowH * 0.42);
-    ctx.fillText(String(value), value < 0 ? x - 26 : x + barW + 8, y + rowH * 0.42);
+    ctx.textAlign = value < 0 ? "right" : "left";
+    ctx.fillText(String(value), value < 0 ? x - 8 : x + barW + 8, y + rowH * 0.42);
   });
 }
 
