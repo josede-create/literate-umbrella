@@ -215,6 +215,16 @@ if (hcGapRows.length) {
 
 const hourlyCurve = [0.01, 0.01, 0.006, 0.005, 0.004, 0.005, 0.012, 0.025, 0.04, 0.05, 0.055, 0.063, 0.067, 0.067, 0.064, 0.059, 0.062, 0.07, 0.078, 0.09, 0.09, 0.073, 0.045, 0.021];
 const shiftCoverage = [0.22, 0.18, 0.14, 0.11, 0.09, 0.12, 0.2, 0.38, 0.56, 0.66, 0.72, 0.76, 0.78, 0.76, 0.77, 0.75, 0.78, 0.84, 0.92, 1, 0.98, 0.88, 0.66, 0.4];
+const stores24h = new Set([
+  "vila olimpia",
+  "moema",
+  "santa cecilia",
+  "vila prudente",
+  "vila madalena",
+  "morumbi",
+  "botafogo ii",
+  "vila mascote",
+]);
 const weekDays = [
   { label: "Segunda", date: "04/05/2026", orderShare: 0.18, attendance: 0.89, programFactor: 1.04 },
   { label: "Terça", date: "05/05/2026", orderShare: 0.15, attendance: 0.91, programFactor: 1 },
@@ -878,6 +888,141 @@ function renderPickerGapTable() {
       .join("")}</tbody>`;
 }
 
+function storeScaleRows(storeName) {
+  const target = normalizeStore(storeName);
+  return scaleQueryRows.filter((row) => normalizeStore(row.WAREHOUSENAME) === target);
+}
+
+function hcNeedForStore(storeName) {
+  const rows = storeScaleRows(storeName);
+  const is24h = stores24h.has(normalizeStore(storeName));
+  const bySlot = new Map();
+  rows.forEach((row) => {
+    const key = `${dateKey(row.DATE)}-${num(row.HORA, -1)}`;
+    if (!bySlot.has(key)) bySlot.set(key, { orders: 0, connected: 0, hour: num(row.HORA, -1) });
+    const slot = bySlot.get(key);
+    slot.orders += num(row.TOTAL_ORDENES_HISTORICO || row.ORDERS);
+    slot.connected += num(row.PICKERS_CONECTED || row.PICKERS_CONNECTED);
+  });
+  let neededHours = 0;
+  let connectedHours = 0;
+  bySlot.forEach((slot) => {
+    let need = pickerNeed(slot.orders, slot.hour >= 8 && slot.hour <= 21 ? 1 : 0, 3.27, 1);
+    if (is24h && slot.hour >= 0 && slot.hour <= 5) need = Math.max(3, need);
+    neededHours += need;
+    connectedHours += slot.connected;
+  });
+  const hcFromHours = Math.ceil(neededHours / 48);
+  const minimum = is24h ? 11 : 7;
+  return {
+    neededHours,
+    connectedHours,
+    hcNeeded: Math.max(minimum, hcFromHours),
+    pickerDeltaHours: connectedHours - neededHours,
+    is24h,
+  };
+}
+
+function pearson(rows, xKey, yKey) {
+  const data = rows.map((row) => [num(row[xKey]), num(row[yKey])]);
+  const n = data.length;
+  if (n < 2) return 0;
+  const avgX = data.reduce((acc, item) => acc + item[0], 0) / n;
+  const avgY = data.reduce((acc, item) => acc + item[1], 0) / n;
+  const numerator = data.reduce((acc, item) => acc + (item[0] - avgX) * (item[1] - avgY), 0);
+  const denomX = Math.sqrt(data.reduce((acc, item) => acc + (item[0] - avgX) ** 2, 0));
+  const denomY = Math.sqrt(data.reduce((acc, item) => acc + (item[1] - avgY) ** 2, 0));
+  return denomX && denomY ? numerator / (denomX * denomY) : 0;
+}
+
+function buildHcAdjustmentRows() {
+  return allStores
+    .map((store) => {
+      const need = hcNeedForStore(store.store);
+      const gapCovered = store.plan >= need.hcNeeded;
+      const currentGap = need.hcNeeded - store.real;
+      const planGap = need.hcNeeded - store.plan;
+      let action = "Manter e monitorar curva horária.";
+      if (currentGap > 0 && gapCovered) action = `Cobrir gap atual: recompor ${fmtInt(currentGap)} picker(s) até o plano.`;
+      if (currentGap > 0 && !gapCovered) action = `Abrir ask de ${fmtInt(planGap)} acima do plano e recompor ${fmtInt(Math.max(0, store.plan - store.real))} vaga(s).`;
+      if (store.plan - need.hcNeeded >= 2) action = `Pode reduzir até ${fmtInt(store.plan - need.hcNeeded)} picker(s) do plano e realocar para lojas com ask.`;
+      if (need.is24h && currentGap > 0) action += " Prioridade: proteger madrugada com mínimo 3.";
+      return {
+        ...store,
+        ...need,
+        currentGap,
+        planGap,
+        gapCovered,
+        ask: Math.max(0, planGap),
+        donor: Math.max(0, store.plan - need.hcNeeded),
+        action,
+        pickerShortageHc: Math.max(0, -need.pickerDeltaHours / 48),
+        hcGap: store.real - store.plan,
+      };
+    })
+    .sort((a, b) => b.currentGap - a.currentGap || a.diff - b.diff || a.store.localeCompare(b.store));
+}
+
+function renderHcAdjustment() {
+  const summary = document.querySelector("#hc-adjust-summary");
+  const table = document.querySelector("#hc-adjust-table");
+  const transfer = document.querySelector("#hc-transfer-table");
+  if (!summary || !table || !transfer) return;
+  const rows = buildHcAdjustmentRows();
+  const totalNeed = sum(rows.map((row) => row.hcNeeded));
+  const totalPlan = sum(rows.map((row) => row.plan));
+  const totalReal = sum(rows.map((row) => row.real));
+  const totalAsk = sum(rows.map((row) => row.ask));
+  const totalDonor = sum(rows.map((row) => row.donor));
+  const deltaBrHours = sum(rows.map((row) => row.pickerDeltaHours));
+  const corr = pearson(rows, "pickerShortageHc", "hcGap");
+  summary.innerHTML = [
+    ["Delta BR", `${fmtInt(deltaBrHours)} h`, "Pickers conectados - necessários na semana", deltaBrHours < 0 ? "red" : "green"],
+    ["HC necessário", fmtInt(totalNeed), `Plano ${fmtInt(totalPlan)} · Real ${fmtInt(totalReal)}`, totalReal >= totalNeed ? "green" : "red"],
+    ["Ask líquido", fmtInt(Math.max(0, totalNeed - totalPlan)), `Ask bruto ${fmtInt(totalAsk)} · Plano doável ${fmtInt(totalDonor)}`, totalAsk > totalDonor ? "amber" : "green"],
+    ["Correlação", fixed(corr, 2), "Shortage horário x gap HC real vs plan", corr < -0.25 ? "red" : "amber"],
+  ]
+    .map(([label, value, sub, cls]) => `<article class="kpi ${cls}"><p class="label">${label}</p><p class="value">${value}</p><p class="sub">${sub}</p></article>`)
+    .join("");
+
+  const head = ["Loja", "24h", "Need HC", "Plan", "Real", "Gap plan", "Delta h", "Cobre?", "Ask", "Sugestão"];
+  table.innerHTML = `
+    <thead><tr>${head.map((h) => `<th>${h}</th>`).join("")}</tr></thead>
+    <tbody>${rows
+      .map(
+        (row) => `<tr>
+          <td><strong>${storeLink(row.store)}</strong><br><span>${row.coord}</span></td>
+          <td>${row.is24h ? "Sim" : "Não"}</td>
+          <td>${fmtInt(row.hcNeeded)}</td>
+          <td>${fmtInt(row.plan)}</td>
+          <td>${fmtInt(row.real)}</td>
+          <td>${status(row.diff, "delta")}</td>
+          <td><span class="status ${statusClass(row.pickerDeltaHours, "delta")}">${fmtInt(row.pickerDeltaHours)} h</span></td>
+          <td>${row.real >= row.hcNeeded ? '<span class="status green">Sim</span>' : row.gapCovered ? '<span class="status amber">Com gap coberto</span>' : '<span class="status red">Não</span>'}</td>
+          <td>${row.ask ? status(row.ask, "delta") : status(0, "delta")}</td>
+          <td>${row.action}</td>
+        </tr>`,
+      )
+      .join("")}</tbody>`;
+
+  const receivers = rows.filter((row) => row.currentGap > 0).slice(0, 8);
+  const donors = rows.filter((row) => row.donor > 0).sort((a, b) => b.donor - a.donor);
+  const moves = receivers.map((receiver, index) => {
+    const donor = donors[index % Math.max(1, donors.length)];
+    return {
+      from: donor?.store || "Sem loja doadora suficiente",
+      to: receiver.store,
+      amount: Math.min(receiver.currentGap, donor?.donor || receiver.currentGap),
+      note: donor ? `Reduzir plano da origem e realocar antes de abrir ${receiver.ask || receiver.currentGap} vaga(s).` : "Não há sobra suficiente no plano; abrir ask de HC.",
+    };
+  });
+  transfer.innerHTML = `
+    <thead><tr><th>Origem sugerida</th><th>Destino</th><th>Pickers</th><th>Leitura</th></tr></thead>
+    <tbody>${moves
+      .map((move) => `<tr><td>${move.from}</td><td><strong>${storeLink(move.to)}</strong></td><td>${fmtInt(move.amount)}</td><td>${move.note}</td></tr>`)
+      .join("")}</tbody>`;
+}
+
 function renderCoordinatorCards() {
   document.querySelector("#coord-grid").innerHTML = coordinators
     .map((coord) => {
@@ -1099,6 +1244,7 @@ function init() {
   renderScaleTable();
   renderHourlyMatrix();
   renderPickerGapTable();
+  renderHcAdjustment();
   renderCoordinatorCards();
   renderCharts();
   handleHashNavigation();
