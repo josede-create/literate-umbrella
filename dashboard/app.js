@@ -212,8 +212,13 @@ const weekDays = [
   { label: "Domingo", date: "10/05/2026", orderShare: 0.06, attendance: 0.78, programFactor: 0.62 },
 ];
 
+function num(value, fallback = 0) {
+  const parsed = Number(value);
+  return Number.isFinite(parsed) ? parsed : fallback;
+}
+
 function fmtInt(value) {
-  return new Intl.NumberFormat("pt-BR").format(Math.round(value));
+  return new Intl.NumberFormat("pt-BR").format(Math.round(num(value)));
 }
 
 function fmtDateTime(value) {
@@ -227,11 +232,16 @@ function fmtDateTime(value) {
 
 function fmtMetric(value, def) {
   if (def.type === "int") return fmtInt(value);
-  if (def.type === "pct") return `${Number(value).toFixed(2)}%`;
-  return Number(value).toFixed(2);
+  if (def.type === "pct") return `${num(value).toFixed(2)}%`;
+  return num(value).toFixed(2);
+}
+
+function fixed(value, digits = 2) {
+  return num(value).toFixed(digits);
 }
 
 function statusClass(value, metric, direction = "up", target = null) {
+  value = num(value);
   if (metric === "delta") return value < 0 ? "red" : value > 0 ? "amber" : "green";
   if (target !== null) {
     const good = direction === "up" ? value >= target : value <= target;
@@ -244,7 +254,7 @@ function statusClass(value, metric, direction = "up", target = null) {
 }
 
 function status(value, metric, suffix = "", direction = "up", target = null) {
-  return `<span class="status ${statusClass(Number(value), metric, direction, target)}">${value}${suffix}</span>`;
+  return `<span class="status ${statusClass(value, metric, direction, target)}">${value}${suffix}</span>`;
 }
 
 function storeHref(store) {
@@ -259,7 +269,7 @@ function deltaText(week, month, def) {
   const delta = week - month;
   const signal = delta > 0 ? "+" : "";
   if (def.type === "int") return `${signal}${fmtInt(delta)} vs mês`;
-  return `${signal}${delta.toFixed(2)}${def.type === "pct" ? " p.p." : ""} vs mês`;
+  return `${signal}${fixed(delta)}${def.type === "pct" ? " p.p." : ""} vs mês`;
 }
 
 function pickerNeed(orders, receiving = 0, time = 3.27, h6 = 1) {
@@ -331,7 +341,7 @@ function renderCompareTable() {
         const week = brWeek[def.key];
         const delta = week - month;
         const improved = def.direction === "up" ? delta >= 0 : delta <= 0;
-        const deltaLabel = def.type === "int" ? fmtInt(delta) : `${delta > 0 ? "+" : ""}${delta.toFixed(2)}${def.type === "pct" ? " p.p." : ""}`;
+        const deltaLabel = def.type === "int" ? fmtInt(delta) : `${delta > 0 ? "+" : ""}${fixed(delta)}${def.type === "pct" ? " p.p." : ""}`;
         const reading = improved ? "melhorou vs mês" : "piorou vs mês";
         return `<tr>
           <td><strong>${def.label}</strong></td>
@@ -388,13 +398,13 @@ function renderDailyTable() {
           <td><strong>${storeLink(row.store)}</strong></td>
           <td>${row.coord}</td>
           <td>${fmtInt(row.orders)}</td>
-          <td>${status(row.okrs.toFixed(2), "okrs", "%")}</td>
-          <td>${status(row.defect.toFixed(2), "defect", "%", "down", 0.78)}</td>
-          <td>${status(row.cancel.toFixed(2), "cancel", "%", "down", 0.5)}</td>
-          <td>${status(row.availability.toFixed(2), "availability", "%", "up", 99.5)}</td>
-          <td>${status(row.stockout.toFixed(2), "stockout", "%", "down", 0.13)}</td>
-          <td>${status(row.inStore.toFixed(2), "inStore", "", "down", 2.19)}</td>
-          <td>${status(row.productivity.toFixed(2), "prod")}</td>
+          <td>${status(fixed(row.okrs), "okrs", "%")}</td>
+          <td>${status(fixed(row.defect), "defect", "%", "down", 0.78)}</td>
+          <td>${status(fixed(row.cancel), "cancel", "%", "down", 0.5)}</td>
+          <td>${status(fixed(row.availability), "availability", "%", "up", 99.5)}</td>
+          <td>${status(fixed(row.stockout), "stockout", "%", "down", 0.13)}</td>
+          <td>${status(fixed(row.inStore), "inStore", "", "down", 2.19)}</td>
+          <td>${status(fixed(row.productivity), "prod")}</td>
           <td>${dailyInsight(row)}</td>
         </tr>`,
       )
@@ -410,13 +420,13 @@ function renderDailyStore(storeName) {
   document.querySelector("#daily-date-pill").textContent = window.DAILY_DATA?.date ? `D-1 · ${window.DAILY_DATA.date}` : "D-1";
   const kpis = [
     ["Orders", fmtInt(row.orders), `${fmtInt(row.rappi)} Rappi · ${fmtInt(row.ze)} Zé`, "neutral"],
-    ["OKRS", `${row.okrs.toFixed(2)}%`, dailyInsight(row), statusClass(row.okrs, "okrs")],
-    ["DR", `${row.defect.toFixed(2)}%`, "meta D-1: 0,78%", statusClass(row.defect, "defect", "down", 0.78)],
-    ["Cancel", `${row.cancel.toFixed(2)}%`, "meta D-1: 0,50%", statusClass(row.cancel, "cancel", "down", 0.5)],
-    ["SA", `${row.availability.toFixed(2)}%`, "meta D-1: 99,50%", statusClass(row.availability, "availability", "up", 99.5)],
-    ["Stockout", `${row.stockout.toFixed(2)}%`, "meta D-1: 0,13%", statusClass(row.stockout, "stockout", "down", 0.13)],
-    ["InStore", row.inStore.toFixed(2), "meta D-1: 2,19", statusClass(row.inStore, "inStore", "down", 2.19)],
-    ["Prod.", row.productivity.toFixed(2), "meta D-1: 62,50", statusClass(row.productivity, "prod")],
+    ["OKRS", `${fixed(row.okrs)}%`, dailyInsight(row), statusClass(row.okrs, "okrs")],
+    ["DR", `${fixed(row.defect)}%`, "meta D-1: 0,78%", statusClass(row.defect, "defect", "down", 0.78)],
+    ["Cancel", `${fixed(row.cancel)}%`, "meta D-1: 0,50%", statusClass(row.cancel, "cancel", "down", 0.5)],
+    ["SA", `${fixed(row.availability)}%`, "meta D-1: 99,50%", statusClass(row.availability, "availability", "up", 99.5)],
+    ["Stockout", `${fixed(row.stockout)}%`, "meta D-1: 0,13%", statusClass(row.stockout, "stockout", "down", 0.13)],
+    ["InStore", fixed(row.inStore), "meta D-1: 2,19", statusClass(row.inStore, "inStore", "down", 2.19)],
+    ["Prod.", fixed(row.productivity), "meta D-1: 62,50", statusClass(row.productivity, "prod")],
   ];
   document.querySelector("#daily-kpis").innerHTML = kpis
     .map(
@@ -448,7 +458,7 @@ function renderDailyStore(storeName) {
             ["To User", ops.toUser, "min"],
             ["Total", ops.total, "min"],
           ]
-            .map(([label, value, suffix]) => detailCell(label, Number(value).toFixed(2), suffix))
+            .map(([label, value, suffix]) => detailCell(label, num(value).toFixed(2), suffix))
             .join("")
         : detailCell("Indicadores D-1", "Sem detalhe operacional no recorte lido", "A loja aparece no OKRS D-1, mas não no bloco operacional lido.")}
     </div>`;
@@ -458,13 +468,13 @@ function renderDailyStore(storeName) {
 }
 
 function pickerScore(row) {
-  const orders = Number(row.orders || 0);
+  const orders = num(row.orders);
   const volumeWeight = 0.5 + 0.5 * Math.min(1, orders / 50);
   const base =
-    Number(row.inStore || 0) * 2
-    + Number(row.assign || 0) * 0.35
-    + Number(row.picking || 0) * 0.35
-    + Number(row.packing || 0) * 0.35;
+    num(row.inStore) * 2
+    + num(row.assign) * 0.35
+    + num(row.picking) * 0.35
+    + num(row.packing) * 0.35;
   return base * volumeWeight;
 }
 
@@ -482,7 +492,7 @@ function renderDailyPickers(storeName) {
   const store = findDailyStore(storeName);
   const rows = dailyPickers
     .filter((row) => normalizeStore(row.store) === normalizeStore(store.store))
-    .sort((a, b) => pickerScore(b) - pickerScore(a) || Number(b.orders || 0) - Number(a.orders || 0))
+    .sort((a, b) => pickerScore(b) - pickerScore(a) || num(b.orders) - num(a.orders))
     .slice(0, 10);
   if (!rows.length) {
     table.innerHTML = `<tbody><tr><td>Sem dados de picker para esta loja no recorte carregado.</td></tr></tbody>`;
@@ -496,10 +506,10 @@ function renderDailyPickers(storeName) {
         (row) => `<tr>
           <td><strong>${row.name}</strong><br><span>${row.keypick}</span></td>
           <td>${fmtInt(row.orders)}</td>
-          <td>${Number(row.assign).toFixed(2)}</td>
-          <td>${Number(row.picking).toFixed(2)}</td>
-          <td>${Number(row.packing).toFixed(2)}</td>
-          <td>${status(Number(row.inStore).toFixed(2), "inStore", "", "down", 2.19)}</td>
+          <td>${num(row.assign).toFixed(2)}</td>
+          <td>${num(row.picking).toFixed(2)}</td>
+          <td>${num(row.packing).toFixed(2)}</td>
+          <td>${status(num(row.inStore).toFixed(2), "inStore", "", "down", 2.19)}</td>
           <td>${pickerInsight(row)}</td>
         </tr>`,
       )
@@ -521,12 +531,12 @@ function renderDailySaturation(storeName) {
   }
   const byDay = getQueryDays().map((day) => {
     const dayRows = rows.filter((row) => dateKey(row.DATE) === day.date);
-    const ordersByHour = aggregateQueryByHour(dayRows, (row) => Number(row.TOTAL_ORDENES_HISTORICO || row.ORDERS || 0));
-    const connectedByHour = aggregateQueryByHour(dayRows, (row) => Number(row.PICKERS_CONECTED || row.PICKERS_CONNECTED || 0));
-    const scheduledByHour = aggregateQueryByHour(dayRows, (row) => Number(row.PICKERS_SCHEDULED || 0));
+    const ordersByHour = aggregateQueryByHour(dayRows, (row) => num(row.TOTAL_ORDENES_HISTORICO || row.ORDERS));
+    const connectedByHour = aggregateQueryByHour(dayRows, (row) => num(row.PICKERS_CONECTED || row.PICKERS_CONNECTED));
+    const scheduledByHour = aggregateQueryByHour(dayRows, (row) => num(row.PICKERS_SCHEDULED));
     const neededByHour = ordersByHour.map((orders) => pickerNeed(orders, 0, 3.27, 1));
     const orders = sum(ordersByHour);
-    const inStoreNumerator = dayRows.reduce((acc, row) => acc + Number(row.IN_STORE || 0), 0);
+    const inStoreNumerator = dayRows.reduce((acc, row) => acc + num(row.IN_STORE), 0);
     const inStore = orders > 0 ? inStoreNumerator / orders : 0;
     const peak = Math.max(...ordersByHour);
     const peakHour = ordersByHour.indexOf(peak);
@@ -555,7 +565,7 @@ function renderDailySaturation(storeName) {
           <td>${fmtInt(day.scheduled)}</td>
           <td>${fmtInt(day.connected)}</td>
           <td>${status(day.delta, "delta")}</td>
-          <td>${status(day.inStore.toFixed(2), "inStore", "", "down", 2.19)}</td>
+          <td>${status(fixed(day.inStore), "inStore", "", "down", 2.19)}</td>
         </tr>`,
       )
       .join("")}</tbody>`;
@@ -629,9 +639,9 @@ function renderOffenders() {
           <td>${i + 1}</td>
           <td>${r.coord}</td>
           <td><strong>${storeLink(r.store)}</strong></td>
-          <td>${status(r.okrsMonth.toFixed(2), "okrs", "%")}</td>
-          <td>${status(r.okrsWeek.toFixed(2), "okrs", "%")}</td>
-          <td>${status(r.prod.toFixed(2), "prod")}</td>
+          <td>${status(fixed(r.okrsMonth), "okrs", "%")}</td>
+          <td>${status(fixed(r.okrsWeek), "okrs", "%")}</td>
+          <td>${status(fixed(r.prod), "prod")}</td>
           <td>${status(r.diff, "delta")}</td>
           <td>${r.signal || "sem ofensor crítico"}</td>
           <td>${insightForStore(r)}</td>
@@ -664,7 +674,7 @@ function renderScaleTable() {
               .map(([key, label], index) => {
                 const values = profile[key];
                 return `<tr>
-                  ${index === 0 ? `<td class="day-cell" rowspan="${metrics.length}"><strong>${storeLink(store.store)}</strong><span>${day.label} · ${day.date}</span><span>${store.coord} · InStore ${store.inStore.toFixed(2)}</span></td>` : ""}
+                  ${index === 0 ? `<td class="day-cell" rowspan="${metrics.length}"><strong>${storeLink(store.store)}</strong><span>${day.label} · ${day.date}</span><span>${store.coord} · InStore ${fixed(store.inStore)}</span></td>` : ""}
                   <td class="metric-cell">${label}</td>
                   <td class="total-cell">${fmtInt(sum(values))}</td>
                   ${values.map((value) => `<td class="${key === "delta" ? heatClass(value) : ""}">${fmtInt(value)}</td>`).join("")}
@@ -698,11 +708,11 @@ function buildHourlyRows() {
 function buildHourlyRowsFromQuery() {
   return getQueryDays().map((day) => {
     const rows = scaleQueryRows.filter((row) => dateKey(row.DATE) === day.date);
-    const forecast = aggregateQueryByHour(rows, (row) => Number(row.ORDENES_PRONOSTICADAS_HORA || 0));
-    const real = aggregateQueryByHour(rows, (row) => Number(row.TOTAL_ORDENES_HISTORICO || row.ORDERS || 0));
-    const scheduled = aggregateQueryByHour(rows, (row) => Number(row.PICKERS_SCHEDULED || 0));
-    const connected = aggregateQueryByHour(rows, (row) => Number(row.PICKERS_CONECTED || row.PICKERS_CONNECTED || 0));
-    const needed = aggregateQueryByHour(rows, (row) => pickerNeed(Number(row.TOTAL_ORDENES_HISTORICO || row.ORDERS || 0), 0, 3.27, 1));
+    const forecast = aggregateQueryByHour(rows, (row) => num(row.ORDENES_PRONOSTICADAS_HORA));
+    const real = aggregateQueryByHour(rows, (row) => num(row.TOTAL_ORDENES_HISTORICO || row.ORDERS));
+    const scheduled = aggregateQueryByHour(rows, (row) => num(row.PICKERS_SCHEDULED));
+    const connected = aggregateQueryByHour(rows, (row) => num(row.PICKERS_CONECTED || row.PICKERS_CONNECTED));
+    const needed = aggregateQueryByHour(rows, (row) => pickerNeed(num(row.TOTAL_ORDENES_HISTORICO || row.ORDERS), 0, 3.27, 1));
     const delta = connected.map((value, hour) => value - needed[hour]);
     return { ...day, forecast, real, scheduled, connected, needed, delta };
   });
@@ -710,10 +720,10 @@ function buildHourlyRowsFromQuery() {
 
 function buildStoreHourlyProfileFromQuery(storeName, date) {
   const rows = scaleQueryRows.filter((row) => normalizeStore(row.WAREHOUSENAME) === normalizeStore(storeName) && dateKey(row.DATE) === date);
-  const forecast = aggregateQueryByHour(rows, (row) => Number(row.ORDENES_PRONOSTICADAS_HORA || 0));
-  const real = aggregateQueryByHour(rows, (row) => Number(row.TOTAL_ORDENES_HISTORICO || row.ORDERS || 0));
-  const scheduled = aggregateQueryByHour(rows, (row) => Number(row.PICKERS_SCHEDULED || 0));
-  const connected = aggregateQueryByHour(rows, (row) => Number(row.PICKERS_CONECTED || row.PICKERS_CONNECTED || 0));
+  const forecast = aggregateQueryByHour(rows, (row) => num(row.ORDENES_PRONOSTICADAS_HORA));
+  const real = aggregateQueryByHour(rows, (row) => num(row.TOTAL_ORDENES_HISTORICO || row.ORDERS));
+  const scheduled = aggregateQueryByHour(rows, (row) => num(row.PICKERS_SCHEDULED));
+  const connected = aggregateQueryByHour(rows, (row) => num(row.PICKERS_CONECTED || row.PICKERS_CONNECTED));
   const needed = real.map((orders, hour) => pickerNeed(orders, hour >= 8 && hour <= 21 ? 1 : 0, 3.27, 1));
   const delta = connected.map((value, hour) => value - needed[hour]);
   return { forecast, real, scheduled, connected, needed, delta };
@@ -722,8 +732,9 @@ function buildStoreHourlyProfileFromQuery(storeName, date) {
 function aggregateQueryByHour(rows, mapper) {
   const values = Array.from({ length: 24 }, () => 0);
   rows.forEach((row) => {
-    const hour = Number(row.HORA);
-    if (Number.isInteger(hour) && hour >= 0 && hour <= 23) values[hour] += Math.round(mapper(row));
+    const hour = num(row.HORA, -1);
+    const value = num(mapper(row));
+    if (Number.isInteger(hour) && hour >= 0 && hour <= 23) values[hour] += Math.round(value);
   });
   return values;
 }
@@ -737,13 +748,13 @@ function getQueryDays() {
 function topInStoreStoresFromQuery() {
   const byStore = new Map();
   scaleQueryRows.forEach((row) => {
-    const store = row.WAREHOUSENAME || "Sem loja";
+    const store = String(row.WAREHOUSENAME || "Sem loja").trim();
     const current = byStore.get(store) || { store, coord: "Query", inStoreNumerator: 0, orders: 0, plan: 0, real: 0, diff: 0, prod: 0, inStore: 0 };
-    const orders = Number(row.TOTAL_ORDENES_HISTORICO || row.ORDERS || 0);
-    current.inStoreNumerator += Number(row.IN_STORE || 0);
+    const orders = num(row.TOTAL_ORDENES_HISTORICO || row.ORDERS);
+    current.inStoreNumerator += num(row.IN_STORE);
     current.orders += orders;
-    current.plan += Number(row.PICKERS_SCHEDULED || 0);
-    current.real += Number(row.PICKERS_CONECTED || row.PICKERS_CONNECTED || 0);
+    current.plan += num(row.PICKERS_SCHEDULED);
+    current.real += num(row.PICKERS_CONECTED || row.PICKERS_CONNECTED);
     byStore.set(store, current);
   });
   return [...byStore.values()]
@@ -791,10 +802,11 @@ function sumProfiles(profiles, key) {
 }
 
 function sum(values) {
-  return values.reduce((acc, item) => acc + item, 0);
+  return values.reduce((acc, item) => acc + num(item), 0);
 }
 
 function heatClass(value) {
+  value = num(value);
   if (value < 0) return "heat-bad";
   if (value > 1) return "heat-good";
   return "heat-ok";
@@ -845,8 +857,8 @@ function renderPickerGapTable() {
           <td>${row.plan}</td>
           <td>${row.real}</td>
           <td>${status(row.diff, "delta")}</td>
-          <td>${status(row.prod.toFixed(1), "prod")}</td>
-          <td>${status(row.inStore.toFixed(2), "inStore", "", "down", 2.65)}</td>
+          <td>${status(fixed(row.prod, 1), "prod")}</td>
+          <td>${status(fixed(row.inStore), "inStore", "", "down", 2.65)}</td>
           <td>${insightForStore(row)}</td>
         </tr>`,
       )
@@ -864,7 +876,7 @@ function renderCoordinatorCards() {
             <h3>${coord.name}</h3>
             <p>${coord.region}</p>
           </div>
-          <span class="pill ${trend < 0 ? "warning" : ""}">Semana x mês: ${trend > 0 ? "+" : ""}${trend.toFixed(2)} p.p.</span>
+          <span class="pill ${trend < 0 ? "warning" : ""}">Semana x mês: ${trend > 0 ? "+" : ""}${fixed(trend)} p.p.</span>
         </div>
         <div class="coord-body">
           <div class="coord-metrics full">
@@ -884,13 +896,13 @@ function renderCoordinatorCards() {
                 .map(
                   (row) => `<tr>
                     <td>${storeLink(row.store)}</td>
-                    <td>${status(row.okrsMonth.toFixed(1), "okrs", "%")}</td>
-                    <td>${status(row.okrsWeek.toFixed(1), "okrs", "%")}</td>
-                    <td>${status(row.prod.toFixed(1), "prod")}</td>
-                    <td>${row.availability.toFixed(1)}%</td>
-                    <td>${row.defect.toFixed(2)}%</td>
-                    <td>${row.cancel.toFixed(2)}%</td>
-                    <td>${status(row.inStore.toFixed(2), "inStore", "", "down", 2.65)}</td>
+                    <td>${status(fixed(row.okrsMonth, 1), "okrs", "%")}</td>
+                    <td>${status(fixed(row.okrsWeek, 1), "okrs", "%")}</td>
+                    <td>${status(fixed(row.prod, 1), "prod")}</td>
+                    <td>${fixed(row.availability, 1)}%</td>
+                    <td>${fixed(row.defect)}%</td>
+                    <td>${fixed(row.cancel)}%</td>
+                    <td>${status(fixed(row.inStore), "inStore", "", "down", 2.65)}</td>
                     <td>${status(row.diff, "delta")}</td>
                   </tr>`,
                 )
