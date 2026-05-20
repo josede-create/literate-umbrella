@@ -193,6 +193,14 @@ main {
   width: 100%;
 }
 
+.compact-chart {
+  min-height: 230px;
+}
+
+.compact-chart svg {
+  min-height: 230px;
+}
+
 .axis {
   color: #98a2b3;
   font-size: 11px;
@@ -234,6 +242,24 @@ main {
 .internalization-panel {
   display: grid;
   gap: 14px;
+}
+
+.share-trend-heading {
+  align-items: center;
+  border-top: 1px solid #edf0eb;
+  display: flex;
+  justify-content: space-between;
+  margin-top: 18px;
+  padding-top: 14px;
+}
+
+.share-trend-heading strong {
+  font-size: 14px;
+}
+
+.share-trend-heading span {
+  color: var(--muted);
+  font-size: 12px;
 }
 
 .share-row {
@@ -490,6 +516,11 @@ th:nth-child(2) {
             <span id="shareSubtitle"></span>
           </div>
           <div id="sharePanel" class="share-panel"></div>
+          <div class="share-trend-heading">
+            <strong>Evolução mensal</strong>
+            <span>% dos ativos</span>
+          </div>
+          <div id="shareTrendChart" class="chart compact-chart"></div>
         </article>
         <article class="panel">
           <div class="panel-heading">
@@ -976,6 +1007,15 @@ function renderShareAndInternalization(summary) {
       <div class="stacked-bar"><div class="moustache" style="width:${moustacheShare * 100}%"></div></div>
     </div>
   `;
+  lineChart(
+    document.querySelector("#shareTrendChart"),
+    [
+      { key: "share_ativos_gnx", label: "GNX", color: "#2f6f9f", format: fmtPct.format },
+      { key: "share_ativos_moustache", label: "Moustache", color: "#3d7d55", format: fmtPct.format },
+    ],
+    DATA.monthly.slice().sort(byMonth),
+    { label: "Share mensal de pickers ativos" },
+  );
   document.querySelector("#internalizationPanel").innerHTML = `
     <header><strong>${monthLabel[state.month]}</strong><span>${state.company === "all" ? "todas as empresas" : state.company}</span></header>
     <span class="internalization-number">${fmtInt.format(number(summary.internalizacoes))}</span>
