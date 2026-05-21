@@ -265,13 +265,13 @@ body.coordinator-view .main-only {
 }
 
 .chart:hover .value-label {
-  font-size: 15px;
+  font-size: 14px;
   opacity: 0.92;
   stroke-width: 4px;
 }
 
 .chart .chart-point:hover .value-label {
-  font-size: 20px;
+  font-size: 18px;
   opacity: 1;
   stroke-width: 5px;
 }
@@ -1260,16 +1260,42 @@ function lineChart(el, series, rows, options = {}) {
   const step = rows.length > 1 ? (width - padding * 2) / (rows.length - 1) : 0;
   const x = (idx) => padding + idx * step;
   const yLines = [0, 0.25, 0.5, 0.75, 1].map((ratio) => padding + ratio * (height - padding * 2));
+  const linePoints = series.map((item) =>
+    rows.map((row, idx) => {
+      const px = x(idx);
+      const py = scale.y(row[item.key]);
+      return {
+        item,
+        px,
+        py,
+        value: number(row[item.key]),
+        labelY: py < 54 ? py + 20 : py - 10,
+      };
+    }),
+  );
+
+  rows.forEach((_, idx) => {
+    const labels = linePoints.map((points) => points[idx]).sort((a, b) => a.labelY - b.labelY);
+    const minGap = 20;
+    const minY = 16;
+    const maxY = height - padding - 10;
+    for (let i = 1; i < labels.length; i += 1) {
+      if (labels[i].labelY - labels[i - 1].labelY < minGap) {
+        labels[i].labelY = labels[i - 1].labelY + minGap;
+      }
+    }
+    const overflow = labels.length ? labels[labels.length - 1].labelY - maxY : 0;
+    if (overflow > 0) labels.forEach((point) => { point.labelY -= overflow; });
+    const underflow = labels.length ? minY - labels[0].labelY : 0;
+    if (underflow > 0) labels.forEach((point) => { point.labelY += underflow; });
+  });
 
   const paths = series
-    .map((item) => {
-      const points = rows.map((row, idx) => `${idx === 0 ? "M" : "L"} ${x(idx)} ${scale.y(row[item.key])}`).join(" ");
-      const dots = rows
-        .map((row, idx) => {
-          const px = x(idx);
-          const py = scale.y(row[item.key]);
-          const labelY = py < 54 ? py + 18 : py - 9;
-          return `<g class="chart-point"><circle cx="${px}" cy="${py}" r="6" fill="${item.color}"><title>${item.label}: ${item.format(number(row[item.key]))}</title></circle><text class="value-label" x="${px}" y="${labelY}" fill="${item.color}" font-size="11" font-weight="700" text-anchor="middle">${item.format(number(row[item.key]))}</text></g>`;
+    .map((item, seriesIdx) => {
+      const points = linePoints[seriesIdx].map((point, idx) => `${idx === 0 ? "M" : "L"} ${point.px} ${point.py}`).join(" ");
+      const dots = linePoints[seriesIdx]
+        .map((point) => {
+          return `<g class="chart-point"><circle cx="${point.px}" cy="${point.py}" r="6" fill="${item.color}"><title>${item.label}: ${item.format(point.value)}</title></circle><text class="value-label" x="${point.px}" y="${point.labelY}" fill="${item.color}" font-size="11" font-weight="700" text-anchor="middle">${item.format(point.value)}</text></g>`;
         })
         .join("");
       return `<path d="${points}" fill="none" stroke="${item.color}" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>${dots}`;
