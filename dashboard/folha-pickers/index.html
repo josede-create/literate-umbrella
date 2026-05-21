@@ -631,6 +631,20 @@ th:nth-child(3) {
         </article>
         <article class="panel">
           <div class="panel-heading">
+            <h2>GNX</h2>
+            <span>absenteísmo e turnover</span>
+          </div>
+          <div id="rateChartGnx" class="chart"></div>
+        </article>
+        <article class="panel">
+          <div class="panel-heading">
+            <h2>Moustache</h2>
+            <span>absenteísmo e turnover</span>
+          </div>
+          <div id="rateChartMoustache" class="chart"></div>
+        </article>
+        <article class="panel">
+          <div class="panel-heading">
             <h2>Custos variáveis</h2>
             <span>Hora extra + adicional noturno</span>
           </div>
@@ -1019,6 +1033,21 @@ function monthlyRowsForCurrentCompany() {
     .sort(byMonth);
 }
 
+function monthlyRowsForCompany(company) {
+  const months = DATA.monthly.map((row) => row.mes).sort();
+  return months.map((mes) => {
+    const rows = DATA.people.filter((row) => {
+      return row.mes === mes && row.empresa === company && (state.view !== "coordinator" || row.coordenador === state.coordinator);
+    });
+    const summary = aggregatePeople(rows);
+    return {
+      mes,
+      ...summary,
+      he_media_por_ativo: number(summary.pickers_ativos) ? number(summary.custo_hora_extra) / number(summary.pickers_ativos) : 0,
+    };
+  });
+}
+
 function groupedPeopleRows() {
   const grouped = new Map();
   peopleForFilters().forEach((row) => {
@@ -1264,6 +1293,10 @@ function barChart(el, series, rows, options = {}) {
 
 function renderCharts() {
   const rows = monthlyRowsForCurrentCompany();
+  const rateSeries = [
+    { key: "absenteismo_pct", label: "Absenteísmo", color: "#2f8078", format: fmtPct.format },
+    { key: "turnover_pct", label: "Turnover", color: "#b5473f", format: fmtPct.format },
+  ];
   lineChart(
     document.querySelector("#headcountChart"),
     [
@@ -1277,12 +1310,21 @@ function renderCharts() {
   );
   lineChart(
     document.querySelector("#rateChart"),
-    [
-      { key: "absenteismo_pct", label: "Absenteísmo", color: "#2f8078", format: fmtPct.format },
-      { key: "turnover_pct", label: "Turnover", color: "#b5473f", format: fmtPct.format },
-    ],
+    rateSeries,
     rows,
     { label: "Absenteismo e turnover" },
+  );
+  lineChart(
+    document.querySelector("#rateChartGnx"),
+    rateSeries,
+    monthlyRowsForCompany("GNX"),
+    { label: "Absenteismo e turnover GNX" },
+  );
+  lineChart(
+    document.querySelector("#rateChartMoustache"),
+    rateSeries,
+    monthlyRowsForCompany("Moustache"),
+    { label: "Absenteismo e turnover Moustache" },
   );
   barChart(
     document.querySelector("#costChart"),
