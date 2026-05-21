@@ -255,6 +255,31 @@ body.coordinator-view .main-only {
   font-size: 11px;
 }
 
+.value-label {
+  paint-order: stroke;
+  pointer-events: none;
+  stroke: #ffffff;
+  stroke-linejoin: round;
+  stroke-width: 3px;
+  transition: font-size 120ms ease, opacity 120ms ease, stroke-width 120ms ease;
+}
+
+.chart:hover .value-label {
+  font-size: 15px;
+  opacity: 0.92;
+  stroke-width: 4px;
+}
+
+.chart .chart-point:hover .value-label {
+  font-size: 20px;
+  opacity: 1;
+  stroke-width: 5px;
+}
+
+.chart .chart-point:hover circle {
+  r: 7;
+}
+
 .legend {
   align-items: center;
   display: flex;
@@ -1244,7 +1269,7 @@ function lineChart(el, series, rows, options = {}) {
           const px = x(idx);
           const py = scale.y(row[item.key]);
           const labelY = py < 54 ? py + 18 : py - 9;
-          return `<circle cx="${px}" cy="${py}" r="4" fill="${item.color}"><title>${item.label}: ${item.format(number(row[item.key]))}</title></circle><text x="${px}" y="${labelY}" fill="${item.color}" font-size="11" font-weight="700" text-anchor="middle">${item.format(number(row[item.key]))}</text>`;
+          return `<g class="chart-point"><circle cx="${px}" cy="${py}" r="6" fill="${item.color}"><title>${item.label}: ${item.format(number(row[item.key]))}</title></circle><text class="value-label" x="${px}" y="${labelY}" fill="${item.color}" font-size="11" font-weight="700" text-anchor="middle">${item.format(number(row[item.key]))}</text></g>`;
         })
         .join("");
       return `<path d="${points}" fill="none" stroke="${item.color}" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>${dots}`;
@@ -1279,7 +1304,7 @@ function barChart(el, series, rows, options = {}) {
           const y = Math.min(scale.y(value), zero);
           const h = Math.abs(zero - scale.y(value));
           const labelY = value >= 0 ? Math.max(y - 6, 12) : y + h + 14;
-          return `<rect x="${x}" y="${y}" width="${barWidth}" height="${Math.max(h, 1)}" rx="4" fill="${item.color}"><title>${item.label}: ${item.format(value)}</title></rect><text x="${x + barWidth / 2}" y="${labelY}" fill="${item.color}" font-size="11" font-weight="700" text-anchor="middle">${item.format(value)}</text>`;
+          return `<g class="chart-point"><rect x="${x}" y="${y}" width="${barWidth}" height="${Math.max(h, 1)}" rx="4" fill="${item.color}"><title>${item.label}: ${item.format(value)}</title></rect><text class="value-label" x="${x + barWidth / 2}" y="${labelY}" fill="${item.color}" font-size="11" font-weight="700" text-anchor="middle">${item.format(value)}</text></g>`;
         })
         .join("");
     })
