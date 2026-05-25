@@ -935,6 +935,59 @@ function renderHourlyMatrix() {
       .join("")}</tbody>`;
 }
 
+function buildConnectedByDayRows() {
+  return buildHourlyRows().map((day) => {
+    const connected = day.connected || Array.from({ length: 24 }, () => 0);
+    const scheduled = day.scheduled || Array.from({ length: 24 }, () => 0);
+    const needed = day.needed || Array.from({ length: 24 }, () => 0);
+    const orders = day.real || Array.from({ length: 24 }, () => 0);
+    const totalConnected = sum(connected);
+    const totalScheduled = sum(scheduled);
+    const totalNeeded = sum(needed);
+    const totalOrders = sum(orders);
+    const activeHours = connected.filter((value, hour) => value > 0 || orders[hour] > 0 || scheduled[hour] > 0).length || 24;
+    const peakConnected = Math.max(...connected, 0);
+    const peakHour = connected.indexOf(peakConnected);
+    return {
+      ...day,
+      totalConnected,
+      totalScheduled,
+      totalNeeded,
+      totalOrders,
+      avgConnected: totalConnected / activeHours,
+      peakConnected,
+      peakHour,
+      delta: totalConnected - totalNeeded,
+      adherence: totalScheduled ? (totalConnected / totalScheduled) * 100 : 0,
+    };
+  });
+}
+
+function renderConnectedByDayTable() {
+  const table = document.querySelector("#connected-by-day-table");
+  if (!table) return;
+  const rows = buildConnectedByDayRows();
+  const head = ["Dia", "Orders", "Conectados dia", "Média/h", "Pico conectado", "Hora pico", "Programados", "Need", "Delta", "Aderência"];
+  table.innerHTML = `
+    <thead><tr>${head.map((h) => `<th>${h}</th>`).join("")}</tr></thead>
+    <tbody>${rows
+      .map(
+        (row) => `<tr>
+          <td><strong>${row.label}</strong><br><span>${row.date}</span></td>
+          <td>${fmtInt(row.totalOrders)}</td>
+          <td>${fmtInt(row.totalConnected)}</td>
+          <td>${fixed(row.avgConnected, 1)}</td>
+          <td>${fmtInt(row.peakConnected)}</td>
+          <td>${row.peakHour}h</td>
+          <td>${fmtInt(row.totalScheduled)}</td>
+          <td>${fmtInt(row.totalNeeded)}</td>
+          <td>${status(row.delta, "delta")}</td>
+          <td>${fixed(row.adherence, 1)}%</td>
+        </tr>`,
+      )
+      .join("")}</tbody>`;
+}
+
 function renderPickerGapTable() {
   const rows = [...allStores].sort((a, b) => a.diff - b.diff || a.store.localeCompare(b.store));
   const head = ["Loja", "Coord.", "Plan", "Real", "Delta", "Prod.", "InStore", "Leitura"];
@@ -1522,6 +1575,7 @@ function init() {
   renderDaily();
   renderScaleTable();
   renderHourlyMatrix();
+  renderConnectedByDayTable();
   renderPickerGapTable();
   renderHcAdjustment();
   renderOffenderScheduleSuggestions();
