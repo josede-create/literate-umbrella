@@ -200,6 +200,8 @@ const hcGapRows = Array.isArray(window.HC_GAP_DATA?.rows) ? window.HC_GAP_DATA.r
 const dailyStores = Array.isArray(window.DAILY_DATA?.stores) ? [...window.DAILY_DATA.stores].sort((a, b) => a.store.localeCompare(b.store)) : [];
 const dailyOps = window.DAILY_OPS || {};
 const dailyPickers = Array.isArray(window.DAILY_PICKERS) ? window.DAILY_PICKERS : [];
+const weeklyInstoreRows = Array.isArray(window.WEEKLY_INSTORE_DATA?.weeks) ? window.WEEKLY_INSTORE_DATA.weeks : [];
+const weeklyInstoreGoal = Number(window.WEEKLY_INSTORE_DATA?.goal || 2.57);
 
 if (hcGapRows.length) {
   const gapByStore = new Map(hcGapRows.map((row) => [normalizeStore(row.store), row]));
@@ -383,6 +385,45 @@ function renderCompareTable() {
           <td>${status(fmtMetric(week, def).replace("%", ""), def.key === "productivity" ? "prod" : def.key, def.type === "pct" ? "%" : "", def.direction, def.target)}</td>
           <td>${status(deltaLabel, improved ? "okrs" : "delta", "", improved ? "up" : "down", improved ? null : 0)}</td>
           <td>${reading}</td>
+        </tr>`;
+      })
+      .join("")}</tbody>`;
+}
+
+function shortDate(value) {
+  const [year, month, day] = String(value || "").slice(0, 10).split("-");
+  if (!year || !month || !day) return "";
+  return `${day}/${month}`;
+}
+
+function weekLabel(row) {
+  return `${shortDate(row.weekStart)} a ${shortDate(row.weekEnd)}`;
+}
+
+function renderWeeklyInstore() {
+  const canvas = document.querySelector("#weekly-instore-chart");
+  const table = document.querySelector("#weekly-instore-table");
+  if (!canvas || !table) return;
+  if (!weeklyInstoreRows.length) {
+    table.innerHTML = `<tbody><tr><td>Sem dados das últimas 4 semanas carregados.</td></tr></tbody>`;
+    return;
+  }
+  drawWeeklyInstoreChart(canvas, weeklyInstoreRows);
+  const head = ["Semana", "Orders", "Assign", "Picking", "Packing", "InStore total", "Produtividade", "Lojas dentro da meta"];
+  table.innerHTML = `
+    <thead><tr>${head.map((h) => `<th>${h}</th>`).join("")}</tr></thead>
+    <tbody>${weeklyInstoreRows
+      .map((row) => {
+        const inGoalPct = row.storesTotal ? (num(row.storesInGoal) / num(row.storesTotal)) * 100 : 0;
+        return `<tr>
+          <td><strong>${weekLabel(row)}</strong></td>
+          <td>${fmtInt(row.ordersTotal)}</td>
+          <td>${fixed(row.assign, 2)}</td>
+          <td>${fixed(row.picking, 2)}</td>
+          <td>${fixed(row.packing, 2)}</td>
+          <td>${status(fixed(row.inStore, 2), "inStore", "", "down", weeklyInstoreGoal)}</td>
+          <td>${status(fixed(row.productivity, 1), "prod", "", "up", 69)}</td>
+          <td>${fmtInt(row.storesInGoal)} / ${fmtInt(row.storesTotal)} (${fixed(inGoalPct, 1)}%)</td>
         </tr>`;
       })
       .join("")}</tbody>`;
@@ -1518,7 +1559,137 @@ function drawHorizontalChart(canvas, rows, key) {
   });
 }
 
+function drawWeeklyInstoreChart(canvas, rows) {
+  const ctx = canvas.getContext("2d");
+  const dpr = window.devicePixelRatio || 1;
+  const rect = canvas.getBoundingClientRect();
+  const height = Number(canvas.getAttribute("height")) || 430;
+  canvas.width = Math.max(1, rect.width * dpr);
+  canvas.height = Math.max(1, height * dpr);
+  ctx.scale(dpr, dpr);
+
+  const width = rect.width;
+  const pad = { top: 58, right: 88, bottom: 78, left: 58 };
+  const plotW = width - pad.left - pad.right;
+  const plotH = height - pad.top - pad.bottom;
+  const colors = {
+    assign: "#006d77",
+    picking: "#b7791f",
+    packing: "#c2410c",
+    productivity: "#0b253a",
+    stores: "#1f7a4d",
+  };
+  const maxInstore = Math.max(weeklyInstoreGoal, ...rows.map((row) => num(row.inStore))) * 1.2;
+  const maxProductivity = Math.max(75, ...rows.map((row) => num(row.productivity))) * 1.08;
+  const maxStores = Math.max(1, ...rows.map((row) => num(row.storesTotal)));
+  const groupW = plotW / rows.length;
+  const barW = Math.min(78, Math.max(44, groupW * 0.38));
+  const yInstore = (value) => pad.top + plotH * (1 - num(value) / maxInstore);
+  const yProductivity = (value) => pad.top + plotH * (1 - num(value) / maxProductivity);
+  const yStores = (value) => pad.top + plotH * (1 - num(value) / maxStores);
+
+  ctx.clearRect(0, 0, width, height);
+  ctx.strokeStyle = "#d9e0e7";
+  ctx.lineWidth = 1;
+  ctx.font = "11px Inter, sans-serif";
+  ctx.textAlign = "right";
+  ctx.fillStyle = "#607080";
+  for (let i = 0; i <= 4; i++) {
+    const y = pad.top + (plotH * i) / 4;
+    ctx.beginPath();
+    ctx.moveTo(pad.left, y);
+    ctx.lineTo(width - pad.right, y);
+    ctx.stroke();
+    const value = maxInstore * (1 - i / 4);
+    ctx.fillText(fixed(value, 1), pad.left - 8, y + 4);
+  }
+
+  const goalY = yInstore(weeklyInstoreGoal);
+  ctx.strokeStyle = "#8a98a6";
+  ctx.setLineDash([5, 5]);
+  ctx.beginPath();
+  ctx.moveTo(pad.left, goalY);
+  ctx.lineTo(width - pad.right, goalY);
+  ctx.stroke();
+  ctx.setLineDash([]);
+  ctx.fillStyle = "#607080";
+  ctx.textAlign = "left";
+  ctx.fillText(`meta InStore ${weeklyInstoreGoal}`, width - pad.right + 8, goalY + 4);
+
+  const legend = [
+    ["Assign", colors.assign],
+    ["Picking", colors.picking],
+    ["Packing", colors.packing],
+    ["Produtividade", colors.productivity],
+    ["Lojas na meta", colors.stores],
+  ];
+  legend.forEach(([label, color], index) => {
+    const x = pad.left + index * 136;
+    ctx.fillStyle = color;
+    ctx.fillRect(x, 20, 12, 12);
+    ctx.fillStyle = "#17202a";
+    ctx.textAlign = "left";
+    ctx.font = "11px Inter, sans-serif";
+    ctx.fillText(label, x + 18, 30);
+  });
+
+  rows.forEach((row, index) => {
+    const centerX = pad.left + index * groupW + groupW / 2;
+    const x = centerX - barW / 2;
+    let baseline = pad.top + plotH;
+    [
+      ["assign", row.assign],
+      ["picking", row.picking],
+      ["packing", row.packing],
+    ].forEach(([key, value]) => {
+      const segmentH = plotH * (num(value) / maxInstore);
+      baseline -= segmentH;
+      ctx.fillStyle = colors[key];
+      ctx.fillRect(x, baseline, barW, segmentH);
+    });
+    ctx.fillStyle = "#17202a";
+    ctx.textAlign = "center";
+    ctx.font = "12px Inter, sans-serif";
+    ctx.fillText(fixed(row.inStore, 2), centerX, Math.max(48, baseline - 8));
+    ctx.fillStyle = "#607080";
+    ctx.font = "11px Inter, sans-serif";
+    ctx.fillText(weekLabel(row), centerX, height - 44);
+    ctx.font = "10px Inter, sans-serif";
+    ctx.fillText(`${fmtInt(row.ordersTotal)} orders`, centerX, height - 26);
+  });
+
+  const drawLine = (key, yFor, color, labelFor, dashed = false) => {
+    ctx.strokeStyle = color;
+    ctx.fillStyle = color;
+    ctx.lineWidth = 2;
+    ctx.setLineDash(dashed ? [6, 5] : []);
+    ctx.beginPath();
+    rows.forEach((row, index) => {
+      const x = pad.left + index * groupW + groupW / 2;
+      const y = yFor(row[key]);
+      if (index === 0) ctx.moveTo(x, y);
+      else ctx.lineTo(x, y);
+    });
+    ctx.stroke();
+    ctx.setLineDash([]);
+    rows.forEach((row, index) => {
+      const x = pad.left + index * groupW + groupW / 2;
+      const y = yFor(row[key]);
+      ctx.beginPath();
+      ctx.arc(x, y, 4, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.font = "10px Inter, sans-serif";
+      ctx.textAlign = "center";
+      ctx.fillText(labelFor(row), x, y - 9);
+    });
+  };
+
+  drawLine("productivity", yProductivity, colors.productivity, (row) => fixed(row.productivity, 1));
+  drawLine("storesInGoal", yStores, colors.stores, (row) => `${fmtInt(row.storesInGoal)} lojas`, true);
+}
+
 function renderCharts() {
+  renderWeeklyInstore();
   drawHorizontalChart(
     document.querySelector("#pickerGapChart"),
     [...allStores].sort((a, b) => a.diff - b.diff || a.store.localeCompare(b.store)),
@@ -1555,7 +1726,7 @@ function handleHashNavigation() {
 }
 
 function latestUpdateStamp() {
-  const dates = [window.OKRS_DATA_UPDATED_AT, window.DAILY_DATA_UPDATED_AT, window.SCALE_DATA_UPDATED_AT, window.HC_GAP_DATA_UPDATED_AT]
+  const dates = [window.OKRS_DATA_UPDATED_AT, window.DAILY_DATA_UPDATED_AT, window.SCALE_DATA_UPDATED_AT, window.HC_GAP_DATA_UPDATED_AT, window.WEEKLY_INSTORE_DATA_UPDATED_AT]
     .filter(Boolean)
     .map((value) => new Date(value))
     .filter((date) => !Number.isNaN(date.getTime()));

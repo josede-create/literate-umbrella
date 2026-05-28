@@ -72,6 +72,20 @@
           </div>
         </article>
 
+        <article class="panel weekly-instore-panel">
+          <div class="panel-head">
+            <h3>InStore - últimas 4 semanas</h3>
+            <span class="pill">Assign + Picking + Packing</span>
+          </div>
+          <p class="chart-note">Barras empilhadas mostram a composição do InStore. As linhas mostram produtividade e lojas dentro da meta de InStore ≤ 2.57.</p>
+          <div class="chart-shell weekly-instore-shell">
+            <canvas id="weekly-instore-chart" height="430"></canvas>
+          </div>
+          <div class="table-wrap">
+            <table id="weekly-instore-table" class="compact-table"></table>
+          </div>
+        </article>
+
         <article class="panel insight-panel">
           <div class="panel-head">
             <h3>Principais insights</h3>
@@ -269,6 +283,7 @@
     <script src="./okrs_data.js"></script>
     <script src="./hc_gap_data.js"></script>
     <script src="./daily_data.js"></script>
+    <script src="./weekly_instore_data.js"></script>
     <script src="./app.js"></script>
   </body>
 </html>

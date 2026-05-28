@@ -425,6 +425,15 @@ body[data-page="daily"] #coords {
   margin-bottom: 16px;
 }
 
+.weekly-instore-panel {
+  margin-bottom: 16px;
+}
+
+.weekly-instore-shell {
+  min-height: 430px;
+  margin-bottom: 12px;
+}
+
 .compare-table-wrap {
   max-height: none;
 }
