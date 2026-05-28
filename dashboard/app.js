@@ -1563,13 +1563,13 @@ function drawWeeklyInstoreChart(canvas, rows) {
   const ctx = canvas.getContext("2d");
   const dpr = window.devicePixelRatio || 1;
   const rect = canvas.getBoundingClientRect();
-  const height = Number(canvas.getAttribute("height")) || 430;
+  const height = Number(canvas.getAttribute("height")) || 560;
   canvas.width = Math.max(1, rect.width * dpr);
   canvas.height = Math.max(1, height * dpr);
   ctx.scale(dpr, dpr);
 
   const width = rect.width;
-  const pad = { top: 58, right: 88, bottom: 78, left: 58 };
+  const pad = { top: 86, right: 88, bottom: 86, left: 58 };
   const plotW = width - pad.left - pad.right;
   const plotH = height - pad.top - pad.bottom;
   const colors = {
@@ -1650,7 +1650,7 @@ function drawWeeklyInstoreChart(canvas, rows) {
     ctx.fillStyle = "#17202a";
     ctx.textAlign = "center";
     ctx.font = "12px Inter, sans-serif";
-    ctx.fillText(fixed(row.inStore, 2), centerX, Math.max(48, baseline - 8));
+    ctx.fillText(fixed(row.inStore, 2), centerX, Math.max(58, baseline - 14));
     ctx.fillStyle = "#607080";
     ctx.font = "11px Inter, sans-serif";
     ctx.fillText(weekLabel(row), centerX, height - 44);
@@ -1658,7 +1658,7 @@ function drawWeeklyInstoreChart(canvas, rows) {
     ctx.fillText(`${fmtInt(row.ordersTotal)} orders`, centerX, height - 26);
   });
 
-  const drawLine = (key, yFor, color, labelFor, dashed = false) => {
+  const drawLine = (key, yFor, color, labelFor, dashed = false, labelOffset = -12) => {
     ctx.strokeStyle = color;
     ctx.fillStyle = color;
     ctx.lineWidth = 2;
@@ -1680,12 +1680,12 @@ function drawWeeklyInstoreChart(canvas, rows) {
       ctx.fill();
       ctx.font = "10px Inter, sans-serif";
       ctx.textAlign = "center";
-      ctx.fillText(labelFor(row), x, y - 9);
+      ctx.fillText(labelFor(row), x, y + labelOffset);
     });
   };
 
-  drawLine("productivity", yProductivity, colors.productivity, (row) => fixed(row.productivity, 1));
-  drawLine("storesInGoal", yStores, colors.stores, (row) => `${fmtInt(row.storesInGoal)} lojas`, true);
+  drawLine("productivity", yProductivity, colors.productivity, (row) => `Prod. ${fixed(row.productivity, 1)}`, false, -16);
+  drawLine("storesInGoal", yStores, colors.stores, (row) => `${fmtInt(row.storesInGoal)} lojas`, true, 18);
 }
 
 function renderCharts() {
