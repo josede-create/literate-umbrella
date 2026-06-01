@@ -198,7 +198,7 @@ const allStores = [...storeResults, ...extraStoreResults].sort((a, b) => a.store
 const scaleQueryRows = Array.isArray(window.SCALE_QUERY_ROWS) ? window.SCALE_QUERY_ROWS : [];
 const hcGapRows = Array.isArray(window.HC_GAP_DATA?.rows) ? window.HC_GAP_DATA.rows : [];
 const dailyStores = Array.isArray(window.DAILY_DATA?.stores) ? [...window.DAILY_DATA.stores].sort((a, b) => a.store.localeCompare(b.store)) : [];
-const dailyOps = window.DAILY_OPS || {};
+const dailyOps = window.DAILY_STORES_TIMES || window.DAILY_OPS || {};
 const dailyPickers = Array.isArray(window.DAILY_PICKERS) ? window.DAILY_PICKERS : [];
 const weeklyInstoreRows = Array.isArray(window.WEEKLY_INSTORE_DATA?.weeks) ? window.WEEKLY_INSTORE_DATA.weeks : [];
 const weeklyInstoreGoal = Number(window.WEEKLY_INSTORE_DATA?.goal || 2.57);
