@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Turbo | Expansão de Lojas</title>
+    <link rel="icon" href="data:," />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">Turbo BR</p>
+        <h1>Expansão de novas lojas</h1>
+      </div>
+      <div class="meta" id="meta"></div>
+    </header>
+
+    <main>
+      <section class="toolbar">
+        <div class="segmented" role="group" aria-label="Foco">
+          <button class="active" data-focus="general">Geral</button>
+          <button data-focus="rjsp">RJ/SP</button>
+        </div>
+        <div class="segmented" role="group" aria-label="Base">
+          <button class="active" data-basis="users">Usuários</button>
+          <button data-basis="population">População</button>
+        </div>
+      </section>
+
+      <section class="kpis" id="kpis"></section>
+
+      <section class="layout">
+        <div class="map-shell">
+          <div id="map"></div>
+          <div class="legend">
+            <span><i class="current"></i> lojas atuais 5 km</span>
+            <span><i class="new"></i> novas lojas 5 km</span>
+            <span><i class="dot"></i> usuários descobertos</span>
+          </div>
+        </div>
+        <aside class="side">
+          <h2>Top oportunidades</h2>
+          <div class="table-scroll">
+            <table id="opportunityTable"></table>
+          </div>
+        </aside>
+      </section>
+
+      <section class="tables">
+        <div>
+          <h2>Resumo por cenário</h2>
+          <div class="table-scroll"><table id="scenarioTable"></table></div>
+        </div>
+        <div>
+          <h2>Lojas atuais</h2>
+          <div class="table-scroll"><table id="storeTable"></table></div>
+        </div>
+      </section>
+    </main>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="./data.js"></script>
+    <script src="./app.js"></script>
+  </body>
+</html>
