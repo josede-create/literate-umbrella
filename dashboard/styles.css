@@ -786,6 +786,12 @@ tr:hover td {
   position: static;
 }
 
+.sticky-head-wrap .compact-table th {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+}
+
 .store-matrix {
   min-width: 1780px;
 }
