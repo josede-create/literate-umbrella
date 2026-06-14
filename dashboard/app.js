@@ -492,6 +492,7 @@ function renderDailyTable() {
 }
 
 function aggregateDailyBr() {
+  const connectivityOrders = dailyBrConnectivity.reduce((acc, row) => acc + num(row.orders), 0);
   const totals = dailyStores.reduce(
     (acc, row) => {
       acc.rappi += num(row.rappi);
@@ -510,6 +511,8 @@ function aggregateDailyBr() {
   );
   return {
     ...totals,
+    orders: Math.max(totals.orders, connectivityOrders),
+    ordersFromConnectivity: connectivityOrders,
     defect: totals.rappi ? totals.defect / totals.rappi : 0,
     cancel: totals.rappi ? totals.cancel / totals.rappi : 0,
     availability: totals.rappi ? totals.availability / totals.rappi : 0,
@@ -524,9 +527,13 @@ function renderDailyBr() {
   const target = document.querySelector("#daily-br-kpis");
   if (!target || !dailyStores.length) return;
   const br = aggregateDailyBr();
+  const ordersSubtext =
+    br.ordersFromConnectivity > br.rappi + br.ze
+      ? `${fmtInt(br.ordersFromConnectivity)} consolidado hora a hora BR`
+      : `${fmtInt(br.rappi)} Rappi · ${fmtInt(br.ze)} Zé`;
   document.querySelector("#daily-br-date-pill").textContent = window.DAILY_DATA?.date ? `D-1 · ${window.DAILY_DATA.date}` : "D-1";
   const kpis = [
-    ["Orders", fmtInt(br.orders), `${fmtInt(br.rappi)} Rappi · ${fmtInt(br.ze)} Zé`, "neutral"],
+    ["Orders", fmtInt(br.orders), ordersSubtext, "neutral"],
     ["OKRS", `${fixed(br.okrs)}%`, "Resultado ponderado por orders", statusClass(br.okrs, "okrs")],
     ["DR", `${fixed(br.defect)}%`, "meta D-1: 0,78%", statusClass(br.defect, "defect", "down", 0.78)],
     ["Cancel", `${fixed(br.cancel)}%`, "meta D-1: 0,50%", statusClass(br.cancel, "cancel", "down", 0.5)],
