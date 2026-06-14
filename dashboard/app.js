@@ -199,6 +199,7 @@ const scaleQueryRows = Array.isArray(window.SCALE_QUERY_ROWS) ? window.SCALE_QUE
 const hcGapRows = Array.isArray(window.HC_GAP_DATA?.rows) ? window.HC_GAP_DATA.rows : [];
 const dailyStores = Array.isArray(window.DAILY_DATA?.stores) ? [...window.DAILY_DATA.stores].sort((a, b) => a.store.localeCompare(b.store)) : [];
 const dailyOps = window.DAILY_STORES_TIMES || window.DAILY_OPS || {};
+const dailyBrConnectivity = Array.isArray(window.DAILY_BR_CONNECTIVITY) ? window.DAILY_BR_CONNECTIVITY : [];
 const dailyPickers = Array.isArray(window.DAILY_PICKERS) ? window.DAILY_PICKERS : [];
 const weeklyInstoreRows = Array.isArray(window.WEEKLY_INSTORE_DATA?.weeks) ? window.WEEKLY_INSTORE_DATA.weeks : [];
 const weeklyInstoreGoal = Number(window.WEEKLY_INSTORE_DATA?.goal || 2.57);
@@ -308,12 +309,14 @@ function deltaText(week, month, def) {
   return `${signal}${fixed(delta)}${def.type === "pct" ? " p.p." : ""} vs mês`;
 }
 
-function pickerNeed(orders, receiving = 0, time = 3.27, h6 = 1) {
-  if (orders === 0) return 0;
-  const base = (time * (orders + (orders * 0.5) / 60) + (orders * 0.25) / 2 + orders / 5) / (60 * h6);
-  const roundedBase = Math.ceil(base);
-  const need = Math.ceil(base + roundedBase / 7.33);
-  return Math.max(2, need) + receiving;
+function pickerNeed(orders, receiving = 0, time = 3, h6 = 1) {
+  if (orders <= 0) return 0;
+  const minutesPerOrder = time + 1;
+  const breakBufferMinutesPerHour = 5;
+  const productiveMinutesPerPickerHour = Math.max(1, 60 * h6 - breakBufferMinutesPerHour);
+  const basePickers = (orders * minutesPerOrder) / productiveMinutesPerPickerHour;
+  const replenishmentCoverage = 0.25 * h6;
+  return Math.ceil(basePickers + replenishmentCoverage + receiving);
 }
 
 function insightForStore(row) {
@@ -535,6 +538,31 @@ function renderDailyBr() {
   target.innerHTML = kpis
     .map(([label, value, sub, cls]) => `<article class="kpi ${cls}"><p class="label">${label}</p><p class="value">${value}</p><p class="sub">${sub}</p></article>`)
     .join("");
+  renderDailyBrConnectivity();
+}
+
+function renderDailyBrConnectivity() {
+  const table = document.querySelector("#daily-br-connectivity-table");
+  if (!table) return;
+  if (!dailyBrConnectivity.length) {
+    table.innerHTML = `<tbody><tr><td>Sem visibilidade horária de conectividade para o D-1 carregado.</td></tr></tbody>`;
+    return;
+  }
+  const rows = dailyBrConnectivity;
+  const head = ["Hora", "Orders", "Pickers conectados", "Pickers necessários", "Delta"];
+  table.innerHTML = `
+    <thead><tr>${head.map((h) => `<th>${h}</th>`).join("")}</tr></thead>
+    <tbody>${rows
+      .map(
+        (row) => `<tr>
+          <td>${String(row.hour).padStart(2, "0")}:00</td>
+          <td>${fmtInt(row.orders)}</td>
+          <td>${fmtInt(row.connected)}</td>
+          <td>${fmtInt(row.needed)}</td>
+          <td>${status(fmtInt(row.delta), "delta")}</td>
+        </tr>`,
+      )
+      .join("")}</tbody>`;
 }
 
 function renderDailyStore(storeName) {
@@ -660,7 +688,7 @@ function renderDailySaturation(storeName) {
     const ordersByHour = aggregateQueryByHour(dayRows, (row) => num(row.TOTAL_ORDENES_HISTORICO || row.ORDERS));
     const connectedByHour = aggregateQueryByHour(dayRows, (row) => num(row.PICKERS_CONECTED || row.PICKERS_CONNECTED));
     const scheduledByHour = aggregateQueryByHour(dayRows, (row) => num(row.PICKERS_SCHEDULED));
-    const neededByHour = ordersByHour.map((orders) => pickerNeed(orders, 0, 3.27, 1));
+    const neededByHour = ordersByHour.map((orders) => pickerNeed(orders, 0, 3, 1));
     const orders = sum(ordersByHour);
     const inStoreNumerator = dayRows.reduce((acc, row) => acc + num(row.IN_STORE), 0);
     const inStore = orders > 0 ? inStoreNumerator / orders : 0;
@@ -839,7 +867,7 @@ function buildHourlyRowsFromQuery() {
     const real = aggregateQueryByHour(rows, (row) => num(row.TOTAL_ORDENES_HISTORICO || row.ORDERS));
     const scheduled = aggregateQueryByHour(rows, (row) => num(row.PICKERS_SCHEDULED));
     const connected = aggregateQueryByHour(rows, (row) => num(row.PICKERS_CONECTED || row.PICKERS_CONNECTED));
-    const needed = aggregateQueryByHour(rows, (row) => pickerNeed(num(row.TOTAL_ORDENES_HISTORICO || row.ORDERS), 0, 3.27, 1));
+    const needed = aggregateQueryByHour(rows, (row) => pickerNeed(num(row.TOTAL_ORDENES_HISTORICO || row.ORDERS), 0, 3, 1));
     const delta = connected.map((value, hour) => value - needed[hour]);
     return { ...day, forecast, real, scheduled, connected, needed, delta };
   });
@@ -851,7 +879,7 @@ function buildStoreHourlyProfileFromQuery(storeName, date) {
   const real = aggregateQueryByHour(rows, (row) => num(row.TOTAL_ORDENES_HISTORICO || row.ORDERS));
   const scheduled = aggregateQueryByHour(rows, (row) => num(row.PICKERS_SCHEDULED));
   const connected = aggregateQueryByHour(rows, (row) => num(row.PICKERS_CONECTED || row.PICKERS_CONNECTED));
-  const needed = real.map((orders, hour) => pickerNeed(orders, hour >= 8 && hour <= 21 ? 1 : 0, 3.27, 1));
+  const needed = real.map((orders, hour) => pickerNeed(orders, hour >= 8 && hour <= 21 ? 1 : 0, 3, 1));
   const delta = connected.map((value, hour) => value - needed[hour]);
   return { forecast, real, scheduled, connected, needed, delta };
 }
@@ -924,7 +952,7 @@ function buildStoreHourlyProfile(store, day = weekDays[0], connectedCalibration 
   const real = forecast.map((value, hour) => Math.round(value * (hour >= 18 && hour <= 21 ? 1.16 : hour <= 6 ? 1.08 : 1 + (day.orderShare - 0.14))));
   const scheduled = shiftCoverage.map((coverage, hour) => Math.max(hour >= 5 && hour <= 23 ? 1 : 0, Math.round(store.plan * coverage * day.programFactor * scheduledCalibration)));
   const connected = shiftCoverage.map((coverage, hour) => Math.max(hour >= 5 && hour <= 23 ? 1 : 0, Math.round(store.real * coverage * day.attendance * connectedCalibration)));
-  const needed = real.map((orders, hour) => pickerNeed(orders, hour >= 8 && hour <= 21 ? 1 : 0, 3.27, 1));
+  const needed = real.map((orders, hour) => pickerNeed(orders, hour >= 8 && hour <= 21 ? 1 : 0, 3, 1));
   const delta = connected.map((value, hour) => value - needed[hour]);
   return { forecast, real, scheduled, connected, needed, delta };
 }
@@ -1165,7 +1193,7 @@ function hcNeedForStore(storeName) {
   let connectedHours = 0;
   const dayShifts = new Map();
   bySlot.forEach((slot) => {
-    let need = pickerNeed(slot.orders, slot.hour >= 8 && slot.hour <= 21 ? 1 : 0, 3.27, 1);
+    let need = pickerNeed(slot.orders, slot.hour >= 8 && slot.hour <= 21 ? 1 : 0, 3, 1);
     if (slot.orders > 0) need = Math.max(3, need);
     if (is24h && slot.hour >= 0 && slot.hour <= 5) need = Math.max(3, need);
     neededHours += need;

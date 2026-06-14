@@ -211,12 +211,14 @@ function deltaText(week, month, def) {
   return `${signal}${delta.toFixed(2)}${def.type === "pct" ? " p.p." : ""} vs mês`;
 }
 
-function pickerNeed(orders, receiving = 0, time = 3.27, h6 = 1) {
-  if (orders === 0) return 0;
-  const base = (time * (orders + (orders * 0.5) / 60) + (orders * 0.25) / 2 + orders / 5) / (60 * h6);
-  const roundedBase = Math.ceil(base);
-  const need = Math.ceil(base + roundedBase / 7.33);
-  return Math.max(2, need) + receiving;
+function pickerNeed(orders, receiving = 0, time = 3, h6 = 1) {
+  if (orders <= 0) return 0;
+  const minutesPerOrder = time + 1;
+  const breakBufferMinutesPerHour = 5;
+  const productiveMinutesPerPickerHour = Math.max(1, 60 * h6 - breakBufferMinutesPerHour);
+  const basePickers = (orders * minutesPerOrder) / productiveMinutesPerPickerHour;
+  const replenishmentCoverage = 0.25 * h6;
+  return Math.ceil(basePickers + replenishmentCoverage + receiving);
 }
 
 function insightForStore(row) {
@@ -368,7 +370,7 @@ function buildHourlyRowsFromQuery() {
     const real = aggregateQueryByHour(rows, (row) => Number(row.TOTAL_ORDENES_HISTORICO || row.ORDERS || 0));
     const scheduled = aggregateQueryByHour(rows, (row) => Number(row.PICKERS_SCHEDULED || 0));
     const connected = aggregateQueryByHour(rows, (row) => Number(row.PICKERS_CONECTED || row.PICKERS_CONNECTED || 0));
-    const needed = aggregateQueryByHour(rows, (row) => pickerNeed(Number(row.TOTAL_ORDENES_HISTORICO || row.ORDERS || 0), 0, 3.27, 1));
+    const needed = aggregateQueryByHour(rows, (row) => pickerNeed(Number(row.TOTAL_ORDENES_HISTORICO || row.ORDERS || 0), 0, 3, 1));
     const delta = connected.map((value, hour) => value - needed[hour]);
     return { ...day, forecast, real, scheduled, connected, needed, delta };
   });
@@ -380,7 +382,7 @@ function buildStoreHourlyProfileFromQuery(storeName, date) {
   const real = aggregateQueryByHour(rows, (row) => Number(row.TOTAL_ORDENES_HISTORICO || row.ORDERS || 0));
   const scheduled = aggregateQueryByHour(rows, (row) => Number(row.PICKERS_SCHEDULED || 0));
   const connected = aggregateQueryByHour(rows, (row) => Number(row.PICKERS_CONECTED || row.PICKERS_CONNECTED || 0));
-  const needed = real.map((orders, hour) => pickerNeed(orders, hour >= 8 && hour <= 21 ? 1 : 0, 3.27, 1));
+  const needed = real.map((orders, hour) => pickerNeed(orders, hour >= 8 && hour <= 21 ? 1 : 0, 3, 1));
   const delta = connected.map((value, hour) => value - needed[hour]);
   return { forecast, real, scheduled, connected, needed, delta };
 }
@@ -443,7 +445,7 @@ function buildStoreHourlyProfile(store, day = weekDays[0], connectedCalibration 
   const real = forecast.map((value, hour) => Math.round(value * (hour >= 18 && hour <= 21 ? 1.16 : hour <= 6 ? 1.08 : 1 + (day.orderShare - 0.14))));
   const scheduled = shiftCoverage.map((coverage, hour) => Math.max(hour >= 5 && hour <= 23 ? 1 : 0, Math.round(store.plan * coverage * day.programFactor * scheduledCalibration)));
   const connected = shiftCoverage.map((coverage, hour) => Math.max(hour >= 5 && hour <= 23 ? 1 : 0, Math.round(store.real * coverage * day.attendance * connectedCalibration)));
-  const needed = real.map((orders, hour) => pickerNeed(orders, hour >= 8 && hour <= 21 ? 1 : 0, 3.27, 1));
+  const needed = real.map((orders, hour) => pickerNeed(orders, hour >= 8 && hour <= 21 ? 1 : 0, 3, 1));
   const delta = connected.map((value, hour) => value - needed[hour]);
   return { forecast, real, scheduled, connected, needed, delta };
 }
