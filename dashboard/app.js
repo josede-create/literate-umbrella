@@ -1,6 +1,6 @@
 const PERIODS = {
-  month: "Maio MTD",
-  week: "04/05 a 10/05",
+  month: "Mês atual",
+  week: "Última semana",
 };
 
 const brMonth = {
@@ -205,6 +205,7 @@ const hcGapRows = Array.isArray(window.HC_GAP_DATA?.rows) ? window.HC_GAP_DATA.r
 const dailyStores = Array.isArray(window.DAILY_DATA?.stores) ? [...window.DAILY_DATA.stores].sort((a, b) => a.store.localeCompare(b.store)) : [];
 const dailyOps = window.DAILY_STORES_TIMES || window.DAILY_OPS || {};
 const dailyBrConnectivity = Array.isArray(window.DAILY_BR_CONNECTIVITY) ? window.DAILY_BR_CONNECTIVITY : [];
+const dailyPickingCompliance = window.DAILY_PICKING_COMPLIANCE || { br: null, stores: [] };
 const dailyPickers = Array.isArray(window.DAILY_PICKERS) ? window.DAILY_PICKERS : [];
 const weeklyInstoreRows = Array.isArray(window.WEEKLY_INSTORE_DATA?.weeks) ? window.WEEKLY_INSTORE_DATA.weeks : [];
 const weeklyInstoreGoal = Number(window.WEEKLY_INSTORE_DATA?.goal || 2.57);
@@ -219,6 +220,14 @@ if (hcGapRows.length) {
     store.diff = num(gap.diff, store.real - store.plan);
     store.hcSource = window.HC_GAP_DATA?.source || "Follow up HC Preview";
   });
+}
+
+if (window.OKRS_DATA?.month?.periodStart && window.OKRS_DATA?.month?.periodEnd) {
+  PERIODS.month = `${shortDate(window.OKRS_DATA.month.periodStart)} a ${shortDate(window.OKRS_DATA.month.periodEnd)}`;
+}
+
+if (window.OKRS_DATA?.week?.periodStart && window.OKRS_DATA?.week?.periodEnd) {
+  PERIODS.week = `${shortDate(window.OKRS_DATA.week.periodStart)} a ${shortDate(window.OKRS_DATA.week.periodEnd)}`;
 }
 
 const hourlyCurve = [0.01, 0.01, 0.006, 0.005, 0.004, 0.005, 0.012, 0.025, 0.04, 0.05, 0.055, 0.063, 0.067, 0.067, 0.064, 0.059, 0.062, 0.07, 0.078, 0.09, 0.09, 0.073, 0.045, 0.021];
@@ -437,6 +446,60 @@ function renderWeeklyInstore() {
       .join("")}</tbody>`;
 }
 
+function renderBrPickingCompliance() {
+  const table = document.querySelector("#br-picking-compliance-table");
+  if (!table) return;
+  const rows = connectivityPreviousRows.length ? buildComplianceDayRows(connectivityPreviousRows) : [];
+  if (!rows.length) {
+    table.innerHTML = `<tbody><tr><td>Sem dados de compliance da última semana fechada.</td></tr></tbody>`;
+    return;
+  }
+  const range = `${rows[0].date} a ${rows[rows.length - 1].date}`;
+  document.querySelector("#br-picking-compliance-pill").textContent = `Última semana fechada · ${range}`;
+  const total = rows.reduce(
+    (acc, row) => {
+      acc.orders += row.orders;
+      acc.needed += row.needed;
+      acc.scheduled += row.scheduled;
+      acc.compliantSlots += row.compliantSlots;
+      acc.totalSlots += row.totalSlots;
+      acc.instoreWeighted += row.instoreCompliance * row.orders;
+      return acc;
+    },
+    { orders: 0, needed: 0, scheduled: 0, compliantSlots: 0, totalSlots: 0, instoreWeighted: 0 },
+  );
+  const head = ["Dia", "Orders", "Pickers necessários", "Pickers escalados", "Picking compliance", "Slots OK", "InStore compliance"];
+  const bodyRows = [
+    {
+      label: "BR semana",
+      date: range,
+      orders: total.orders,
+      needed: total.needed,
+      scheduled: total.scheduled,
+      compliantSlots: total.compliantSlots,
+      totalSlots: total.totalSlots,
+      compliance: compliancePct(total.compliantSlots, total.totalSlots),
+      instoreCompliance: total.orders ? total.instoreWeighted / total.orders : 0,
+    },
+    ...rows,
+  ];
+  table.innerHTML = `
+    <thead><tr>${head.map((item) => `<th>${item}</th>`).join("")}</tr></thead>
+    <tbody>${bodyRows
+      .map(
+        (row) => `<tr>
+          <td><strong>${row.label}</strong>${row.date ? `<br><span>${row.date}</span>` : ""}</td>
+          <td>${fmtInt(row.orders)}</td>
+          <td>${fixed(row.needed, 1)}</td>
+          <td>${fixed(row.scheduled, 1)}</td>
+          <td>${status(`${fixed(row.compliance, 1)}%`, "prod", "", "up", 55)}</td>
+          <td>${fmtInt(row.compliantSlots)} / ${fmtInt(row.totalSlots)}</td>
+          <td>${status(`${fixed(row.instoreCompliance, 1)}%`, "prod", "", "up", 70)}</td>
+        </tr>`,
+      )
+      .join("")}</tbody>`;
+}
+
 function dailyInsight(row) {
   const signals = [];
   if (row.okrs < 85) signals.push("OKRS abaixo de 85");
@@ -499,6 +562,91 @@ function queryPickerReception(row) {
 function queryInStoreAvg(row) {
   const orders = num(row.TOTAL_ORDENES_HISTORICO || row.ORDERS);
   return orders > 0 ? num(row.IN_STORE) / orders : 0;
+}
+
+function coordinatorForStore(storeName) {
+  const normalized = normalizeStore(storeName);
+  return (
+    allStores.find((row) => normalizeStore(row.store) === normalized)?.coord ||
+    dailyStores.find((row) => normalizeStore(row.store) === normalized)?.coord ||
+    "Sem coord"
+  );
+}
+
+function compliancePct(compliant, total) {
+  return total > 0 ? (compliant / total) * 100 : 0;
+}
+
+function formatHours(value) {
+  return fixed(value, 1);
+}
+
+function buildComplianceDayRows(rows) {
+  return connectivityDays(rows).map((day) => {
+    const dayRows = rows.filter((row) => dateKey(row.DATE) === day.date);
+    const orders = dayRows.reduce((acc, row) => acc + num(row.TOTAL_ORDENES_HISTORICO || row.ORDERS), 0);
+    const needed = dayRows.reduce((acc, row) => acc + num(row.PICKERS_NEEDED), 0);
+    const scheduled = dayRows.reduce((acc, row) => acc + num(row.PICKERS_SCHEDULED), 0);
+    const activeSlots = dayRows.filter((row) => num(row.PICKERS_NEEDED) > 0);
+    const compliantSlots = activeSlots.filter((row) => num(row.PICKERS_SCHEDULED) >= num(row.PICKERS_NEEDED)).length;
+    const instoreRows = dayRows.filter((row) => num(row.TOTAL_ORDENES_HISTORICO || row.ORDERS) > 0);
+    const instoreCompliantOrders = instoreRows.reduce((acc, row) => {
+      const rowOrders = num(row.TOTAL_ORDENES_HISTORICO || row.ORDERS);
+      return acc + (queryInStoreAvg(row) <= weeklyInstoreGoal ? rowOrders : 0);
+    }, 0);
+    return {
+      ...day,
+      orders,
+      needed,
+      scheduled,
+      compliantSlots,
+      totalSlots: activeSlots.length,
+      compliance: compliancePct(compliantSlots, activeSlots.length),
+      instoreCompliance: compliancePct(instoreCompliantOrders, orders),
+    };
+  });
+}
+
+function buildCoordinatorComplianceRows(rows) {
+  const byCoord = new Map();
+  rows.forEach((row) => {
+    const store = String(row.WAREHOUSENAME || "").trim();
+    if (!store || /^inactive/i.test(store)) return;
+    const coord = coordinatorForStore(store);
+    const current = byCoord.get(coord) || {
+      coord,
+      stores: new Set(),
+      orders: 0,
+      needed: 0,
+      scheduled: 0,
+      compliantSlots: 0,
+      totalSlots: 0,
+      instoreCompliantOrders: 0,
+    };
+    current.stores.add(store);
+    const orders = num(row.TOTAL_ORDENES_HISTORICO || row.ORDERS);
+    const needed = num(row.PICKERS_NEEDED);
+    const scheduled = num(row.PICKERS_SCHEDULED);
+    current.orders += orders;
+    current.needed += needed;
+    current.scheduled += scheduled;
+    if (needed > 0) {
+      current.totalSlots += 1;
+      if (scheduled >= needed) current.compliantSlots += 1;
+    }
+    if (orders > 0 && queryInStoreAvg(row) <= weeklyInstoreGoal) {
+      current.instoreCompliantOrders += orders;
+    }
+    byCoord.set(coord, current);
+  });
+  return [...byCoord.values()]
+    .map((row) => ({
+      ...row,
+      storesCount: row.stores.size,
+      compliance: compliancePct(row.compliantSlots, row.totalSlots),
+      instoreCompliance: compliancePct(row.instoreCompliantOrders, row.orders),
+    }))
+    .sort((a, b) => a.compliance - b.compliance || b.orders - a.orders);
 }
 
 function renderDailyTable() {
@@ -632,6 +780,7 @@ function renderDailyStore(storeName) {
             .join("")
         : detailCell("Indicadores D-1", "Sem detalhe operacional no recorte lido", "A loja aparece no OKRS D-1, mas não no bloco operacional lido.")}
     </div>`;
+  renderDailyPickingCompliance(row.store);
   renderDailyPickers(row.store);
 }
 
@@ -681,6 +830,61 @@ function renderDailyPickers(storeName) {
           <td>${pickerInsight(row)}</td>
         </tr>`,
       )
+      .join("")}</tbody>`;
+}
+
+function renderDailyPickingCompliance(selectedStoreName = "") {
+  const table = document.querySelector("#daily-picking-compliance-table");
+  if (!table) return;
+  document.querySelector("#daily-picking-compliance-pill").textContent = window.DAILY_DATA?.date ? `D-1 · ${window.DAILY_DATA.date}` : "D-1";
+  const storeRows = Array.isArray(dailyPickingCompliance.stores) ? [...dailyPickingCompliance.stores] : [];
+  if (!dailyPickingCompliance.br && !storeRows.length) {
+    table.innerHTML = `<tbody><tr><td>Sem dados de compliance de picking para o D-1 carregado.</td></tr></tbody>`;
+    return;
+  }
+  const selectedStore = selectedStoreName ? normalizeStore(selectedStoreName) : "";
+  const topRows = storeRows
+    .sort((a, b) => num(a.compliance) - num(b.compliance) || num(b.orders) - num(a.orders))
+    .slice(0, 12);
+  const selectedRow = selectedStore ? storeRows.find((row) => normalizeStore(row.store) === selectedStore) : null;
+  const dailyInstoreRows = dailyStores.map((row) => ({
+    store: row.store,
+    orders: num(row.orders),
+    compliance: num(row.inStore) <= weeklyInstoreGoal ? 100 : 0,
+  }));
+  const dailyInstoreBrOrders = dailyInstoreRows.reduce((acc, row) => acc + row.orders, 0);
+  const dailyInstoreBrOkOrders = dailyInstoreRows.reduce((acc, row) => acc + (row.compliance >= 100 ? row.orders : 0), 0);
+  const dailyInstoreByStore = new Map(dailyInstoreRows.map((row) => [normalizeStore(row.store), row]));
+  const displayRows = [
+    dailyPickingCompliance.br ? { scope: "BR", ...dailyPickingCompliance.br } : null,
+    selectedRow ? { scope: "Loja selecionada", ...selectedRow } : null,
+    ...topRows.map((row) => ({ scope: "Loja", ...row })),
+  ].filter(Boolean);
+  const seen = new Set();
+  const uniqueRows = displayRows.filter((row) => {
+    const key = `${row.scope}-${normalizeStore(row.store || row.scope)}`;
+    if (seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
+  const head = ["Escopo", "Orders", "Pickers necessários", "Pickers escalados", "Picking compliance", "Slots OK", "InStore compliance"];
+  table.innerHTML = `
+    <thead><tr>${head.map((item) => `<th>${item}</th>`).join("")}</tr></thead>
+    <tbody>${uniqueRows
+      .map((row) => {
+        const instoreRow = row.scope === "BR"
+          ? { compliance: compliancePct(dailyInstoreBrOkOrders, dailyInstoreBrOrders) }
+          : dailyInstoreByStore.get(normalizeStore(row.store));
+        return `<tr>
+          <td><strong>${row.scope === "Loja" ? row.store : row.scope}</strong>${row.scope === "Loja selecionada" && row.store ? `<br><span>${row.store}</span>` : ""}</td>
+          <td>${fmtInt(row.orders)}</td>
+          <td>${fixed(row.needed, 1)}</td>
+          <td>${fixed(row.scheduled, 1)}</td>
+          <td>${status(`${fixed(row.compliance, 1)}%`, "prod", "", "up", 55)}</td>
+          <td>${fmtInt(row.compliantSlots)} / ${fmtInt(row.totalSlots)}</td>
+          <td>${status(`${fixed(instoreRow?.compliance || 0, 1)}%`, "prod", "", "up", 70)}</td>
+        </tr>`;
+      })
       .join("")}</tbody>`;
 }
 
@@ -802,6 +1006,7 @@ function renderDaily() {
     document.querySelector("#daily").scrollIntoView({ behavior: "smooth", block: "start" });
   });
   renderDailyBr();
+  renderDailyPickingCompliance(dailyStores[0].store);
   renderDailyTable();
   renderDailyStore(dailyStores[0].store);
 }
@@ -1745,6 +1950,37 @@ function renderCoordinatorCards() {
     .join("");
 }
 
+function renderCoordinatorPickingCompliance() {
+  const table = document.querySelector("#coord-picking-compliance-table");
+  if (!table) return;
+  const rows = buildCoordinatorComplianceRows(connectivityPreviousRows);
+  if (!rows.length) {
+    table.innerHTML = `<tbody><tr><td>Sem dados de compliance por coordenador para a última semana fechada.</td></tr></tbody>`;
+    return;
+  }
+  const dates = connectivityDays(connectivityPreviousRows);
+  if (dates.length) {
+    document.querySelector("#coord-picking-compliance-pill").textContent = `${dates[0].date} a ${dates[dates.length - 1].date}`;
+  }
+  const head = ["Coordenador", "Lojas", "Orders", "Pickers necessários", "Pickers escalados", "Picking compliance", "Slots OK", "InStore compliance"];
+  table.innerHTML = `
+    <thead><tr>${head.map((item) => `<th>${item}</th>`).join("")}</tr></thead>
+    <tbody>${rows
+      .map(
+        (row) => `<tr>
+          <td><strong>${row.coord}</strong></td>
+          <td>${fmtInt(row.storesCount)}</td>
+          <td>${fmtInt(row.orders)}</td>
+          <td>${fixed(row.needed, 1)}</td>
+          <td>${fixed(row.scheduled, 1)}</td>
+          <td>${status(`${fixed(row.compliance, 1)}%`, "prod", "", "up", 55)}</td>
+          <td>${fmtInt(row.compliantSlots)} / ${fmtInt(row.totalSlots)}</td>
+          <td>${status(`${fixed(row.instoreCompliance, 1)}%`, "prod", "", "up", 70)}</td>
+        </tr>`,
+      )
+      .join("")}</tbody>`;
+}
+
 function drawBarChart(canvas, labels, series, options = {}) {
   const ctx = canvas.getContext("2d");
   const dpr = window.devicePixelRatio || 1;
@@ -2043,12 +2279,14 @@ function init() {
   renderInsights();
   renderCompareTable();
   renderOffenders();
+  renderBrPickingCompliance();
   renderDaily();
   renderConnectivity();
   renderPickerGapTable();
   renderHcAdjustment();
   renderOffenderScheduleSuggestions();
   renderCoordinatorCards();
+  renderCoordinatorPickingCompliance();
   renderCharts();
   handleHashNavigation();
 }

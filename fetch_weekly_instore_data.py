@@ -39,32 +39,54 @@ delivery_base AS (
     AND DT.ORDER_ID <> '2216319964'
   GROUP BY 1, 2
 ),
-delivery_hourly_connections AS (
-  SELECT
-    DATE_TRUNC(WEEK, DT.ORDER_CREATED_AT)::DATE AS week_start,
-    DT.ORDER_CREATED_AT::DATE AS order_date,
-    HOUR(DT.ORDER_CREATED_AT) AS order_hour,
+wh AS (
+  SELECT DISTINCT
+    KEYWH,
+    WAREHOUSEID,
     CASE
-      WHEN W.WAREHOUSENAME = 'Buritis' THEN 'Estoril'
-      WHEN W.WAREHOUSENAME = 'Sagrada Familia' THEN 'Santa Efigênia'
-      ELSE COALESCE(W.WAREHOUSENAME, DT.KEYWH)
-    END AS warehouse_name,
-    COUNT(DISTINCT DT.KEYPICK) AS pickers_connected
-  FROM RP_SILVER_DB_PROD.TURBO_CORE.BR_DELIVERY_TIMES DT
-  LEFT JOIN FIVETRAN.CPGS_TURBO_DS_PUBLIC.BR_WAREHOUSE_NEW W
-    ON DT.KEYWH = W.KEYWH
+      WHEN WAREHOUSENAME = 'Buritis' THEN 'Estoril'
+      WHEN WAREHOUSENAME = 'Sagrada Familia' THEN 'Santa Efigênia'
+      WHEN WAREHOUSENAME = 'Centro' THEN 'Catete II'
+      ELSE TRIM(WAREHOUSENAME)
+    END AS WAREHOUSENAME
+  FROM FIVETRAN.CPGS_TURBO_DS_PUBLIC.BR_WAREHOUSE_NEW
+),
+store_map AS (
+  SELECT DISTINCT STORE_ID, WAREHOUSE_ID
+  FROM FIVETRAN.CPGS_TURBO_DS_PUBLIC.GLOBAL_WAREHOUSE_STORE
+  WHERE COUNTRY_CODE = 'BR'
+    AND NEW_ARCH = 'true'
+),
+orders_rappi_official AS (
+  SELECT
+    DATE_TRUNC(WEEK, O.CREATED_AT)::DATE AS week_start,
+    COUNT(DISTINCT O.ORDER_ID) AS orders_rappi
+  FROM RP_SILVER_DB_PROD.DES_PROD.ORDERS_BR O
+  JOIN store_map S
+    ON S.STORE_ID = O.STORE_ID
+  JOIN wh W
+    ON W.WAREHOUSEID = S.WAREHOUSE_ID
   CROSS JOIN date_bounds B
-  WHERE DT.COUNTRY = 'BR'
-    AND DT.ORDER_CREATED_AT::DATE >= B.start_date
-    AND DT.ORDER_CREATED_AT::DATE < B.end_date
-    AND DT.ORDER_ID <> '2216319964'
-  GROUP BY 1, 2, 3, 4
+  WHERE O.CREATED_AT::DATE >= B.start_date
+    AND O.CREATED_AT::DATE < B.end_date
+    AND O.IS_FINISHED = TRUE
+    AND O.STATE IN ('pending_review', 'finished')
+    AND O.COUNTRY = 'BR'
+    AND UPPER(O.VERTICAL_SUB_GROUP) = 'TURBO'
+    AND COALESCE(O.STORE_TYPE_STORE, '') NOT IN ('turbo_veinticuatro_nc', 'retailers_cargo')
+  GROUP BY 1
 ),
 connections AS (
   SELECT
-    week_start,
-    SUM(pickers_connected) AS conections
-  FROM delivery_hourly_connections
+    DATE_TRUNC(WEEK, MAIN_DATE)::DATE AS week_start,
+    SUM(num_pickers) AS conections
+  FROM RP_GOLD_DB_PROD.TURBO_CORE.GLOBAL_PICKER_PRODUCTIVITY_PBI
+  CROSS JOIN date_bounds B
+  WHERE COUNTRY = 'BR'
+    AND MAIN_DATE::DATE >= B.start_date
+    AND MAIN_DATE::DATE < B.end_date
+    AND duration_range IN ('5:00 - 5:59', '7:00 - 7:59', '6:00 - 6:59', '> 8:00', '4:00 - 4:59')
+    AND role_name IN ('Store Lead / Picker support', 'Picker')
   GROUP BY 1
 ),
 orders_ze AS (
@@ -82,19 +104,21 @@ orders_ze AS (
 SELECT
   D.week_start,
   DATEADD(DAY, 6, D.week_start)::DATE AS week_end,
-  SUM(D.orders_rappi) AS orders_rappi,
+  COALESCE(MAX(O.orders_rappi), SUM(D.orders_rappi)) AS orders_rappi,
   COALESCE(MAX(Z.orders_ze), 0) AS orders_ze,
-  SUM(D.orders_rappi) + COALESCE(MAX(Z.orders_ze), 0) AS orders_total,
+  COALESCE(MAX(O.orders_rappi), SUM(D.orders_rappi)) + COALESCE(MAX(Z.orders_ze), 0) AS orders_total,
   SUM(D.assign_time) / NULLIF(SUM(D.orders_rappi), 0) AS assign,
   SUM(D.picking_time) / NULLIF(SUM(D.orders_rappi), 0) AS picking,
   SUM(D.packing_time) / NULLIF(SUM(D.orders_rappi), 0) AS packing,
   (SUM(D.assign_time) + SUM(D.picking_time) + SUM(D.packing_time)) / NULLIF(SUM(D.orders_rappi), 0) AS instore,
   COUNT_IF((D.assign_time + D.picking_time + D.packing_time) / NULLIF(D.orders_rappi, 0) <= 2.57) AS stores_in_goal,
   COUNT_IF(D.orders_rappi > 0) AS stores_total,
-  ((SUM(D.orders_rappi) + COALESCE(MAX(Z.orders_ze), 0)) * 6.5) / NULLIF(MAX(C.conections), 0) AS productivity
+  (COALESCE(MAX(O.orders_rappi), SUM(D.orders_rappi)) + COALESCE(MAX(Z.orders_ze), 0)) / NULLIF(MAX(C.conections), 0) AS productivity
 FROM delivery_base D
 LEFT JOIN orders_ze Z
   ON D.week_start = Z.week_start
+LEFT JOIN orders_rappi_official O
+  ON D.week_start = O.week_start
 LEFT JOIN connections C
   ON D.week_start = C.week_start
 GROUP BY 1
