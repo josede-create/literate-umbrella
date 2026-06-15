@@ -196,6 +196,11 @@ if (Array.isArray(window.OKRS_DATA?.coordinators)) {
 
 const allStores = [...storeResults, ...extraStoreResults].sort((a, b) => a.store.localeCompare(b.store));
 const scaleQueryRows = Array.isArray(window.SCALE_QUERY_ROWS) ? window.SCALE_QUERY_ROWS : [];
+const connectivityData = window.CONNECTIVITY_DATA || {};
+const connectivityCurrentRows = Array.isArray(connectivityData.currentWeekRows) ? connectivityData.currentWeekRows : [];
+const connectivityPreviousRows = Array.isArray(connectivityData.previousWeekRows) ? connectivityData.previousWeekRows : [];
+const connectivityPickerOffenders = Array.isArray(connectivityData.pickerOffenders) ? connectivityData.pickerOffenders : [];
+const connectivityCurrentCutoff = connectivityData.currentWeekCutoff || "";
 const hcGapRows = Array.isArray(window.HC_GAP_DATA?.rows) ? window.HC_GAP_DATA.rows : [];
 const dailyStores = Array.isArray(window.DAILY_DATA?.stores) ? [...window.DAILY_DATA.stores].sort((a, b) => a.store.localeCompare(b.store)) : [];
 const dailyOps = window.DAILY_STORES_TIMES || window.DAILY_OPS || {};
@@ -467,6 +472,35 @@ function detailCell(label, value, sub = "") {
   </div>`;
 }
 
+function queryPickerTotal(row) {
+  return num(row.PICKERS_TOTAL_CONNECTED ?? row.PICKERS_IN_NITRO ?? row.PICKERS_CONECTED ?? row.PICKERS_CONNECTED);
+}
+
+function queryPickerPicking(row) {
+  return num(row.PICKERS_IN_PICKING ?? row.PICKERS_CONECTED ?? row.PICKERS_CONNECTED);
+}
+
+function queryPickerRest(row) {
+  return num(row.PICKERS_IN_REST);
+}
+
+function queryPickerDisconnection(row) {
+  return num(row.PICKERS_DISCONNECTION);
+}
+
+function queryPickerOther(row) {
+  return num(row.PICKERS_IN_OTHER_ACTIVITIES);
+}
+
+function queryPickerReception(row) {
+  return num(row.PICKERS_IN_RECEPTION);
+}
+
+function queryInStoreAvg(row) {
+  const orders = num(row.TOTAL_ORDENES_HISTORICO || row.ORDERS);
+  return orders > 0 ? num(row.IN_STORE) / orders : 0;
+}
+
 function renderDailyTable() {
   const head = ["Loja", "Coord.", "Orders", "OKRS", "DR", "Cancel", "SA", "Stockout", "InStore", "Prod.", "Leitura"];
   document.querySelector("#daily-table").innerHTML = `
@@ -545,31 +579,6 @@ function renderDailyBr() {
   target.innerHTML = kpis
     .map(([label, value, sub, cls]) => `<article class="kpi ${cls}"><p class="label">${label}</p><p class="value">${value}</p><p class="sub">${sub}</p></article>`)
     .join("");
-  renderDailyBrConnectivity();
-}
-
-function renderDailyBrConnectivity() {
-  const table = document.querySelector("#daily-br-connectivity-table");
-  if (!table) return;
-  if (!dailyBrConnectivity.length) {
-    table.innerHTML = `<tbody><tr><td>Sem visibilidade horária de conectividade para o D-1 carregado.</td></tr></tbody>`;
-    return;
-  }
-  const rows = dailyBrConnectivity;
-  const head = ["Hora", "Orders", "Pickers conectados", "Pickers necessários", "Delta"];
-  table.innerHTML = `
-    <thead><tr>${head.map((h) => `<th>${h}</th>`).join("")}</tr></thead>
-    <tbody>${rows
-      .map(
-        (row) => `<tr>
-          <td>${String(row.hour).padStart(2, "0")}:00</td>
-          <td>${fmtInt(row.orders)}</td>
-          <td>${fmtInt(row.connected)}</td>
-          <td>${fmtInt(row.needed)}</td>
-          <td>${status(fmtInt(row.delta), "delta")}</td>
-        </tr>`,
-      )
-      .join("")}</tbody>`;
 }
 
 function renderDailyStore(storeName) {
@@ -603,9 +612,9 @@ function renderDailyStore(storeName) {
       ${detailCell("Coordenador", row.coord)}
       ${detailCell("Prioridade do dia", dailyInsight(row))}
       ${detailCell(
-        "Saturação semanal",
-        "A aba Saturação veio filtrada por loja no Sheets",
-        "Painel pronto para receber a matriz por loja quando o export trouxer WAREHOUSENAME em todas as linhas.",
+        "Conectividade semanal",
+        "A leitura de conectividade ficou concentrada na aba nova",
+        "Use a aba Conectividade para ver semana atual D+2, semana passada e o recorte por loja.",
       )}
     </div>
     <div class="ops-grid">
@@ -623,8 +632,6 @@ function renderDailyStore(storeName) {
             .join("")
         : detailCell("Indicadores D-1", "Sem detalhe operacional no recorte lido", "A loja aparece no OKRS D-1, mas não no bloco operacional lido.")}
     </div>`;
-  renderDailySaturation(row.store);
-  renderDailyStoreScale(row.store);
   renderDailyPickers(row.store);
 }
 
@@ -693,7 +700,11 @@ function renderDailySaturation(storeName) {
   const byDay = getQueryDays().map((day) => {
     const dayRows = rows.filter((row) => dateKey(row.DATE) === day.date);
     const ordersByHour = aggregateQueryByHour(dayRows, (row) => num(row.TOTAL_ORDENES_HISTORICO || row.ORDERS));
-    const connectedByHour = aggregateQueryByHour(dayRows, (row) => num(row.PICKERS_CONECTED || row.PICKERS_CONNECTED));
+    const totalByHour = aggregateQueryByHour(dayRows, queryPickerTotal);
+    const pickingByHour = aggregateQueryByHour(dayRows, queryPickerPicking);
+    const restByHour = aggregateQueryByHour(dayRows, queryPickerRest);
+    const disconnectionByHour = aggregateQueryByHour(dayRows, queryPickerDisconnection);
+    const otherByHour = aggregateQueryByHour(dayRows, queryPickerOther);
     const scheduledByHour = aggregateQueryByHour(dayRows, (row) => num(row.PICKERS_SCHEDULED));
     const neededByHour = ordersByHour.map((orders) => pickerNeed(orders, 0, 3, 1));
     const orders = sum(ordersByHour);
@@ -708,12 +719,16 @@ function renderDailySaturation(storeName) {
       peakHour,
       needed: sum(neededByHour),
       scheduled: sum(scheduledByHour),
-      connected: sum(connectedByHour),
-      delta: sum(connectedByHour) - sum(neededByHour),
+      totalConnected: sum(totalByHour),
+      inPicking: sum(pickingByHour),
+      inRest: sum(restByHour),
+      disconnection: sum(disconnectionByHour),
+      otherActivities: sum(otherByHour),
+      delta: sum(pickingByHour) - sum(neededByHour),
       inStore,
     };
   });
-  const head = ["Dia", "Orders", "Pico/h", "Need", "Prog.", "Conect.", "Delta", "InStore"];
+  const head = ["Dia", "Orders", "Pico/h", "Need", "Prog.", "No Nitro", "In picking", "In rest", "Disconnection", "Other + reception", "Delta", "InStore"];
   table.innerHTML = `
     <thead><tr>${head.map((h) => `<th>${h}</th>`).join("")}</tr></thead>
     <tbody>${byDay
@@ -724,7 +739,11 @@ function renderDailySaturation(storeName) {
           <td>${fmtInt(day.peak)} às ${day.peakHour}h</td>
           <td>${fmtInt(day.needed)}</td>
           <td>${fmtInt(day.scheduled)}</td>
-          <td>${fmtInt(day.connected)}</td>
+          <td>${fmtInt(day.totalConnected)}</td>
+          <td>${fmtInt(day.inPicking)}</td>
+          <td>${fmtInt(day.inRest)}</td>
+          <td>${fmtInt(day.disconnection)}</td>
+          <td>${fmtInt(day.otherActivities)}</td>
           <td>${status(day.delta, "delta")}</td>
           <td>${status(fixed(day.inStore), "inStore", "", "down", 2.19)}</td>
         </tr>`,
@@ -742,7 +761,11 @@ function renderDailyStoreScale(storeName) {
     ["real", "Orders real"],
     ["needed", "Pickers necessários"],
     ["scheduled", "Pickers programados"],
-    ["connected", "Pickers conectados"],
+    ["active", "Pickers no Nitro"],
+    ["picking", "Pickers in picking"],
+    ["rest", "Pickers in rest"],
+    ["disconnected", "Pickers disconnection"],
+    ["other", "Pickers other + reception"],
     ["delta", "Delta"],
   ];
   table.innerHTML = `
@@ -820,7 +843,11 @@ function renderScaleTable() {
     ["real", "Orders real"],
     ["needed", "Pickers necessários"],
     ["scheduled", "Pickers programados"],
-    ["connected", "Pickers conectados"],
+    ["active", "Pickers no Nitro"],
+    ["picking", "Pickers in picking"],
+    ["rest", "Pickers in rest"],
+    ["disconnected", "Pickers disconnection"],
+    ["other", "Pickers other + reception"],
     ["delta", "Delta"],
   ];
   document.querySelector("#scale-priority-table").innerHTML = `
@@ -860,10 +887,15 @@ function buildHourlyRows() {
     const forecast = sumProfiles(profiles, "forecast");
     const real = sumProfiles(profiles, "real");
     const scheduled = sumProfiles(profiles, "scheduled");
-    const connected = sumProfiles(profiles, "connected");
-    const needed = sumProfiles(profiles, "needed");
-    const delta = connected.map((value, hour) => value - needed[hour]);
-    return { ...day, forecast, real, scheduled, connected, needed, delta };
+  const connected = sumProfiles(profiles, "connected");
+  const active = sumProfiles(profiles, "active");
+  const picking = sumProfiles(profiles, "picking");
+  const rest = sumProfiles(profiles, "rest");
+  const disconnected = sumProfiles(profiles, "disconnected");
+  const other = sumProfiles(profiles, "other");
+  const needed = sumProfiles(profiles, "needed");
+  const delta = picking.map((value, hour) => value - needed[hour]);
+  return { ...day, forecast, real, scheduled, active, picking, rest, disconnected, other, connected: picking, needed, delta };
   });
 }
 
@@ -873,10 +905,14 @@ function buildHourlyRowsFromQuery() {
     const forecast = aggregateQueryByHour(rows, (row) => num(row.ORDENES_PRONOSTICADAS_HORA));
     const real = aggregateQueryByHour(rows, (row) => num(row.TOTAL_ORDENES_HISTORICO || row.ORDERS));
     const scheduled = aggregateQueryByHour(rows, (row) => num(row.PICKERS_SCHEDULED));
-    const connected = aggregateQueryByHour(rows, (row) => num(row.PICKERS_CONECTED || row.PICKERS_CONNECTED));
+    const active = aggregateQueryByHour(rows, queryPickerTotal);
+    const picking = aggregateQueryByHour(rows, queryPickerPicking);
+    const rest = aggregateQueryByHour(rows, queryPickerRest);
+    const disconnected = aggregateQueryByHour(rows, queryPickerDisconnection);
+    const other = aggregateQueryByHour(rows, queryPickerOther);
     const needed = aggregateQueryByHour(rows, (row) => pickerNeed(num(row.TOTAL_ORDENES_HISTORICO || row.ORDERS), 0, 3, 1));
-    const delta = connected.map((value, hour) => value - needed[hour]);
-    return { ...day, forecast, real, scheduled, connected, needed, delta };
+    const delta = picking.map((value, hour) => value - needed[hour]);
+    return { ...day, forecast, real, scheduled, active, picking, rest, disconnected, other, connected: picking, needed, delta };
   });
 }
 
@@ -885,10 +921,14 @@ function buildStoreHourlyProfileFromQuery(storeName, date) {
   const forecast = aggregateQueryByHour(rows, (row) => num(row.ORDENES_PRONOSTICADAS_HORA));
   const real = aggregateQueryByHour(rows, (row) => num(row.TOTAL_ORDENES_HISTORICO || row.ORDERS));
   const scheduled = aggregateQueryByHour(rows, (row) => num(row.PICKERS_SCHEDULED));
-  const connected = aggregateQueryByHour(rows, (row) => num(row.PICKERS_CONECTED || row.PICKERS_CONNECTED));
+  const active = aggregateQueryByHour(rows, queryPickerTotal);
+  const picking = aggregateQueryByHour(rows, queryPickerPicking);
+  const rest = aggregateQueryByHour(rows, queryPickerRest);
+  const disconnected = aggregateQueryByHour(rows, queryPickerDisconnection);
+  const other = aggregateQueryByHour(rows, queryPickerOther);
   const needed = real.map((orders, hour) => pickerNeed(orders, hour >= 8 && hour <= 21 ? 1 : 0, 3, 1));
-  const delta = connected.map((value, hour) => value - needed[hour]);
-  return { forecast, real, scheduled, connected, needed, delta };
+  const delta = picking.map((value, hour) => value - needed[hour]);
+  return { forecast, real, scheduled, active, picking, rest, disconnected, other, connected: picking, needed, delta };
 }
 
 function aggregateQueryByHour(rows, mapper) {
@@ -896,7 +936,7 @@ function aggregateQueryByHour(rows, mapper) {
   rows.forEach((row) => {
     const hour = num(row.HORA, -1);
     const value = num(mapper(row));
-    if (Number.isInteger(hour) && hour >= 0 && hour <= 23) values[hour] += Math.round(value);
+    if (Number.isInteger(hour) && hour >= 0 && hour <= 23) values[hour] += value;
   });
   return values;
 }
@@ -905,6 +945,209 @@ function getQueryDays() {
   if (!scaleQueryRows.length) return weekDays;
   const dates = [...new Set(scaleQueryRows.map((row) => dateKey(row.DATE)).filter(Boolean))].sort();
   return dates.map((date) => ({ label: weekdayPt(date), date }));
+}
+
+function connectivityDays(rows) {
+  const dates = [...new Set(rows.map((row) => dateKey(row.DATE)).filter(Boolean))].sort();
+  return dates.map((date) => ({ label: weekdayPt(date), date }));
+}
+
+function connectivityStoreOptions() {
+  const stores = [...new Set([...connectivityCurrentRows, ...connectivityPreviousRows]
+    .map((row) => String(row.WAREHOUSENAME || "").trim())
+    .filter((store) => store && !/^inactive/i.test(store)))];
+  return stores.sort((a, b) => a.localeCompare(b));
+}
+
+function buildConnectivityProfile(rows) {
+  const hours = Array.from({ length: 24 }, (_, i) => i);
+  const forecast = aggregateQueryByHour(rows, (row) => num(row.ORDENES_PRONOSTICADAS_HORA));
+  const real = aggregateQueryByHour(rows, (row) => num(row.TOTAL_ORDENES_HISTORICO || row.ORDERS));
+  const scheduled = aggregateQueryByHour(rows, (row) => num(row.PICKERS_SCHEDULED));
+  const active = aggregateQueryByHour(rows, queryPickerTotal);
+  const picking = aggregateQueryByHour(rows, queryPickerPicking);
+  const rest = aggregateQueryByHour(rows, queryPickerRest);
+  const disconnected = aggregateQueryByHour(rows, queryPickerDisconnection);
+  const reception = aggregateQueryByHour(rows, queryPickerReception);
+  const other = aggregateQueryByHour(rows, queryPickerOther);
+  const needed = real.map((orders) => pickerNeed(orders, 0, 3, 1));
+  const delta = picking.map((value, hour) => value - needed[hour]);
+  const instoreNumerator = aggregateQueryByHour(rows, (row) => num(row.IN_STORE));
+  const instore = hours.map((hour) => {
+    const orders = real[hour];
+    return orders > 0 ? instoreNumerator[hour] / orders : 0;
+  });
+  return { forecast, real, needed, scheduled, active, picking, rest, disconnected, reception, other, delta, instore };
+}
+
+function formatConnectivityMetric(key, value) {
+  if (key === "instore") return fixed(value);
+  if (["forecast", "real", "needed", "scheduled"].includes(key)) return fmtInt(value);
+  return fixed(value, 1);
+}
+
+function renderConnectivityMatrix(tableId, rows) {
+  const table = document.querySelector(tableId);
+  if (!table) return;
+  const days = connectivityDays(rows);
+  if (!days.length) {
+    table.innerHTML = `<tbody><tr><td>Sem dados disponíveis para este recorte.</td></tr></tbody>`;
+    return;
+  }
+  const hours = Array.from({ length: 24 }, (_, i) => i);
+  const metrics = [
+    ["forecast", "Forecast orders"],
+    ["real", "Orders real"],
+    ["needed", "Pickers necessários"],
+    ["scheduled", "Pickers programados"],
+    ["active", "Pickers no Nitro"],
+    ["picking", "Pickers in picking"],
+    ["rest", "Pickers in rest"],
+    ["disconnected", "Pickers disconnection"],
+    ["reception", "Pickers in reception"],
+    ["other", "Pickers other activities"],
+    ["delta", "Delta BR"],
+    ["instore", "InStore médio"],
+  ];
+  table.innerHTML = `
+    <thead>
+      <tr><th>Dia</th><th>Métrica</th><th>Total</th>${hours.map((hour) => `<th>${hour}</th>`).join("")}</tr>
+    </thead>
+    <tbody>${days
+      .map((day) => {
+        const profile = buildConnectivityProfile(rows.filter((row) => dateKey(row.DATE) === day.date));
+        return metrics
+          .map(([key, label], index) => {
+            const values = profile[key];
+            const total =
+              key === "instore"
+                ? fixed(sum(profile.real) > 0 ? profile.instore.reduce((acc, value, hour) => acc + value * profile.real[hour], 0) / sum(profile.real) : 0)
+                : formatConnectivityMetric(key, sum(values));
+            return `<tr>
+              ${index === 0 ? `<td class="day-cell" rowspan="${metrics.length}"><strong>${day.label}</strong><span>Dia ${day.date}</span></td>` : ""}
+              <td class="metric-cell">${label}</td>
+              <td class="total-cell">${total}</td>
+              ${values.map((value) => `<td class="${key === "delta" ? heatClass(value) : ""}">${formatConnectivityMetric(key, value)}</td>`).join("")}
+            </tr>`;
+          })
+          .join("");
+      })
+      .join("")}</tbody>`;
+}
+
+function renderConnectivityPickerOffenders() {
+  const table = document.querySelector("#connectivity-picker-offenders-table");
+  if (!table) return;
+  if (!connectivityPickerOffenders.length) {
+    table.innerHTML = `<tbody><tr><td>Sem ofensores elegíveis na semana atual carregada.</td></tr></tbody>`;
+    return;
+  }
+  const head = ["Loja", "Picker", "Dias", "Horas conectadas", "Horas em picking", "Horas em rest", "Horas em reception", "Horas em others", "Horas desconectado", "% picking"];
+  const rows = [...connectivityPickerOffenders]
+    .filter((row) => num(row.ACTIVE_DAYS) > 4)
+    .sort((a, b) => num(a.PICKING_SHARE, 999) - num(b.PICKING_SHARE, 999) || num(b.ACTIVE_HOURS) - num(a.ACTIVE_HOURS))
+    .slice(0, 20);
+  table.innerHTML = `
+    <thead><tr>${head.map((h) => `<th>${h}</th>`).join("")}</tr></thead>
+    <tbody>${rows
+      .map(
+        (row) => `<tr>
+          <td><strong>${row.WAREHOUSENAME || "Sem loja"}</strong></td>
+          <td>${row.KEYPICKER}</td>
+          <td>${fmtInt(row.ACTIVE_DAYS)}</td>
+          <td>${fixed(num(row.ACTIVE_HOURS), 1)}</td>
+          <td>${fixed(num(row.PICKING_HOURS), 1)}</td>
+          <td>${fixed(num(row.REST_HOURS), 1)}</td>
+          <td>${fixed(num(row.RECEPTION_HOURS), 1)}</td>
+          <td>${fixed(num(row.OTHER_HOURS), 1)}</td>
+          <td>${fixed(num(row.DISCONNECTED_HOURS), 1)}</td>
+          <td>${status(`${fixed(num(row.PICKING_SHARE), 1)}%`, "prod", "", "up", 50)}</td>
+        </tr>`,
+      )
+      .join("")}</tbody>`;
+}
+
+function renderConnectivityStoreTable(tableId, rows, storeName) {
+  const table = document.querySelector(tableId);
+  if (!table) return;
+  const storeRows = rows.filter((row) => normalizeStore(row.WAREHOUSENAME) === normalizeStore(storeName));
+  const days = connectivityDays(storeRows);
+  if (!days.length) {
+    table.innerHTML = `<tbody><tr><td>Sem dados para ${storeName} neste recorte.</td></tr></tbody>`;
+    return;
+  }
+  const hours = Array.from({ length: 24 }, (_, i) => i);
+  const metrics = [
+    ["real", "Orders real"],
+    ["needed", "Pickers necessários"],
+    ["scheduled", "Pickers programados"],
+    ["active", "Pickers no Nitro"],
+    ["picking", "Pickers in picking"],
+    ["rest", "Pickers in rest"],
+    ["disconnected", "Pickers disconnection"],
+    ["reception", "Pickers in reception"],
+    ["other", "Pickers other activities"],
+    ["delta", "Delta loja"],
+    ["instore", "InStore médio"],
+  ];
+  table.innerHTML = `
+    <thead>
+      <tr><th>Dia</th><th>Métrica</th><th>Total</th>${hours.map((hour) => `<th>${hour}</th>`).join("")}</tr>
+    </thead>
+    <tbody>${days
+      .map((day) => {
+        const profile = buildConnectivityProfile(storeRows.filter((row) => dateKey(row.DATE) === day.date));
+        return metrics
+          .map(([key, label], index) => {
+            const values = profile[key];
+            const total =
+              key === "instore"
+                ? fixed(sum(profile.real) > 0 ? profile.instore.reduce((acc, value, hour) => acc + value * profile.real[hour], 0) / sum(profile.real) : 0)
+                : formatConnectivityMetric(key, sum(values));
+            return `<tr>
+              ${index === 0 ? `<td class="day-cell" rowspan="${metrics.length}"><strong>${day.label}</strong><span>${storeName} · ${day.date}</span></td>` : ""}
+              <td class="metric-cell">${label}</td>
+              <td class="total-cell">${total}</td>
+              ${values.map((value) => `<td class="${key === "delta" ? heatClass(value) : ""}">${formatConnectivityMetric(key, value)}</td>`).join("")}
+            </tr>`;
+          })
+          .join("");
+      })
+      .join("")}</tbody>`;
+}
+
+function renderConnectivityStores() {
+  const select = document.querySelector("#connectivity-store-filter");
+  if (!select) return;
+  const stores = connectivityStoreOptions();
+  if (!stores.length) {
+    select.innerHTML = "";
+    renderConnectivityStoreTable("#connectivity-store-current-table", [], "");
+    renderConnectivityStoreTable("#connectivity-store-previous-table", [], "");
+    return;
+  }
+  if (!select.options.length) {
+    select.innerHTML = stores.map((store) => `<option value="${store}">${store}</option>`).join("");
+    select.addEventListener("change", () => {
+      renderConnectivityStoreTable("#connectivity-store-current-table", connectivityCurrentRows, select.value);
+      renderConnectivityStoreTable("#connectivity-store-previous-table", connectivityPreviousRows, select.value);
+    });
+  }
+  const storeName = select.value || stores[0];
+  select.value = storeName;
+  renderConnectivityStoreTable("#connectivity-store-current-table", connectivityCurrentRows, storeName);
+  renderConnectivityStoreTable("#connectivity-store-previous-table", connectivityPreviousRows, storeName);
+}
+
+function renderConnectivity() {
+  if (connectivityCurrentCutoff) {
+    document.querySelector("#connectivity-current-pill").textContent = `Semana atual · D+2 até ${connectivityCurrentCutoff}`;
+    document.querySelector("#connectivity-store-current-pill").textContent = `D+2 até ${connectivityCurrentCutoff}`;
+  }
+  renderConnectivityMatrix("#connectivity-current-table", connectivityCurrentRows);
+  renderConnectivityMatrix("#connectivity-previous-table", connectivityPreviousRows);
+  renderConnectivityPickerOffenders();
+  renderConnectivityStores();
 }
 
 function topInStoreStoresFromQuery() {
@@ -916,7 +1159,7 @@ function topInStoreStoresFromQuery() {
     current.inStoreNumerator += num(row.IN_STORE);
     current.orders += orders;
     current.plan += num(row.PICKERS_SCHEDULED);
-    current.real += num(row.PICKERS_CONECTED || row.PICKERS_CONNECTED);
+    current.real += queryPickerPicking(row);
     byStore.set(store, current);
   });
   return [...byStore.values()]
@@ -961,7 +1204,8 @@ function buildStoreHourlyProfile(store, day = weekDays[0], connectedCalibration 
   const connected = shiftCoverage.map((coverage, hour) => Math.max(hour >= 5 && hour <= 23 ? 1 : 0, Math.round(store.real * coverage * day.attendance * connectedCalibration)));
   const needed = real.map((orders, hour) => pickerNeed(orders, hour >= 8 && hour <= 21 ? 1 : 0, 3, 1));
   const delta = connected.map((value, hour) => value - needed[hour]);
-  return { forecast, real, scheduled, connected, needed, delta };
+  const zeros = Array.from({ length: 24 }, () => 0);
+  return { forecast, real, scheduled, active: connected, picking: connected, rest: zeros, disconnected: zeros, other: zeros, connected, needed, delta };
 }
 
 function sumProfiles(profiles, key) {
@@ -987,7 +1231,11 @@ function renderHourlyMatrix() {
     ["real", "Ordens real"],
     ["needed", "Pickers necessários"],
     ["scheduled", "Pickers programados"],
-    ["connected", "Pickers conectados"],
+    ["active", "Pickers no Nitro"],
+    ["picking", "Pickers in picking"],
+    ["rest", "Pickers in rest"],
+    ["disconnected", "Pickers disconnection"],
+    ["other", "Pickers other + reception"],
     ["delta", "Delta BR"],
   ];
   document.querySelector("#hourly-matrix").innerHTML = `
@@ -1013,28 +1261,40 @@ function renderHourlyMatrix() {
 
 function buildConnectedByDayRows() {
   return buildHourlyRows().map((day) => {
-    const connected = day.connected || Array.from({ length: 24 }, () => 0);
+    const active = day.active || Array.from({ length: 24 }, () => 0);
+    const picking = day.picking || day.connected || Array.from({ length: 24 }, () => 0);
+    const rest = day.rest || Array.from({ length: 24 }, () => 0);
+    const disconnected = day.disconnected || Array.from({ length: 24 }, () => 0);
+    const other = day.other || Array.from({ length: 24 }, () => 0);
     const scheduled = day.scheduled || Array.from({ length: 24 }, () => 0);
     const needed = day.needed || Array.from({ length: 24 }, () => 0);
     const orders = day.real || Array.from({ length: 24 }, () => 0);
-    const totalConnected = sum(connected);
+    const totalActive = sum(active);
+    const totalPicking = sum(picking);
+    const totalRest = sum(rest);
+    const totalDisconnected = sum(disconnected);
+    const totalOther = sum(other);
     const totalScheduled = sum(scheduled);
     const totalNeeded = sum(needed);
     const totalOrders = sum(orders);
-    const activeHours = connected.filter((value, hour) => value > 0 || orders[hour] > 0 || scheduled[hour] > 0).length || 24;
-    const peakConnected = Math.max(...connected, 0);
-    const peakHour = connected.indexOf(peakConnected);
+    const activeHours = active.filter((value, hour) => value > 0 || orders[hour] > 0 || scheduled[hour] > 0).length || 24;
+    const peakPicking = Math.max(...picking, 0);
+    const peakHour = picking.indexOf(peakPicking);
     return {
       ...day,
-      totalConnected,
+      totalActive,
+      totalPicking,
+      totalRest,
+      totalDisconnected,
+      totalOther,
       totalScheduled,
       totalNeeded,
       totalOrders,
-      avgConnected: totalConnected / activeHours,
-      peakConnected,
+      avgPicking: totalPicking / activeHours,
+      peakPicking,
       peakHour,
-      delta: totalConnected - totalNeeded,
-      adherence: totalScheduled ? (totalConnected / totalScheduled) * 100 : 0,
+      delta: totalPicking - totalNeeded,
+      adherence: totalScheduled ? (totalPicking / totalScheduled) * 100 : 0,
     };
   });
 }
@@ -1043,7 +1303,7 @@ function renderConnectedByDayTable() {
   const table = document.querySelector("#connected-by-day-table");
   if (!table) return;
   const rows = buildConnectedByDayRows();
-  const head = ["Dia", "Orders", "Conectados dia", "Média/h", "Pico conectado", "Hora pico", "Programados", "Need", "Delta", "Aderência"];
+  const head = ["Dia", "Orders", "No Nitro", "In picking", "In rest", "Disconnection", "Other + reception", "Média picking/h", "Pico picking", "Hora pico", "Programados", "Need", "Delta", "Aderência"];
   table.innerHTML = `
     <thead><tr>${head.map((h) => `<th>${h}</th>`).join("")}</tr></thead>
     <tbody>${rows
@@ -1051,9 +1311,13 @@ function renderConnectedByDayTable() {
         (row) => `<tr>
           <td><strong>${row.label}</strong><br><span>${row.date}</span></td>
           <td>${fmtInt(row.totalOrders)}</td>
-          <td>${fmtInt(row.totalConnected)}</td>
-          <td>${fixed(row.avgConnected, 1)}</td>
-          <td>${fmtInt(row.peakConnected)}</td>
+          <td>${fmtInt(row.totalActive)}</td>
+          <td>${fmtInt(row.totalPicking)}</td>
+          <td>${fmtInt(row.totalRest)}</td>
+          <td>${fmtInt(row.totalDisconnected)}</td>
+          <td>${fmtInt(row.totalOther)}</td>
+          <td>${fixed(row.avgPicking, 1)}</td>
+          <td>${fmtInt(row.peakPicking)}</td>
           <td>${row.peakHour}h</td>
           <td>${fmtInt(row.totalScheduled)}</td>
           <td>${fmtInt(row.totalNeeded)}</td>
@@ -1194,7 +1458,7 @@ function hcNeedForStore(storeName) {
     if (!bySlot.has(key)) bySlot.set(key, { date, orders: 0, connected: 0, hour: num(row.HORA, -1) });
     const slot = bySlot.get(key);
     slot.orders += num(row.TOTAL_ORDENES_HISTORICO || row.ORDERS);
-    slot.connected += num(row.PICKERS_CONECTED || row.PICKERS_CONNECTED);
+    slot.connected += queryPickerPicking(row);
   });
   let neededHours = 0;
   let connectedHours = 0;
@@ -1734,6 +1998,7 @@ function renderCharts() {
 
 function pageForHash(hash = window.location.hash) {
   if (hash.startsWith("#daily")) return "daily";
+  if (hash.startsWith("#connectivity")) return "connectivity";
   if (["#br", "#escala", "#coords"].includes(hash)) return "gerencial";
   return "home";
 }
@@ -1779,9 +2044,7 @@ function init() {
   renderCompareTable();
   renderOffenders();
   renderDaily();
-  renderScaleTable();
-  renderHourlyMatrix();
-  renderConnectedByDayTable();
+  renderConnectivity();
   renderPickerGapTable();
   renderHcAdjustment();
   renderOffenderScheduleSuggestions();

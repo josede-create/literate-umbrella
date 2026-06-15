@@ -18,6 +18,7 @@
         <a href="#home">Início</a>
         <a href="#br">BR Gerencial</a>
         <a href="#daily">Daily</a>
+        <a href="#connectivity">Conectividade</a>
       </nav>
     </header>
 
@@ -41,6 +42,11 @@
             <span>Página 3</span>
             <strong>Daily</strong>
             <em>OKRS, pedidos, qualidade, produtividade e saturação</em>
+          </a>
+          <a class="home-card" href="#connectivity">
+            <span>Página 4</span>
+            <strong>Conectividade</strong>
+            <em>Semana atual D+2, semana passada fechada e leitura de picker</em>
           </a>
           <div class="home-card home-card-static">
             <span>Status</span>
@@ -120,9 +126,6 @@
             <span class="pill" id="daily-br-date-pill">D-1</span>
           </div>
           <div class="kpi-grid dense" id="daily-br-kpis"></div>
-          <div class="table-wrap sticky-head-wrap">
-            <table id="daily-br-connectivity-table" class="compact-table"></table>
-          </div>
         </article>
 
         <article class="panel">
@@ -145,31 +148,6 @@
           </div>
           <div class="table-wrap">
             <table id="daily-picker-table" class="compact-table"></table>
-          </div>
-        </article>
-
-        <article class="panel">
-          <div class="panel-head">
-            <h3>Saturação da semana</h3>
-            <span class="pill">Loja selecionada</span>
-          </div>
-          <div class="table-wrap">
-            <table id="daily-saturation-table" class="compact-table"></table>
-          </div>
-        </article>
-
-        <article class="panel">
-          <div class="panel-head">
-            <h3>Escala da loja por dia e hora</h3>
-            <span class="pill">Última semana</span>
-          </div>
-          <div class="matrix-legend">
-            <span><i class="heat bad"></i> Delta negativo</span>
-            <span><i class="heat ok"></i> Cobertura neutra</span>
-            <span><i class="heat good"></i> Sobra de cobertura</span>
-          </div>
-          <div class="table-wrap matrix-wrap">
-            <table id="daily-store-scale-table" class="matrix-table store-matrix"></table>
           </div>
         </article>
 
@@ -232,39 +210,82 @@
           </div>
         </article>
 
+      </section>
+
+      <section id="connectivity" class="section">
+        <div class="section-title">
+          <div>
+            <p class="eyebrow">Parte 1.3</p>
+            <h2>Conectividade</h2>
+          </div>
+          <p class="section-note">Leitura concentrada de conectividade, picking, intervalos, reception e outras atividades. A semana atual respeita o corte D+2.</p>
+        </div>
+
         <article class="panel">
           <div class="panel-head">
-            <h3>Modelo BR por dia e hora</h3>
-            <span class="pill">Última semana</span>
+            <h3>Gerencial BR da semana atual</h3>
+            <span class="pill" id="connectivity-current-pill">Semana atual</span>
           </div>
+          <p class="chart-note">Modelo BR por dia e hora com separação entre picking, rest, reception e outras atividades. O delta usa apenas `pickers in picking` contra o need.</p>
           <div class="matrix-legend">
             <span><i class="heat bad"></i> Delta negativo</span>
             <span><i class="heat ok"></i> Cobertura neutra</span>
             <span><i class="heat good"></i> Sobra de cobertura</span>
           </div>
           <div class="table-wrap matrix-wrap">
-            <table id="hourly-matrix" class="matrix-table"></table>
+            <table id="connectivity-current-table" class="matrix-table"></table>
           </div>
         </article>
 
         <article class="panel">
           <div class="panel-head">
-            <h3>Pickers conectados por dia</h3>
-            <span class="pill">Dia todo</span>
+            <h3>Semana passada completa por dia</h3>
+            <span class="pill">Fechada</span>
           </div>
-          <p class="chart-note">Leitura BR consolidada da última semana. Como a base vem por loja e hora, o total representa a soma de pickers conectados em todas as horas do dia.</p>
-          <div class="table-wrap">
-            <table id="connected-by-day-table" class="compact-table"></table>
+          <div class="table-wrap matrix-wrap">
+            <table id="connectivity-previous-table" class="matrix-table"></table>
           </div>
         </article>
 
         <article class="panel">
           <div class="panel-head">
-            <h3>Escala por loja ofensora em InStore</h3>
-            <span class="pill danger">Fora do InStore</span>
+            <h3>Pickers ofensores da semana atual</h3>
+            <span class="pill danger">Baixa aderência ao picking</span>
           </div>
-          <div class="table-wrap">
-            <table id="scale-priority-table" class="matrix-table store-matrix"></table>
+          <p class="chart-note">Mostra pickers que apareceram em mais de 4 dias na semana e concentraram menos tempo no módulo de picking.</p>
+          <div class="table-wrap sticky-head-wrap">
+            <table id="connectivity-picker-offenders-table" class="compact-table"></table>
+          </div>
+        </article>
+
+        <article class="panel">
+          <div class="panel-head">
+            <h3>Visão por loja</h3>
+            <span class="pill">Filtro único</span>
+          </div>
+          <div class="daily-controls">
+            <label for="connectivity-store-filter">Loja</label>
+            <select id="connectivity-store-filter"></select>
+          </div>
+          <div class="connectivity-store-grid">
+            <div>
+              <div class="panel-subhead">
+                <h4>Semana atual</h4>
+                <span class="pill" id="connectivity-store-current-pill">D+2</span>
+              </div>
+              <div class="table-wrap matrix-wrap">
+                <table id="connectivity-store-current-table" class="matrix-table store-matrix"></table>
+              </div>
+            </div>
+            <div>
+              <div class="panel-subhead">
+                <h4>Semana passada</h4>
+                <span class="pill">Fechada</span>
+              </div>
+              <div class="table-wrap matrix-wrap">
+                <table id="connectivity-store-previous-table" class="matrix-table store-matrix"></table>
+              </div>
+            </div>
           </div>
         </article>
       </section>
