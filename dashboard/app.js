@@ -972,7 +972,9 @@ function renderDailyStoreScale(storeName) {
     ["other", "Pickers other + reception"],
     ["delta", "Delta"],
   ];
+  const colgroup = `<colgroup><col class="day-col"><col class="metric-col"><col class="total-col">${hours.map(() => `<col class="hour-col">`).join("")}</colgroup>`;
   table.innerHTML = `
+    ${colgroup}
     <thead>
       <tr><th>Dia</th><th>Métrica</th><th>Total</th>${hours.map((hour) => `<th>${hour}</th>`).join("")}</tr>
     </thead>
@@ -1214,7 +1216,9 @@ function renderConnectivityMatrix(tableId, rows) {
     ["delta", "Delta BR"],
     ["instore", "InStore médio"],
   ];
+  const colgroup = `<colgroup><col class="day-col"><col class="metric-col"><col class="total-col">${hours.map(() => `<col class="hour-col">`).join("")}</colgroup>`;
   table.innerHTML = `
+    ${colgroup}
     <thead>
       <tr><th>Dia</th><th>Métrica</th><th>Total</th>${hours.map((hour) => `<th>${hour}</th>`).join("")}</tr>
     </thead>
