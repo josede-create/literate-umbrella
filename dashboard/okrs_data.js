@@ -1,36 +1,54 @@
-window.OKRS_DATA_UPDATED_AT = "2026-05-11T11:40:00-03:00";
+window.OKRS_DATA_UPDATED_AT = "2026-06-15T07:59:22-03:00";
 window.OKRS_DATA = {
   "month": {
-    "periodStart": "2026-05-01",
-    "periodEnd": "2026-05-10",
-    "orders": 216555,
-    "ordersRappi": 192757,
-    "ordersZe": 23798,
+    "periodStart": "2026-06-01",
+    "periodEnd": "2026-06-14",
+    "orders": 337108,
+    "ordersRappi": 309182,
+    "ordersZe": 27926,
     "okrs": 91.38,
-    "defect": 0.9462,
-    "cancel": 0.1281,
+    "defect": 0.0,
+    "cancel": 1.9354,
     "availability": 97.6258,
-    "stockout": 0.1108,
-    "inStore": 2.7854,
-    "productivity": 72.1129,
-    "damaged": 0.0342,
-    "hotDrink": 2.2124
+    "stockout": 1.906,
+    "inStore": 2.9208,
+    "productivity": 63.8537,
+    "damaged": 0.0,
+    "hotDrink": 2.2124,
+    "_raw": {
+      "gmv": 22624728.369999997,
+      "inStore": 903068.351326,
+      "cancel": 5984,
+      "drOps": 0,
+      "stockoutOps": 5893,
+      "mermaDamaged": 0.0,
+      "conections": 5279.384615
+    }
   },
   "week": {
-    "periodStart": "2026-05-04",
-    "periodEnd": "2026-05-10",
-    "orders": 165445,
-    "ordersRappi": 150943,
-    "ordersZe": 14502,
-    "defect": 0.9606,
-    "cancel": 0.7427,
+    "periodStart": "2026-06-08",
+    "periodEnd": "2026-06-14",
+    "orders": 174050,
+    "ordersRappi": 160863,
+    "ordersZe": 13187,
+    "defect": 0.0,
+    "cancel": 2.3846,
     "availability": 98.8415,
-    "stockout": 0.11,
-    "inStore": 2.9121,
-    "productivity": 77.0946,
-    "damaged": 0.0374,
+    "stockout": 2.113,
+    "inStore": 3.5049,
+    "productivity": 64.9776,
+    "damaged": 0.0,
     "hotDrink": 4.7826,
-    "okrs": 94.54
+    "okrs": 94.54,
+    "_raw": {
+      "gmv": 11840784.72,
+      "inStore": 563814.851605,
+      "cancel": 3836,
+      "drOps": 0,
+      "stockoutOps": 3399,
+      "mermaDamaged": 0.0,
+      "conections": 2678.615385
+    }
   },
   "coordinators": [
     {
