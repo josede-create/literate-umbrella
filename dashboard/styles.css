@@ -363,6 +363,7 @@ body[data-page="connectivity"] #coords {
 }
 
 .panel {
+  min-width: 0;
   background: var(--panel);
   border: 1px solid var(--line);
   border-radius: 8px;
@@ -579,6 +580,9 @@ th {
 }
 
 .matrix-wrap {
+  width: 100%;
+  max-width: 100%;
+  overflow: auto;
   max-height: 680px;
   border: 1px solid var(--line);
   border-radius: 8px;
@@ -596,7 +600,8 @@ th {
 }
 
 .matrix-table {
-  min-width: 1680px;
+  width: max-content;
+  min-width: 1560px;
   font-size: 12px;
 }
 
@@ -608,7 +613,7 @@ th {
 }
 
 .matrix-table td {
-  padding: 7px 8px;
+  padding: 7px 6px;
   text-align: center;
   white-space: nowrap;
 }
@@ -621,13 +626,13 @@ th {
 
 .matrix-table th:nth-child(2) {
   position: sticky;
-  left: 150px;
+  left: 140px;
   z-index: 4;
 }
 
 .matrix-table th:nth-child(3) {
   position: sticky;
-  left: 280px;
+  left: 260px;
   z-index: 4;
 }
 
@@ -641,8 +646,8 @@ th {
 
 .matrix-table .day-cell {
   left: 0;
-  width: 150px;
-  min-width: 150px;
+  width: 140px;
+  min-width: 140px;
   text-align: left;
   border-right: 1px solid var(--line);
 }
@@ -655,17 +660,17 @@ th {
 }
 
 .metric-cell {
-  left: 150px;
-  width: 130px;
-  min-width: 130px;
+  left: 140px;
+  width: 120px;
+  min-width: 120px;
   text-align: left !important;
   font-weight: 800;
 }
 
 .total-cell {
-  left: 280px;
-  width: 98px;
-  min-width: 98px;
+  left: 260px;
+  width: 84px;
+  min-width: 84px;
   font-weight: 900;
   background: #f2f5f8 !important;
 }
@@ -814,7 +819,7 @@ tr:hover td {
 }
 
 .store-matrix {
-  min-width: 1780px;
+  min-width: 1620px;
 }
 
 .store-matrix .day-cell {
@@ -849,6 +854,37 @@ tr:hover td {
   display: grid;
   grid-template-columns: 1fr;
   gap: 18px;
+  min-width: 0;
+}
+
+.connectivity-store-grid > div {
+  min-width: 0;
+}
+
+.connectivity-store-grid .matrix-wrap {
+  width: 100%;
+  max-width: 100%;
+}
+
+#connectivity {
+  min-width: 0;
+}
+
+#connectivity .panel {
+  overflow: hidden;
+}
+
+#connectivity .matrix-wrap {
+  display: block;
+  max-width: 100%;
+  overflow-x: auto;
+  overflow-y: auto;
+}
+
+#connectivity .matrix-table th:not(:nth-child(-n + 3)),
+#connectivity .matrix-table td:not(.day-cell):not(.metric-cell):not(.total-cell) {
+  width: 50px;
+  min-width: 50px;
 }
 
 @media (max-width: 1080px) {
