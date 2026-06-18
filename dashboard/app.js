@@ -206,6 +206,7 @@ const dailyStores = Array.isArray(window.DAILY_DATA?.stores) ? [...window.DAILY_
 const dailyOps = window.DAILY_STORES_TIMES || window.DAILY_OPS || {};
 const dailyBrConnectivity = Array.isArray(window.DAILY_BR_CONNECTIVITY) ? window.DAILY_BR_CONNECTIVITY : [];
 const dailyPickingCompliance = window.DAILY_PICKING_COMPLIANCE || { br: null, stores: [] };
+const dailyServiceHourly = window.DAILY_SERVICE_HOURLY || { goals: { inStore: 2.19, handoff: 5 }, br: null, brHourly: [], stores: [], storeHourly: {} };
 const dailyPickers = Array.isArray(window.DAILY_PICKERS) ? window.DAILY_PICKERS : [];
 const weeklyInstoreRows = Array.isArray(window.WEEKLY_INSTORE_DATA?.weeks) ? window.WEEKLY_INSTORE_DATA.weeks : [];
 const weeklyInstoreGoal = Number(window.WEEKLY_INSTORE_DATA?.goal || 2.57);
@@ -729,10 +730,136 @@ function renderDailyBr() {
     .join("");
 }
 
+function serviceGoals() {
+  return {
+    inStore: num(dailyServiceHourly.goals?.inStore || 2.19),
+    handoff: num(dailyServiceHourly.goals?.handoff || 5),
+  };
+}
+
+function serviceRowSignal(row) {
+  const goals = serviceGoals();
+  const issues = [];
+  if (num(row.inStore) > goals.inStore) issues.push(`InStore > ${fixed(goals.inStore)}`);
+  if (num(row.handoff) > goals.handoff) issues.push(`Handoff > ${fixed(goals.handoff)}`);
+  return issues.length ? issues.join(", ") : "Dentro da referência";
+}
+
+function renderDailyServiceCompliance() {
+  const target = document.querySelector("#daily-service-compliance-kpis");
+  if (!target) return;
+  const pill = document.querySelector("#daily-service-compliance-pill");
+  if (pill) pill.textContent = window.DAILY_DATA?.date ? `D-1 · ${window.DAILY_DATA.date}` : "D-1";
+  const goals = serviceGoals();
+  const br = dailyServiceHourly.br || {};
+  const brHourly = Array.isArray(dailyServiceHourly.brHourly) ? dailyServiceHourly.brHourly : [];
+  const orders = num(br.orders) || brHourly.reduce((acc, row) => acc + num(row.orders), 0);
+  const inStoreWeighted = brHourly.reduce((acc, row) => acc + num(row.inStore) * num(row.orders), 0);
+  const handoffWeighted = brHourly.reduce((acc, row) => acc + num(row.handoff) * num(row.orders), 0);
+  const inStore = orders ? inStoreWeighted / orders : aggregateDailyBr().inStore;
+  const handoff = orders ? handoffWeighted / orders : 0;
+  const inStoreCompliance = num(br.inStoreCompliance);
+  const handoffCompliance = num(br.handoffCompliance);
+  const kpis = [
+    ["Orders", fmtInt(orders), "Base horária D-1", "neutral"],
+    ["InStore médio", fixed(inStore), `Meta: ${fixed(goals.inStore)} min`, statusClass(inStore, "inStore", "down", goals.inStore)],
+    ["InStore compliance", `${fixed(inStoreCompliance, 1)}%`, "% de orders em horas dentro da meta", statusClass(inStoreCompliance, "prod", "up", 70)],
+    ["Handoff médio", fixed(handoff), `Meta: ${fixed(goals.handoff)} min`, handoff <= goals.handoff ? "green" : "red"],
+    ["Handoff compliance", `${fixed(handoffCompliance, 1)}%`, "% de orders em horas dentro da meta", statusClass(handoffCompliance, "prod", "up", 70)],
+  ];
+  target.innerHTML = kpis
+    .map(([label, value, sub, cls]) => `<article class="kpi ${cls === "neutral" ? "" : cls}"><p class="label">${label}</p><p class="value">${value}</p><p class="sub">${sub}</p></article>`)
+    .join("");
+}
+
+function renderDailyBrHourly() {
+  const table = document.querySelector("#daily-br-hourly-table");
+  if (!table) return;
+  const rows = Array.isArray(dailyServiceHourly.brHourly) ? dailyServiceHourly.brHourly : [];
+  if (!rows.length) {
+    table.innerHTML = `<tbody><tr><td>Sem dados horários de InStore e Handoff para o D-1.</td></tr></tbody>`;
+    return;
+  }
+  const goals = serviceGoals();
+  const head = ["Hora", "Orders", "InStore", "Handoff", "Leitura"];
+  table.innerHTML = `
+    <thead><tr>${head.map((item) => `<th>${item}</th>`).join("")}</tr></thead>
+    <tbody>${rows
+      .map((row) => `<tr>
+        <td><strong>${row.hour}h</strong></td>
+        <td>${fmtInt(row.orders)}</td>
+        <td>${status(fixed(row.inStore), "inStore", "", "down", goals.inStore)}</td>
+        <td>${status(fixed(row.handoff), "handoff", "", "down", goals.handoff)}</td>
+        <td>${serviceRowSignal(row)}</td>
+      </tr>`)
+      .join("")}</tbody>`;
+}
+
+function renderDailyStoreComplianceTable() {
+  const table = document.querySelector("#daily-store-compliance-table");
+  if (!table) return;
+  const rows = Array.isArray(dailyServiceHourly.stores) ? dailyServiceHourly.stores : [];
+  if (!rows.length) {
+    table.innerHTML = `<tbody><tr><td>Sem dados de compliance por loja para o D-1.</td></tr></tbody>`;
+    return;
+  }
+  const goals = serviceGoals();
+  const head = ["Loja", "Coord.", "Orders", "InStore", "InStore compliance", "Handoff", "Handoff compliance", "Leitura"];
+  table.innerHTML = `
+    <thead><tr>${head.map((item) => `<th>${item}</th>`).join("")}</tr></thead>
+    <tbody>${rows
+      .map((row) => {
+        const daily = dailyStores.find((store) => normalizeStore(store.store) === normalizeStore(row.store));
+        return `<tr>
+          <td><strong>${storeLink(row.store)}</strong></td>
+          <td>${daily?.coord || "-"}</td>
+          <td>${fmtInt(row.orders)}</td>
+          <td>${status(fixed(row.inStore), "inStore", "", "down", goals.inStore)}</td>
+          <td>${status(`${fixed(row.inStoreCompliance, 1)}%`, "prod", "", "up", 70)}</td>
+          <td>${status(fixed(row.handoff), "handoff", "", "down", goals.handoff)}</td>
+          <td>${status(`${fixed(row.handoffCompliance, 1)}%`, "prod", "", "up", 70)}</td>
+          <td>${serviceRowSignal(row)}</td>
+        </tr>`;
+      })
+      .join("")}</tbody>`;
+}
+
+function renderDailyStoreHourly(storeName) {
+  const table = document.querySelector("#daily-store-hourly-table");
+  if (!table) return;
+  const store = findDailyStore(storeName);
+  const pill = document.querySelector("#daily-store-hourly-pill");
+  if (pill) pill.textContent = `${store.store} · D-1`;
+  const rows = dailyServiceHourly.storeHourly?.[store.store] || [];
+  if (!rows.length) {
+    table.innerHTML = `<tbody><tr><td>Sem dados horários de InStore e Handoff para ${store.store}.</td></tr></tbody>`;
+    return;
+  }
+  const goals = serviceGoals();
+  const head = ["Hora", "Orders", "InStore", "Handoff", "Leitura"];
+  table.innerHTML = `
+    <thead><tr>${head.map((item) => `<th>${item}</th>`).join("")}</tr></thead>
+    <tbody>${rows
+      .map((row) => `<tr>
+        <td><strong>${row.hour}h</strong></td>
+        <td>${fmtInt(row.orders)}</td>
+        <td>${status(fixed(row.inStore), "inStore", "", "down", goals.inStore)}</td>
+        <td>${status(fixed(row.handoff), "handoff", "", "down", goals.handoff)}</td>
+        <td>${row.orders ? serviceRowSignal(row) : "Sem orders na hora"}</td>
+      </tr>`)
+      .join("")}</tbody>`;
+}
+
+function findServiceStore(storeName) {
+  const normalized = normalizeStore(storeName);
+  return (Array.isArray(dailyServiceHourly.stores) ? dailyServiceHourly.stores : []).find((row) => normalizeStore(row.store) === normalized);
+}
+
 function renderDailyStore(storeName) {
   if (!dailyStores.length) return;
   const row = findDailyStore(storeName);
   const ops = dailyOps[row.store];
+  const serviceStore = findServiceStore(row.store);
   const select = document.querySelector("#daily-store-select");
   select.value = row.store;
   document.querySelector("#daily-date-pill").textContent = window.DAILY_DATA?.date ? `D-1 · ${window.DAILY_DATA.date}` : "D-1";
@@ -744,6 +871,8 @@ function renderDailyStore(storeName) {
     ["SA", `${fixed(row.availability)}%`, "meta D-1: 99,50%", statusClass(row.availability, "availability", "up", 99.5)],
     ["Stockout", `${fixed(row.stockout)}%`, "meta D-1: 0,13%", statusClass(row.stockout, "stockout", "down", 0.13)],
     ["InStore", fixed(row.inStore), "meta D-1: 2,19", statusClass(row.inStore, "inStore", "down", 2.19)],
+    ["InStore comp.", serviceStore ? `${fixed(serviceStore.inStoreCompliance, 1)}%` : "-", "Orders em horas dentro da meta", serviceStore ? statusClass(serviceStore.inStoreCompliance, "prod", "up", 70) : "amber"],
+    ["Handoff comp.", serviceStore ? `${fixed(serviceStore.handoffCompliance, 1)}%` : "-", "Orders em horas dentro da meta", serviceStore ? statusClass(serviceStore.handoffCompliance, "prod", "up", 70) : "amber"],
     ["Prod.", fixed(row.productivity), "meta D-1: 62,50", statusClass(row.productivity, "prod")],
   ];
   document.querySelector("#daily-kpis").innerHTML = kpis
@@ -781,6 +910,7 @@ function renderDailyStore(storeName) {
         : detailCell("Indicadores D-1", "Sem detalhe operacional no recorte lido", "A loja aparece no OKRS D-1, mas não no bloco operacional lido.")}
     </div>`;
   renderDailyPickingCompliance(row.store);
+  renderDailyStoreHourly(row.store);
   renderDailyPickers(row.store);
 }
 
@@ -1008,6 +1138,9 @@ function renderDaily() {
     document.querySelector("#daily").scrollIntoView({ behavior: "smooth", block: "start" });
   });
   renderDailyBr();
+  renderDailyServiceCompliance();
+  renderDailyBrHourly();
+  renderDailyStoreComplianceTable();
   renderDailyPickingCompliance(dailyStores[0].store);
   renderDailyTable();
   renderDailyStore(dailyStores[0].store);

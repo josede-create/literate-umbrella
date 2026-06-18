@@ -353,6 +353,103 @@ ORDER BY 2, 3
 """
 
 
+SQL_DAILY_CONNECTIVITY_LIGHT = """
+WITH wh AS (
+  SELECT DISTINCT
+    KEYWH,
+    CASE
+      WHEN WAREHOUSENAME = 'Buritis' THEN 'Estoril'
+      WHEN WAREHOUSENAME = 'Sagrada Familia' THEN 'Santa Efigênia'
+      WHEN WAREHOUSENAME = 'Centro' THEN 'Catete II'
+      ELSE WAREHOUSENAME
+    END AS warehousename
+  FROM FIVETRAN.CPGS_TURBO_DS_PUBLIC.BR_WAREHOUSE_NEW
+),
+base_orders_metrics AS (
+  SELECT
+    KEYWH,
+    HOUR(ORDER_CREATED_AT) AS order_hour,
+    COUNT(DISTINCT ORDER_ID) AS orders_count
+  FROM RP_SILVER_DB_PROD.TURBO_CORE.BR_DELIVERY_TIMES
+  WHERE COUNTRY = 'BR'
+    AND ORDER_CREATED_AT::DATE = %(target_date)s
+    AND ORDER_ID <> '2216319964'
+  GROUP BY 1, 2
+),
+forecast AS (
+  SELECT
+    A.KEYWH,
+    COALESCE(W.warehousename, A.KEYWH) AS WAREHOUSENAME,
+    A.HORA AS order_hour,
+    A.PICKERS_NEEDED,
+    A.PICKERS_SCHEDULED
+  FROM RP_GOLD_DB_PROD.TURBO_CORE.GLOBAL_FORECAST_OPS_PICKERS A
+  LEFT JOIN wh W
+    ON A.KEYWH = W.KEYWH
+  WHERE A.COUNTRY = 'BR'
+    AND A.MAIN_DATE = %(target_date)s
+)
+SELECT
+  F.KEYWH,
+  F.WAREHOUSENAME,
+  F.order_hour AS HORA,
+  COALESCE(OM.orders_count, 0) AS ORDERS_HISTORIC,
+  COALESCE(F.PICKERS_NEEDED, 0) AS PICKERS_NEEDED,
+  COALESCE(F.PICKERS_SCHEDULED, 0) AS PICKERS_SCHEDULED,
+  0 AS PICKERS_TOTAL_CONNECTED,
+  0 AS PICKERS_IN_PICKING,
+  0 AS PICKERS_IN_REST,
+  0 AS PICKERS_IN_RECEPTION,
+  0 AS PICKERS_IN_OTHER_ACTIVITIES,
+  0 AS PICKERS_DISCONNECTION
+FROM forecast F
+LEFT JOIN base_orders_metrics OM
+  ON F.KEYWH = OM.KEYWH
+  AND F.order_hour = OM.order_hour
+ORDER BY 2, 3
+"""
+
+
+SQL_DAILY_SERVICE_HOURLY = """
+WITH wh AS (
+  SELECT DISTINCT
+    KEYWH,
+    CASE
+      WHEN WAREHOUSENAME = 'Buritis' THEN 'Estoril'
+      WHEN WAREHOUSENAME = 'Sagrada Familia' THEN 'Santa Efigênia'
+      WHEN WAREHOUSENAME = 'Centro' THEN 'Catete II'
+      ELSE WAREHOUSENAME
+    END AS warehousename
+  FROM FIVETRAN.CPGS_TURBO_DS_PUBLIC.BR_WAREHOUSE_NEW
+),
+ops_hour_order AS (
+  SELECT
+    DT.KEYWH,
+    COALESCE(W.warehousename, DT.KEYWH) AS WAREHOUSENAME,
+    HOUR(DT.ORDER_CREATED_AT) AS HORA,
+    DT.ORDER_ID,
+    MAX(COALESCE(DT.ASSING_TO_PICKER, 0) + COALESCE(DT.PICKING, 0) + COALESCE(DT.PACKING, 0)) AS IN_STORE,
+    MAX(COALESCE(DT.HANDLING_TO_STOREKEEPER, 0)) AS HANDOFF
+  FROM RP_SILVER_DB_PROD.TURBO_CORE.BR_DELIVERY_TIMES DT
+  LEFT JOIN wh W
+    ON DT.KEYWH = W.KEYWH
+  WHERE DT.COUNTRY = 'BR'
+    AND DT.ORDER_CREATED_AT::DATE = %(target_date)s
+    AND DT.ORDER_ID <> '2216319964'
+  GROUP BY 1, 2, 3, 4
+)
+SELECT
+  WAREHOUSENAME,
+  HORA,
+  COUNT(DISTINCT ORDER_ID) AS ORDERS_HISTORIC,
+  SUM(IN_STORE) AS IN_STORE,
+  SUM(HANDOFF) AS HANDOFF
+FROM ops_hour_order
+GROUP BY 1, 2
+ORDER BY 1, 2
+"""
+
+
 SQL_DAILY_PICKERS = """
 WITH wh AS (
   SELECT DISTINCT
@@ -471,12 +568,22 @@ def main():
 
     with snowflake.connector.connect(**params) as conn:
         with conn.cursor(snowflake.connector.DictCursor) as cur:
+            print("fetching daily stores...")
             cur.execute(SQL_STORES, {"target_date": target_date})
             store_rows = cur.fetchall()
-            cur.execute(SQL_DAILY_CONNECTIVITY, {"target_date": target_date})
+            print(f"daily stores: {len(store_rows)}")
+            print("fetching daily scale compliance...")
+            cur.execute(SQL_DAILY_CONNECTIVITY_LIGHT, {"target_date": target_date})
             connectivity_rows = cur.fetchall()
+            print(f"daily scale rows: {len(connectivity_rows)}")
+            print("fetching daily service hourly...")
+            cur.execute(SQL_DAILY_SERVICE_HOURLY, {"target_date": target_date})
+            service_rows = cur.fetchall()
+            print(f"daily service rows: {len(service_rows)}")
+            print("fetching daily pickers...")
             cur.execute(SQL_DAILY_PICKERS, {"target_date": target_date})
             picker_rows = cur.fetchall()
+            print(f"daily pickers: {len(picker_rows)}")
 
     stores = []
     times = {}
@@ -518,8 +625,29 @@ def main():
             "total": float(row["TOTAL"] or previous_times.get("total", 0)),
         }
 
-    br_by_hour = {hour: {"hour": hour, "orders": 0, "needed": 0.0, "scheduled": 0.0, "connected": 0.0, "inPicking": 0.0, "inRest": 0.0, "inReception": 0.0, "otherActivities": 0.0, "disconnection": 0.0} for hour in range(24)}
+    instore_goal = 2.19
+    handoff_goal = 5.0
+    br_by_hour = {
+        hour: {
+            "hour": hour,
+            "orders": 0,
+            "needed": 0.0,
+            "scheduled": 0.0,
+            "connected": 0.0,
+            "inPicking": 0.0,
+            "inRest": 0.0,
+            "inReception": 0.0,
+            "otherActivities": 0.0,
+            "disconnection": 0.0,
+        }
+        for hour in range(24)
+    }
     compliance_by_store = {}
+    service_by_store = {}
+    service_br_by_hour = {
+        hour: {"hour": hour, "orders": 0, "inStoreNumerator": 0.0, "handoffNumerator": 0.0}
+        for hour in range(24)
+    }
     for row in connectivity_rows:
         store_name = str(row["WAREHOUSENAME"] or "").strip()
         if not store_name or store_name == "Santa Cecilia Farma":
@@ -562,6 +690,50 @@ def main():
             if scheduled >= needed_scale:
                 current["compliantSlots"] += 1
         compliance_by_store[store_name] = current
+
+    for row in service_rows:
+        store_name = str(row["WAREHOUSENAME"] or "").strip()
+        if not store_name or store_name == "Santa Cecilia Farma":
+            continue
+        hour = int(float(row["HORA"] or 0))
+        orders = int(float(row["ORDERS_HISTORIC"] or 0))
+        in_store_numerator = float(row["IN_STORE"] or 0)
+        handoff_numerator = float(row["HANDOFF"] or 0)
+
+        br_service_bucket = service_br_by_hour[hour]
+        br_service_bucket["orders"] += orders
+        br_service_bucket["inStoreNumerator"] += in_store_numerator
+        br_service_bucket["handoffNumerator"] += handoff_numerator
+
+        store_service = service_by_store.get(store_name)
+        if not store_service:
+            store_service = {
+                "store": store_name,
+                "orders": 0,
+                "inStoreNumerator": 0.0,
+                "handoffNumerator": 0.0,
+                "inStoreOkOrders": 0,
+                "handoffOkOrders": 0,
+                "hours": {
+                    item_hour: {"hour": item_hour, "orders": 0, "inStoreNumerator": 0.0, "handoffNumerator": 0.0}
+                    for item_hour in range(24)
+                },
+            }
+        store_service["orders"] += orders
+        store_service["inStoreNumerator"] += in_store_numerator
+        store_service["handoffNumerator"] += handoff_numerator
+        if orders:
+            in_store_avg = in_store_numerator / orders
+            handoff_avg = handoff_numerator / orders
+            if in_store_avg <= instore_goal:
+                store_service["inStoreOkOrders"] += orders
+            if handoff_avg <= handoff_goal:
+                store_service["handoffOkOrders"] += orders
+        store_hour = store_service["hours"][hour]
+        store_hour["orders"] += orders
+        store_hour["inStoreNumerator"] += in_store_numerator
+        store_hour["handoffNumerator"] += handoff_numerator
+        service_by_store[store_name] = store_service
 
     br_connectivity = []
     for hour in range(24):
@@ -607,6 +779,57 @@ def main():
         "stores": store_compliance_rows,
     }
 
+    service_hourly_br = []
+    for hour in range(24):
+        row = service_br_by_hour[hour]
+        service_hourly_br.append(
+            {
+                "hour": hour,
+                "orders": row["orders"],
+                "inStore": round(row["inStoreNumerator"] / row["orders"], 2) if row["orders"] else 0,
+                "handoff": round(row["handoffNumerator"] / row["orders"], 2) if row["orders"] else 0,
+            }
+        )
+
+    br_service_orders = sum(row["orders"] for row in service_by_store.values())
+    br_instore_ok_orders = sum(row["inStoreOkOrders"] for row in service_by_store.values())
+    br_handoff_ok_orders = sum(row["handoffOkOrders"] for row in service_by_store.values())
+    service_store_rows = []
+    service_hourly_stores = {}
+    for row in service_by_store.values():
+        orders = row["orders"]
+        service_store_rows.append(
+            {
+                "store": row["store"],
+                "orders": orders,
+                "inStore": round(row["inStoreNumerator"] / orders, 2) if orders else 0,
+                "handoff": round(row["handoffNumerator"] / orders, 2) if orders else 0,
+                "inStoreCompliance": round(row["inStoreOkOrders"] / orders * 100, 2) if orders else 0,
+                "handoffCompliance": round(row["handoffOkOrders"] / orders * 100, 2) if orders else 0,
+            }
+        )
+        service_hourly_stores[row["store"]] = [
+            {
+                "hour": hour,
+                "orders": hour_row["orders"],
+                "inStore": round(hour_row["inStoreNumerator"] / hour_row["orders"], 2) if hour_row["orders"] else 0,
+                "handoff": round(hour_row["handoffNumerator"] / hour_row["orders"], 2) if hour_row["orders"] else 0,
+            }
+            for hour, hour_row in row["hours"].items()
+        ]
+    service_store_rows.sort(key=lambda item: (item["inStoreCompliance"], item["handoffCompliance"], -item["orders"], item["store"]))
+    daily_service_hourly = {
+        "goals": {"inStore": instore_goal, "handoff": handoff_goal},
+        "br": {
+            "orders": br_service_orders,
+            "inStoreCompliance": round(br_instore_ok_orders / br_service_orders * 100, 2) if br_service_orders else 0,
+            "handoffCompliance": round(br_handoff_ok_orders / br_service_orders * 100, 2) if br_service_orders else 0,
+        },
+        "brHourly": service_hourly_br,
+        "stores": service_store_rows,
+        "storeHourly": service_hourly_stores,
+    }
+
     daily_pickers = []
     for row in picker_rows:
         store_name = str(row["WAREHOUSENAME"] or "").strip()
@@ -641,6 +864,9 @@ def main():
         + ";\n\n"
         + "window.DAILY_PICKING_COMPLIANCE = "
         + json.dumps(daily_picking_compliance, ensure_ascii=False)
+        + ";\n\n"
+        + "window.DAILY_SERVICE_HOURLY = "
+        + json.dumps(daily_service_hourly, ensure_ascii=False)
         + ";\n\n"
         + "window.DAILY_PICKERS = "
         + json.dumps(daily_pickers, ensure_ascii=False)
