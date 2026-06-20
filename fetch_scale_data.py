@@ -15,7 +15,7 @@ WITH params AS (
   SELECT
     DATE_TRUNC('WEEK', DATEADD('WEEK', -1, CURRENT_DATE()))::DATE AS previous_week_start,
     DATE_TRUNC('WEEK', CURRENT_DATE())::DATE AS current_week_start,
-    DATEADD('DAY', -2, CURRENT_DATE())::DATE AS current_week_cutoff,
+    DATEADD('DAY', -1, CURRENT_DATE())::DATE AS current_week_cutoff,
     DATEADD('DAY', -1, DATE_TRUNC('WEEK', CURRENT_DATE()))::DATE AS previous_week_end
 ),
 wh AS (

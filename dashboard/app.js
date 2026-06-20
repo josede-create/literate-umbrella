@@ -891,7 +891,7 @@ function renderDailyStore(storeName) {
       ${detailCell(
         "Conectividade semanal",
         "A leitura de conectividade ficou concentrada na aba nova",
-        "Use a aba Conectividade para ver semana atual D+2, semana passada e o recorte por loja.",
+        "Use a aba Conectividade para ver semana atual até ontem, semana passada e o recorte por loja.",
       )}
     </div>
     <div class="ops-grid">
@@ -1483,8 +1483,8 @@ function renderConnectivityStores() {
 
 function renderConnectivity() {
   if (connectivityCurrentCutoff) {
-    document.querySelector("#connectivity-current-pill").textContent = `Semana atual · D+2 até ${connectivityCurrentCutoff}`;
-    document.querySelector("#connectivity-store-current-pill").textContent = `D+2 até ${connectivityCurrentCutoff}`;
+    document.querySelector("#connectivity-current-pill").textContent = `Semana atual · até ${connectivityCurrentCutoff}`;
+    document.querySelector("#connectivity-store-current-pill").textContent = `Até ${connectivityCurrentCutoff}`;
   }
   renderConnectivityMatrix("#connectivity-current-table", connectivityCurrentRows);
   renderConnectivityMatrix("#connectivity-previous-table", connectivityPreviousRows);
