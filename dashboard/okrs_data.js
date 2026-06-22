@@ -1,4 +1,4 @@
-window.OKRS_DATA_UPDATED_AT = "2026-06-22T09:10:40-03:00";
+window.OKRS_DATA_UPDATED_AT = "2026-06-22T09:50:03-03:00";
 window.OKRS_DATA = {
   "month": {
     "orders": 435105,

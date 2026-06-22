@@ -14,7 +14,7 @@ SQL_CONNECTIVITY = """
 WITH params AS (
   SELECT
     DATE_TRUNC('WEEK', DATEADD('WEEK', -1, CURRENT_DATE()))::DATE AS previous_week_start,
-    DATE_TRUNC('WEEK', CURRENT_DATE())::DATE AS current_week_start,
+    LEAST(DATE_TRUNC('WEEK', CURRENT_DATE())::DATE, DATEADD('DAY', -1, CURRENT_DATE())::DATE) AS current_week_start,
     DATEADD('DAY', -1, CURRENT_DATE())::DATE AS current_week_cutoff,
     DATEADD('DAY', -1, DATE_TRUNC('WEEK', CURRENT_DATE()))::DATE AS previous_week_end
 ),
@@ -371,6 +371,12 @@ def main():
     current_week_cutoff = None
     if connectivity_rows:
         current_week_cutoff = str(connectivity_rows[0].get("CURRENT_WEEK_CUTOFF") or "")
+    if not current_week_rows and current_week_cutoff:
+        current_week_rows = [
+            {**row, "WEEK_TYPE": "current"}
+            for row in previous_week_rows
+            if str(row.get("DATE") or "")[:10] == current_week_cutoff
+        ]
 
     out.write_text(
         "window.SCALE_DATA_UPDATED_AT = "
