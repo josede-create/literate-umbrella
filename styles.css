@@ -24,6 +24,7 @@
 
 html {
   scroll-behavior: smooth;
+  scroll-padding-top: 170px;
 }
 
 body {
@@ -105,6 +106,7 @@ main {
 
 .section {
   margin-bottom: 36px;
+  scroll-margin-top: 170px;
 }
 
 .section-title {
@@ -137,6 +139,10 @@ main {
 }
 
 .kpi-grid.dense {
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+}
+
+.connectivity-grid {
   grid-template-columns: repeat(5, minmax(0, 1fr));
 }
 
@@ -258,6 +264,17 @@ main {
 
 .br-compare-panel {
   margin-bottom: 16px;
+}
+
+.connectivity-panel {
+  margin-bottom: 16px;
+}
+
+.muted-cell {
+  display: block;
+  margin-top: 3px;
+  color: var(--muted);
+  font-size: 11px;
 }
 
 .compare-table-wrap {
@@ -616,6 +633,10 @@ tr:hover td {
   min-width: 1780px;
 }
 
+.connectivity-hourly-table {
+  min-width: 1320px;
+}
+
 .store-matrix .day-cell {
   width: 170px;
   min-width: 170px;
@@ -660,6 +681,7 @@ tr:hover td {
   }
 
   .kpi-grid.dense,
+  .connectivity-grid,
   .coord-metrics.full {
     grid-template-columns: repeat(3, 1fr);
   }
@@ -685,6 +707,7 @@ tr:hover td {
   }
 
   .kpi-grid.dense,
+  .connectivity-grid,
   .coord-metrics.full {
     grid-template-columns: repeat(2, 1fr);
   }

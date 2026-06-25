@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Operações In Store Turbo - 27/04/2026</title>
+    <title>Operações In Store Turbo - Conectividade Brasil</title>
     <link rel="stylesheet" href="./styles.css" />
   </head>
   <body>
@@ -11,11 +11,12 @@
       <div>
         <p class="eyebrow">Weekly - Coordenadores Turbo</p>
         <h1>Operações In Store Turbo</h1>
-        <p class="meta">Semana de referência: segunda-feira, 27/04/2026 · Dados: OKRS mês, OKRS semanal, simulador de pickers e escala</p>
+        <p class="meta">Dados gerenciais + conectividade pre-jogo Brasil em 13/06, 19/06 e 24/06/2026</p>
         <p class="update-stamp" id="data-updated-at">Última atualização dos dados: carregando...</p>
       </div>
       <nav class="tabs" aria-label="Seções do dashboard">
         <a href="#br">BR Gerencial</a>
+        <a href="#conectividade">Conectividade</a>
         <a href="#escala">Escala</a>
         <a href="#coords">Coordenadores</a>
       </nav>
@@ -63,13 +64,55 @@
         </article>
       </section>
 
+      <section id="conectividade" class="section">
+        <div class="section-title">
+          <div>
+            <p class="eyebrow">Copa do Mundo</p>
+            <h2>Conectividade pre-jogo Brasil</h2>
+          </div>
+          <p class="section-note">Janelas de 4 horas antes dos jogos do Brasil, com picker-hora conectado, necessidade forecast, pico de pickers únicos e lojas com maior gap.</p>
+        </div>
+
+        <div class="kpi-grid connectivity-grid" id="connectivity-kpis"></div>
+
+        <article class="panel connectivity-panel">
+          <div class="panel-head">
+            <h3>Resumo por jogo</h3>
+            <span class="pill">Pre-jogo</span>
+          </div>
+          <div class="table-wrap">
+            <table id="connectivity-summary-table" class="compact-table"></table>
+          </div>
+        </article>
+
+        <article class="panel connectivity-panel">
+          <div class="panel-head">
+            <h3>Conectividade por hora</h3>
+            <span class="pill warning">Picker-hora</span>
+          </div>
+          <div class="table-wrap matrix-wrap">
+            <table id="connectivity-hourly-table" class="matrix-table connectivity-hourly-table"></table>
+          </div>
+        </article>
+
+        <article class="panel">
+          <div class="panel-head">
+            <h3>Lojas com maior gap no último jogo</h3>
+            <span class="pill danger">Brasil x Escocia</span>
+          </div>
+          <div class="table-wrap">
+            <table id="connectivity-store-table" class="compact-table"></table>
+          </div>
+        </article>
+      </section>
+
       <section id="escala" class="section">
         <div class="section-title">
           <div>
             <p class="eyebrow">Parte 1.2</p>
             <h2>Pickers, forecast e escala</h2>
           </div>
-          <p class="section-note">A visão usa a fórmula customizada de pickers necessários, considerando tempo em loja, orders por hora e apoio de recebimento.</p>
+          <p class="section-note">A visão usa a base real de forecast, pickers necessários, programados e conectados nas janelas dos jogos.</p>
         </div>
 
         <article class="panel gap-panel">
@@ -88,7 +131,7 @@
         <article class="panel">
           <div class="panel-head">
             <h3>Modelo BR por dia e hora</h3>
-            <span class="pill">Última semana</span>
+            <span class="pill">Jogos Brasil</span>
           </div>
           <div class="matrix-legend">
             <span><i class="heat bad"></i> Delta negativo</span>

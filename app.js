@@ -156,6 +156,8 @@ const extraStoreResults = [
 
 const allStores = [...storeResults, ...extraStoreResults].sort((a, b) => a.store.localeCompare(b.store));
 const scaleQueryRows = Array.isArray(window.SCALE_QUERY_ROWS) ? window.SCALE_QUERY_ROWS : [];
+const connectionAuditRows = Array.isArray(window.CONNECTION_AUDIT_SUMMARY) ? window.CONNECTION_AUDIT_SUMMARY : [];
+const peakUniqueRows = Array.isArray(window.PEAK_UNIQUE_CONNECTED) ? window.PEAK_UNIQUE_CONNECTED : [];
 
 const hourlyCurve = [0.01, 0.01, 0.006, 0.005, 0.004, 0.005, 0.012, 0.025, 0.04, 0.05, 0.055, 0.063, 0.067, 0.067, 0.064, 0.059, 0.062, 0.07, 0.078, 0.09, 0.09, 0.073, 0.045, 0.021];
 const shiftCoverage = [0.22, 0.18, 0.14, 0.11, 0.09, 0.12, 0.2, 0.38, 0.56, 0.66, 0.72, 0.76, 0.78, 0.76, 0.77, 0.75, 0.78, 0.84, 0.92, 1, 0.98, 0.88, 0.66, 0.4];
@@ -186,6 +188,21 @@ function fmtMetric(value, def) {
   if (def.type === "int") return fmtInt(value);
   if (def.type === "pct") return `${Number(value).toFixed(2)}%`;
   return Number(value).toFixed(2);
+}
+
+function fmtNum(value, digits = 1) {
+  return new Intl.NumberFormat("pt-BR", {
+    minimumFractionDigits: digits,
+    maximumFractionDigits: digits,
+  }).format(Number(value || 0));
+}
+
+function fmtPct(value, digits = 1) {
+  return `${fmtNum(value, digits)}%`;
+}
+
+function fmtSigned(value, digits = 1) {
+  return `${Number(value || 0) >= 0 ? "+" : ""}${fmtNum(value, digits)}`;
 }
 
 function statusClass(value, metric, direction = "up", target = null) {
@@ -308,6 +325,208 @@ function renderOffenders() {
       .join("")}</tbody>`;
 }
 
+function coveragePct(row) {
+  return Number(row.avg_needed || 0) > 0 ? (Number(row.avg_connected || 0) / Number(row.avg_needed || 0)) * 100 : 0;
+}
+
+function preGameAuditRows() {
+  return connectionAuditRows
+    .filter((row) => row.window_type === "pre_game_4h")
+    .sort((a, b) => String(a.date_day).localeCompare(String(b.date_day)));
+}
+
+function latestGameId() {
+  const rows = preGameAuditRows();
+  return rows.length ? rows[rows.length - 1].game_id : null;
+}
+
+function findPeakRow(gameId) {
+  return peakUniqueRows.find((row) => row.game_id === gameId) || {};
+}
+
+function connectivityDeltaStatus(value) {
+  const className = value >= 0 ? "green" : value >= -40 ? "amber" : "red";
+  return `<span class="status ${className}">${fmtSigned(value)}</span>`;
+}
+
+function aggregateConnectivityRows(rows) {
+  return rows.reduce(
+    (acc, row) => {
+      acc.forecast += Number(row.ORDENES_PRONOSTICADAS_HORA || 0);
+      acc.orders += Number(row.TOTAL_ORDENES_HISTORICO || row.ORDERS || 0);
+      acc.needed += Number(row.PICKERS_NEEDED || 0);
+      acc.scheduled += Number(row.PICKERS_SCHEDULED || 0);
+      acc.connected += Number(row.PICKERS_CONECTED || row.PICKERS_CONNECTED || 0);
+      acc.picking += Number(row.PICKERS_IN_PICKING || 0);
+      acc.rest += Number(row.PICKERS_IN_REST || 0);
+      acc.reception += Number(row.PICKERS_IN_RECEPTION || 0);
+      acc.other += Number(row.PICKERS_IN_OTHER_ACTIVITIES || 0);
+      acc.instoreNumerator += Number(row.IN_STORE || 0);
+      return acc;
+    },
+    { forecast: 0, orders: 0, needed: 0, scheduled: 0, connected: 0, picking: 0, rest: 0, reception: 0, other: 0, instoreNumerator: 0 },
+  );
+}
+
+function renderConnectivityKpis() {
+  const target = document.querySelector("#connectivity-kpis");
+  if (!target) return;
+  const rows = preGameAuditRows();
+  const latest = rows[rows.length - 1] || {};
+  const previous = rows[rows.length - 2] || {};
+  const peak = findPeakRow(latest.game_id);
+  const coverage = coveragePct(latest);
+  const previousCoverage = coveragePct(previous);
+  const latestStoreRows = scaleQueryRows.filter((row) => row.GAME_ID === latest.game_id);
+  const totals = aggregateConnectivityRows(latestStoreRows);
+  const deltaPh = Number(latest.connected_ph || 0) - Number(latest.needed_ph || 0);
+  const kpis = [
+    {
+      label: "Cobertura conectada",
+      value: fmtPct(coverage),
+      sub: `${latest.game_label || "Último jogo"} · ${coverage - previousCoverage >= 0 ? "+" : ""}${fmtNum(coverage - previousCoverage)} p.p. vs jogo anterior`,
+      className: coverage >= 100 ? "green" : coverage >= 90 ? "amber" : "red",
+    },
+    {
+      label: "Média conectada",
+      value: fmtNum(latest.avg_connected),
+      sub: `Necessidade média ${fmtNum(latest.avg_needed)} pickers`,
+      className: Number(latest.avg_connected || 0) >= Number(latest.avg_needed || 0) ? "green" : "amber",
+    },
+    {
+      label: "Delta picker-hora",
+      value: fmtSigned(deltaPh),
+      sub: `${fmtNum(latest.connected_ph)} conectado vs ${fmtNum(latest.needed_ph)} necessário`,
+      className: deltaPh >= 0 ? "green" : deltaPh >= -80 ? "amber" : "red",
+    },
+    {
+      label: "Pico conectado",
+      value: fmtInt(peak.unique_pickers_any_store || 0),
+      sub: `Hora ${peak.peak_hour ?? "-"} · ${fmtInt(peak.stores_with_connection || 0)} lojas com conexão`,
+      className: "green",
+    },
+    {
+      label: "Orders janela",
+      value: fmtInt(totals.orders),
+      sub: `${fmtNum(totals.connected)} picker-hora conectado · ${fmtNum(totals.picking)} em picking`,
+      className: totals.connected >= totals.needed ? "green" : "amber",
+    },
+  ];
+  target.innerHTML = kpis
+    .map(
+      (item) => `<article class="kpi ${item.className}">
+        <p class="label">${item.label}</p>
+        <p class="value">${item.value}</p>
+        <p class="sub">${item.sub}</p>
+      </article>`,
+    )
+    .join("");
+}
+
+function renderConnectivitySummaryTable() {
+  const target = document.querySelector("#connectivity-summary-table");
+  if (!target) return;
+  const head = ["Jogo", "Janela", "Conectado médio", "Necessário médio", "Cobertura", "Delta PH", "Pico únicos", "Lojas"];
+  target.innerHTML = `
+    <thead><tr>${head.map((h) => `<th>${h}</th>`).join("")}</tr></thead>
+    <tbody>${preGameAuditRows()
+      .map((row) => {
+        const peak = findPeakRow(row.game_id);
+        const delta = Number(row.connected_ph || 0) - Number(row.needed_ph || 0);
+        const coverage = coveragePct(row);
+        return `<tr>
+          <td><strong>${row.game_label}</strong><span class="muted-cell">${row.date_day}</span></td>
+          <td>${row.window_label}</td>
+          <td>${fmtNum(row.avg_connected)}</td>
+          <td>${fmtNum(row.avg_needed)}</td>
+          <td><span class="status ${coverage >= 100 ? "green" : coverage >= 90 ? "amber" : "red"}">${fmtPct(coverage)}</span></td>
+          <td>${connectivityDeltaStatus(delta)}</td>
+          <td>${fmtInt(peak.unique_pickers_any_store || 0)} <span class="muted-cell">h${peak.peak_hour ?? "-"}</span></td>
+          <td>${fmtInt(row.stores_with_connection || 0)}</td>
+        </tr>`;
+      })
+      .join("")}</tbody>`;
+}
+
+function renderConnectivityHourlyTable() {
+  const target = document.querySelector("#connectivity-hourly-table");
+  if (!target) return;
+  const byGameHour = new Map();
+  scaleQueryRows.forEach((row) => {
+    const key = `${row.GAME_ID}|${row.HORA}`;
+    const current = byGameHour.get(key) || { game: row.GAME_LABEL, date: row.DATE, hour: row.HORA, rows: [] };
+    current.rows.push(row);
+    byGameHour.set(key, current);
+  });
+  const rows = [...byGameHour.values()].sort((a, b) => String(a.date).localeCompare(String(b.date)) || Number(a.hour) - Number(b.hour));
+  const head = ["Jogo", "Hora", "Forecast", "Orders", "Necess.", "Prog.", "Conect.", "Picking", "Pausa", "Receb.", "Outras", "Delta"];
+  target.innerHTML = `
+    <thead><tr>${head.map((h) => `<th>${h}</th>`).join("")}</tr></thead>
+    <tbody>${rows
+      .map((item) => {
+        const totals = aggregateConnectivityRows(item.rows);
+        const delta = totals.connected - totals.needed;
+        return `<tr>
+          <td class="day-cell"><strong>${item.game}</strong><span>${item.date}</span></td>
+          <td class="metric-cell">h${item.hour}</td>
+          <td>${fmtInt(totals.forecast)}</td>
+          <td>${fmtInt(totals.orders)}</td>
+          <td>${fmtNum(totals.needed)}</td>
+          <td>${fmtNum(totals.scheduled)}</td>
+          <td>${fmtNum(totals.connected)}</td>
+          <td>${fmtNum(totals.picking)}</td>
+          <td>${fmtNum(totals.rest)}</td>
+          <td>${fmtNum(totals.reception)}</td>
+          <td>${fmtNum(totals.other)}</td>
+          <td class="${heatClass(delta)}">${fmtSigned(delta)}</td>
+        </tr>`;
+      })
+      .join("")}</tbody>`;
+}
+
+function renderConnectivityStoreTable() {
+  const target = document.querySelector("#connectivity-store-table");
+  if (!target) return;
+  const gameId = latestGameId();
+  const byStore = new Map();
+  scaleQueryRows
+    .filter((row) => row.GAME_ID === gameId)
+    .forEach((row) => {
+      const key = normalizeStore(row.WAREHOUSENAME);
+      const current = byStore.get(key) || { store: row.WAREHOUSENAME, city: row.CITY_NAME, rows: [] };
+      current.rows.push(row);
+      byStore.set(key, current);
+    });
+  const rows = [...byStore.values()]
+    .map((item) => ({ ...item, totals: aggregateConnectivityRows(item.rows) }))
+    .sort((a, b) => a.totals.connected - a.totals.needed - (b.totals.connected - b.totals.needed))
+    .slice(0, 20);
+  const head = ["Loja", "Cidade", "Orders", "Necess.", "Prog.", "Conect.", "Picking", "Receb.", "Delta", "InStore", "THD"];
+  target.innerHTML = `
+    <thead><tr>${head.map((h) => `<th>${h}</th>`).join("")}</tr></thead>
+    <tbody>${rows
+      .map((item) => {
+        const totals = item.totals;
+        const delta = totals.connected - totals.needed;
+        const thdRows = item.rows.map((row) => Number(row.AVG_THD || 0)).filter(Boolean);
+        const thd = thdRows.length ? thdRows.reduce((acc, value) => acc + value, 0) / thdRows.length : 0;
+        return `<tr>
+          <td><strong>${item.store}</strong></td>
+          <td>${item.city}</td>
+          <td>${fmtInt(totals.orders)}</td>
+          <td>${fmtNum(totals.needed)}</td>
+          <td>${fmtNum(totals.scheduled)}</td>
+          <td>${fmtNum(totals.connected)}</td>
+          <td>${fmtNum(totals.picking)}</td>
+          <td>${fmtNum(totals.reception)}</td>
+          <td>${connectivityDeltaStatus(delta)}</td>
+          <td>${totals.orders ? fmtNum(totals.instoreNumerator / totals.orders, 2) : "-"}</td>
+          <td>${thd ? fmtNum(thd, 2) : "-"}</td>
+        </tr>`;
+      })
+      .join("")}</tbody>`;
+}
+
 function renderScaleTable() {
   const queryStores = scaleQueryRows.length ? topInStoreStoresFromQuery().slice(0, 5) : [];
   const rows = queryStores.length ? queryStores : [...allStores].sort((a, b) => b.inStore - a.inStore).slice(0, 5);
@@ -370,7 +589,7 @@ function buildHourlyRowsFromQuery() {
     const real = aggregateQueryByHour(rows, (row) => Number(row.TOTAL_ORDENES_HISTORICO || row.ORDERS || 0));
     const scheduled = aggregateQueryByHour(rows, (row) => Number(row.PICKERS_SCHEDULED || 0));
     const connected = aggregateQueryByHour(rows, (row) => Number(row.PICKERS_CONECTED || row.PICKERS_CONNECTED || 0));
-    const needed = aggregateQueryByHour(rows, (row) => pickerNeed(Number(row.TOTAL_ORDENES_HISTORICO || row.ORDERS || 0), 0, 3, 1));
+    const needed = aggregateQueryByHour(rows, (row) => Number(row.PICKERS_NEEDED ?? pickerNeed(Number(row.TOTAL_ORDENES_HISTORICO || row.ORDERS || 0), 0, 3, 1)));
     const delta = connected.map((value, hour) => value - needed[hour]);
     return { ...day, forecast, real, scheduled, connected, needed, delta };
   });
@@ -382,7 +601,7 @@ function buildStoreHourlyProfileFromQuery(storeName, date) {
   const real = aggregateQueryByHour(rows, (row) => Number(row.TOTAL_ORDENES_HISTORICO || row.ORDERS || 0));
   const scheduled = aggregateQueryByHour(rows, (row) => Number(row.PICKERS_SCHEDULED || 0));
   const connected = aggregateQueryByHour(rows, (row) => Number(row.PICKERS_CONECTED || row.PICKERS_CONNECTED || 0));
-  const needed = real.map((orders, hour) => pickerNeed(orders, hour >= 8 && hour <= 21 ? 1 : 0, 3, 1));
+  const needed = aggregateQueryByHour(rows, (row) => Number(row.PICKERS_NEEDED ?? pickerNeed(Number(row.TOTAL_ORDENES_HISTORICO || row.ORDERS || 0), 0, 3, 1)));
   const delta = connected.map((value, hour) => value - needed[hour]);
   return { forecast, real, scheduled, connected, needed, delta };
 }
@@ -391,7 +610,7 @@ function aggregateQueryByHour(rows, mapper) {
   const values = Array.from({ length: 24 }, () => 0);
   rows.forEach((row) => {
     const hour = Number(row.HORA);
-    if (Number.isInteger(hour) && hour >= 0 && hour <= 23) values[hour] += Math.round(mapper(row));
+    if (Number.isInteger(hour) && hour >= 0 && hour <= 23) values[hour] += Number(mapper(row) || 0);
   });
   return values;
 }
@@ -694,6 +913,10 @@ function init() {
   renderInsights();
   renderCompareTable();
   renderOffenders();
+  renderConnectivityKpis();
+  renderConnectivitySummaryTable();
+  renderConnectivityHourlyTable();
+  renderConnectivityStoreTable();
   renderScaleTable();
   renderHourlyMatrix();
   renderPickerGapTable();
