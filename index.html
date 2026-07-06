@@ -18,6 +18,7 @@
         <a href="#home">Início</a>
         <a href="#br">BR Gerencial</a>
         <a href="#daily">Daily</a>
+        <a href="#service">Compliance</a>
         <a href="#connectivity">Conectividade</a>
       </nav>
     </header>
@@ -43,8 +44,13 @@
             <strong>Daily</strong>
             <em>OKRS, pedidos, qualidade, produtividade e saturação</em>
           </a>
-          <a class="home-card" href="#connectivity">
+          <a class="home-card" href="#service">
             <span>Página 4</span>
+            <strong>Compliance</strong>
+            <em>InStore, Handoff post, Handoff pre e ofensores de tempo total</em>
+          </a>
+          <a class="home-card" href="#connectivity">
+            <span>Página 5</span>
             <strong>Conectividade</strong>
             <em>Semana atual até ontem, semana passada fechada e leitura de picker</em>
           </a>
@@ -220,6 +226,68 @@
         </article>
       </section>
 
+      <section id="service" class="section">
+        <div class="section-title">
+          <div>
+            <p class="eyebrow">Compliance</p>
+            <h2>InStore e Handoff</h2>
+          </div>
+          <p class="section-note">Semana passada fechada com metas fixas: InStore ≤ 2,6, Handoff post ≤ 0,9 e Handoff pre ≤ 1,5. A visão destaca lojas com tempo total acima de 12 e a etapa mais ofensora.</p>
+        </div>
+
+        <article class="panel">
+          <div class="panel-head">
+            <h3>Resumo BR da semana</h3>
+            <span class="pill" id="service-period-pill">Semana passada</span>
+          </div>
+          <div class="kpi-grid dense" id="service-kpis"></div>
+        </article>
+
+        <article class="panel">
+          <div class="panel-head">
+            <h3>Compliance BR por dia</h3>
+            <span class="pill">Dia da semana</span>
+          </div>
+          <div class="table-wrap sticky-head-wrap">
+            <table id="service-day-table" class="compact-table"></table>
+          </div>
+        </article>
+
+        <article class="panel">
+          <div class="panel-head">
+            <h3>Lojas com tempo total acima de 12</h3>
+            <span class="pill danger">Ofensores</span>
+          </div>
+          <div class="table-wrap sticky-head-wrap">
+            <table id="service-offenders-table" class="compact-table"></table>
+          </div>
+        </article>
+
+        <article class="panel">
+          <div class="panel-head">
+            <h3>Visão geral por loja</h3>
+            <span class="pill">Semana fechada</span>
+          </div>
+          <div class="table-wrap sticky-head-wrap">
+            <table id="service-store-table" class="compact-table"></table>
+          </div>
+        </article>
+
+        <article class="panel">
+          <div class="panel-head">
+            <h3>Loja por dia da semana</h3>
+            <span class="pill">Todas as lojas</span>
+          </div>
+          <div class="daily-controls">
+            <label for="service-store-filter">Loja</label>
+            <select id="service-store-filter"></select>
+          </div>
+          <div class="table-wrap sticky-head-wrap">
+            <table id="service-store-day-table" class="compact-table"></table>
+          </div>
+        </article>
+      </section>
+
       <section id="escala" class="section">
         <div class="section-title">
           <div>
@@ -376,6 +444,7 @@
     <script src="./hc_gap_data.js?v=20260706"></script>
     <script src="./daily_data.js?v=20260706"></script>
     <script src="./weekly_instore_data.js?v=20260706"></script>
+    <script src="./service_compliance_data.js?v=20260706"></script>
     <script src="./app.js?v=20260706"></script>
   </body>
 </html>

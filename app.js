@@ -210,6 +210,8 @@ const dailyServiceHourly = window.DAILY_SERVICE_HOURLY || { goals: { inStore: 2.
 const dailyPickers = Array.isArray(window.DAILY_PICKERS) ? window.DAILY_PICKERS : [];
 const weeklyInstoreRows = Array.isArray(window.WEEKLY_INSTORE_DATA?.weeks) ? window.WEEKLY_INSTORE_DATA.weeks : [];
 const weeklyInstoreGoal = Number(window.WEEKLY_INSTORE_DATA?.goal || 2.57);
+const serviceCompliance = window.SERVICE_COMPLIANCE_DATA || { goals: { inStore: 2.6, handoffPost: 0.9, handoffPre: 1.5, total: 12 }, period: {}, br: null, byDay: [], stores: [], storeDays: [], offenders: [], sourceColumns: {} };
+const serviceGoalsData = serviceCompliance.goals || { inStore: 2.6, handoffPost: 0.9, handoffPre: 1.5, total: 12 };
 
 if (hcGapRows.length) {
   const gapByStore = new Map(hcGapRows.map((row) => [normalizeStore(row.store), row]));
@@ -1144,6 +1146,150 @@ function renderDaily() {
   renderDailyPickingCompliance(dailyStores[0].store);
   renderDailyTable();
   renderDailyStore(dailyStores[0].store);
+}
+
+function serviceComplianceGoals() {
+  return {
+    inStore: num(serviceGoalsData.inStore, 2.6),
+    handoffPost: num(serviceGoalsData.handoffPost, 0.9),
+    handoffPre: num(serviceGoalsData.handoffPre, 1.5),
+    total: num(serviceGoalsData.total, 12),
+  };
+}
+
+function servicePeriodLabel() {
+  const period = serviceCompliance.period || {};
+  return period.start && period.end ? `${shortDate(period.start)} a ${shortDate(period.end)}` : "Semana passada";
+}
+
+function serviceMetricSignal(row) {
+  const goals = serviceComplianceGoals();
+  const issues = [];
+  if (num(row.inStore) > goals.inStore) issues.push("InStore");
+  if (num(row.handoffPost) > goals.handoffPost) issues.push("Handoff post");
+  if (num(row.handoffPre) > goals.handoffPre) issues.push("Handoff pre");
+  return issues.length ? issues.join(", ") : "Dentro das metas";
+}
+
+function serviceRowCells(row, includeStore = false, includeDay = false) {
+  const goals = serviceComplianceGoals();
+  return `
+    ${includeStore ? `<td><strong>${storeLink(row.store)}</strong></td>` : ""}
+    ${includeDay ? `<td><strong>${row.dayName || weekdayPt(row.date)}</strong><br><span>${row.date}</span></td>` : ""}
+    <td>${fmtInt(row.orders)}</td>
+    <td>${status(fixed(row.inStore), "inStore", "", "down", goals.inStore)}</td>
+    <td>${status(`${fixed(row.inStoreCompliance, 1)}%`, "prod", "", "up", 70)}</td>
+    <td>${status(fixed(row.handoffPost), "handoff", "", "down", goals.handoffPost)}</td>
+    <td>${status(`${fixed(row.handoffPostCompliance, 1)}%`, "prod", "", "up", 70)}</td>
+    <td>${status(fixed(row.handoffPre), "handoff", "", "down", goals.handoffPre)}</td>
+    <td>${status(`${fixed(row.handoffPreCompliance, 1)}%`, "prod", "", "up", 70)}</td>
+    <td>${status(fixed(row.total), "handoff", "", "down", goals.total)}</td>
+    <td>${row.offenderStage || serviceMetricSignal(row)}</td>`;
+}
+
+function renderServiceKpis() {
+  const target = document.querySelector("#service-kpis");
+  if (!target) return;
+  const br = serviceCompliance.br;
+  const pill = document.querySelector("#service-period-pill");
+  if (pill) pill.textContent = servicePeriodLabel();
+  if (!br || !num(br.orders)) {
+    target.innerHTML = `<article class="kpi"><p class="label">Status</p><p class="value">Sem dados</p><p class="sub">Rode a coleta de compliance semanal.</p></article>`;
+    return;
+  }
+  const goals = serviceComplianceGoals();
+  const source = serviceCompliance.sourceColumns || {};
+  const kpis = [
+    ["Orders", fmtInt(br.orders), servicePeriodLabel(), "neutral"],
+    ["InStore médio", fixed(br.inStore), `Meta: ${fixed(goals.inStore)} · ${source.inStore || ""}`, statusClass(br.inStore, "inStore", "down", goals.inStore)],
+    ["InStore comp.", `${fixed(br.inStoreCompliance, 1)}%`, "Orders dentro da meta", statusClass(br.inStoreCompliance, "prod", "up", 70)],
+    ["Handoff post", fixed(br.handoffPost), `Meta: ${fixed(goals.handoffPost)} · ${source.handoffPost || ""}`, br.handoffPost <= goals.handoffPost ? "green" : "red"],
+    ["Handoff post comp.", `${fixed(br.handoffPostCompliance, 1)}%`, "Orders dentro da meta", statusClass(br.handoffPostCompliance, "prod", "up", 70)],
+    ["Handoff pre", fixed(br.handoffPre), `Meta: ${fixed(goals.handoffPre)} · ${source.handoffPre || ""}`, br.handoffPre <= goals.handoffPre ? "green" : "red"],
+    ["Handoff pre comp.", `${fixed(br.handoffPreCompliance, 1)}%`, "Orders dentro da meta", statusClass(br.handoffPreCompliance, "prod", "up", 70)],
+    ["Tempo total", fixed(br.total), `Referência: ${fixed(goals.total)}`, br.total <= goals.total ? "green" : "red"],
+  ];
+  target.innerHTML = kpis
+    .map(([label, value, sub, cls]) => `<article class="kpi ${cls === "neutral" ? "" : cls}"><p class="label">${label}</p><p class="value">${value}</p><p class="sub">${sub}</p></article>`)
+    .join("");
+}
+
+function renderServiceDayTable() {
+  const table = document.querySelector("#service-day-table");
+  if (!table) return;
+  const rows = Array.isArray(serviceCompliance.byDay) ? serviceCompliance.byDay : [];
+  if (!rows.length) {
+    table.innerHTML = `<tbody><tr><td>Sem dados de compliance por dia para a semana passada.</td></tr></tbody>`;
+    return;
+  }
+  const head = ["Dia", "Orders", "InStore", "InStore comp.", "Handoff post", "Post comp.", "Handoff pre", "Pre comp.", "Total", "Etapa ofensora"];
+  table.innerHTML = `
+    <thead><tr>${head.map((item) => `<th>${item}</th>`).join("")}</tr></thead>
+    <tbody>${rows.map((row) => `<tr>${serviceRowCells(row, false, true)}</tr>`).join("")}</tbody>`;
+}
+
+function renderServiceOffendersTable() {
+  const table = document.querySelector("#service-offenders-table");
+  if (!table) return;
+  const rows = Array.isArray(serviceCompliance.offenders) ? serviceCompliance.offenders : [];
+  if (!rows.length) {
+    table.innerHTML = `<tbody><tr><td>Nenhuma loja com tempo total médio acima de 12 na semana.</td></tr></tbody>`;
+    return;
+  }
+  const head = ["Loja", "Orders", "InStore", "InStore comp.", "Handoff post", "Post comp.", "Handoff pre", "Pre comp.", "Total", "Etapa ofensora"];
+  table.innerHTML = `
+    <thead><tr>${head.map((item) => `<th>${item}</th>`).join("")}</tr></thead>
+    <tbody>${rows.map((row) => `<tr>${serviceRowCells(row, true, false)}</tr>`).join("")}</tbody>`;
+}
+
+function renderServiceStoreTable() {
+  const table = document.querySelector("#service-store-table");
+  if (!table) return;
+  const rows = Array.isArray(serviceCompliance.stores) ? serviceCompliance.stores : [];
+  if (!rows.length) {
+    table.innerHTML = `<tbody><tr><td>Sem dados semanais por loja.</td></tr></tbody>`;
+    return;
+  }
+  const head = ["Loja", "Orders", "InStore", "InStore comp.", "Handoff post", "Post comp.", "Handoff pre", "Pre comp.", "Total", "Etapa ofensora"];
+  table.innerHTML = `
+    <thead><tr>${head.map((item) => `<th>${item}</th>`).join("")}</tr></thead>
+    <tbody>${rows.map((row) => `<tr>${serviceRowCells(row, true, false)}</tr>`).join("")}</tbody>`;
+}
+
+function serviceStoreOptions() {
+  const stores = Array.isArray(serviceCompliance.storeDays)
+    ? [...new Set(serviceCompliance.storeDays.map((row) => row.store).filter(Boolean))]
+    : [];
+  return stores.sort((a, b) => a.localeCompare(b));
+}
+
+function renderServiceStoreDayTable(storeName = "Todas") {
+  const table = document.querySelector("#service-store-day-table");
+  if (!table) return;
+  const rows = (Array.isArray(serviceCompliance.storeDays) ? serviceCompliance.storeDays : [])
+    .filter((row) => storeName === "Todas" || normalizeStore(row.store) === normalizeStore(storeName));
+  if (!rows.length) {
+    table.innerHTML = `<tbody><tr><td>Sem dados por loja e dia.</td></tr></tbody>`;
+    return;
+  }
+  const head = ["Loja", "Dia", "Orders", "InStore", "InStore comp.", "Handoff post", "Post comp.", "Handoff pre", "Pre comp.", "Total", "Etapa ofensora"];
+  table.innerHTML = `
+    <thead><tr>${head.map((item) => `<th>${item}</th>`).join("")}</tr></thead>
+    <tbody>${rows.map((row) => `<tr>${serviceRowCells(row, true, true)}</tr>`).join("")}</tbody>`;
+}
+
+function renderServiceCompliance() {
+  renderServiceKpis();
+  renderServiceDayTable();
+  renderServiceOffendersTable();
+  renderServiceStoreTable();
+  const select = document.querySelector("#service-store-filter");
+  if (select) {
+    const stores = serviceStoreOptions();
+    select.innerHTML = [`<option value="Todas">Todas as lojas</option>`, ...stores.map((store) => `<option value="${store}">${store}</option>`)].join("");
+    select.addEventListener("change", () => renderServiceStoreDayTable(select.value));
+  }
+  renderServiceStoreDayTable("Todas");
 }
 
 function renderOffenders() {
@@ -2371,6 +2517,7 @@ function renderCharts() {
 
 function pageForHash(hash = window.location.hash) {
   if (hash.startsWith("#daily")) return "daily";
+  if (hash.startsWith("#service")) return "service";
   if (hash.startsWith("#connectivity")) return "connectivity";
   if (["#br", "#escala", "#coords"].includes(hash)) return "gerencial";
   return "home";
@@ -2399,7 +2546,7 @@ function handleHashNavigation() {
 }
 
 function latestUpdateStamp() {
-  const dates = [window.OKRS_DATA_UPDATED_AT, window.DAILY_DATA_UPDATED_AT, window.SCALE_DATA_UPDATED_AT, window.HC_GAP_DATA_UPDATED_AT, window.WEEKLY_INSTORE_DATA_UPDATED_AT]
+  const dates = [window.OKRS_DATA_UPDATED_AT, window.DAILY_DATA_UPDATED_AT, window.SCALE_DATA_UPDATED_AT, window.HC_GAP_DATA_UPDATED_AT, window.WEEKLY_INSTORE_DATA_UPDATED_AT, window.SERVICE_COMPLIANCE_UPDATED_AT]
     .filter(Boolean)
     .map((value) => new Date(value))
     .filter((date) => !Number.isNaN(date.getTime()));
@@ -2418,6 +2565,7 @@ function init() {
   renderOffenders();
   renderBrPickingCompliance();
   renderDaily();
+  renderServiceCompliance();
   renderConnectivity();
   renderPickerGapTable();
   renderHcAdjustment();
