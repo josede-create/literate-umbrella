@@ -3,26 +3,59 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Operações In Store Turbo - Conectividade Brasil</title>
+    <title>Operações In Store Turbo - 27/04/2026</title>
     <link rel="stylesheet" href="./styles.css" />
   </head>
   <body>
     <header class="topbar">
       <div>
-        <p class="eyebrow">Weekly - Coordenadores Turbo</p>
+        <p class="eyebrow">Dashboard - Coordenadores Turbo</p>
         <h1>Operações In Store Turbo</h1>
-        <p class="meta">Dados gerenciais + conectividade pre-jogo Brasil em 13/06, 19/06 e 24/06/2026</p>
+        <p class="meta">Visão mensal BR, gerencial semanal e daily loja a loja · OKRS, escala, saturação e produtividade</p>
         <p class="update-stamp" id="data-updated-at">Última atualização dos dados: carregando...</p>
       </div>
       <nav class="tabs" aria-label="Seções do dashboard">
+        <a href="#home">Início</a>
         <a href="#br">BR Gerencial</a>
-        <a href="#conectividade">Conectividade</a>
-        <a href="#escala">Escala</a>
-        <a href="#coords">Coordenadores</a>
+        <a href="#daily">Daily</a>
+        <a href="#connectivity">Conectividade</a>
       </nav>
     </header>
 
     <main>
+      <section id="home" class="section home-section">
+        <div class="section-title">
+          <div>
+            <p class="eyebrow">Parte 1</p>
+            <h2>Indicadores BR Gerencial</h2>
+          </div>
+          <p class="section-note">Resultado do mês atual em nível BR. A navegação abaixo leva para a visão gerencial semanal ou para o detalhe diário por loja.</p>
+        </div>
+        <div class="kpi-grid dense" id="month-kpis"></div>
+        <div class="home-grid">
+          <a class="home-card" href="#br">
+            <span>Página 2</span>
+            <strong>BR Gerencial</strong>
+            <em>Indicadores semanais, escala, ofensores e coordenadores</em>
+          </a>
+          <a class="home-card" href="#daily">
+            <span>Página 3</span>
+            <strong>Daily</strong>
+            <em>OKRS, pedidos, qualidade, produtividade e saturação</em>
+          </a>
+          <a class="home-card" href="#connectivity">
+            <span>Página 4</span>
+            <strong>Conectividade</strong>
+            <em>Semana atual até ontem, semana passada fechada e leitura de picker</em>
+          </a>
+          <div class="home-card home-card-static">
+            <span>Status</span>
+            <strong id="home-update-card">Dados carregados</strong>
+            <em>Atualização exibida no topo do dashboard</em>
+          </div>
+        </div>
+      </section>
+
       <section id="br" class="section">
         <div class="section-title">
           <div>
@@ -45,6 +78,30 @@
           </div>
         </article>
 
+        <article class="panel weekly-instore-panel">
+          <div class="panel-head">
+            <h3>InStore - últimas 4 semanas</h3>
+            <span class="pill">Assign + Picking + Packing</span>
+          </div>
+          <p class="chart-note">Barras empilhadas mostram a composição do InStore. As linhas mostram produtividade e lojas dentro da meta de InStore ≤ 2.57.</p>
+          <div class="chart-shell weekly-instore-shell">
+            <canvas id="weekly-instore-chart" height="560"></canvas>
+          </div>
+          <div class="table-wrap">
+            <table id="weekly-instore-table" class="compact-table"></table>
+          </div>
+        </article>
+
+        <article class="panel">
+          <div class="panel-head">
+            <h3>Compliance BR</h3>
+            <span class="pill" id="br-picking-compliance-pill">Última semana fechada</span>
+          </div>
+          <div class="table-wrap sticky-head-wrap">
+            <table id="br-picking-compliance-table" class="compact-table"></table>
+          </div>
+        </article>
+
         <article class="panel insight-panel">
           <div class="panel-head">
             <h3>Principais insights</h3>
@@ -64,44 +121,101 @@
         </article>
       </section>
 
-      <section id="conectividade" class="section">
+      <section id="daily" class="section">
         <div class="section-title">
           <div>
-            <p class="eyebrow">Copa do Mundo</p>
-            <h2>Conectividade pre-jogo Brasil</h2>
+            <p class="eyebrow">Daily</p>
+            <h2>Daily</h2>
           </div>
-          <p class="section-note">Janelas de 4 horas antes dos jogos do Brasil, com picker-hora conectado, necessidade forecast, pico de pickers únicos e lojas com maior gap.</p>
+          <p class="section-note">Painel por loja com resultado do dia anterior, detalhes operacionais e leitura de saturação quando disponível.</p>
         </div>
 
-        <div class="kpi-grid connectivity-grid" id="connectivity-kpis"></div>
-
-        <article class="panel connectivity-panel">
+        <article class="panel">
           <div class="panel-head">
-            <h3>Resumo por jogo</h3>
-            <span class="pill">Pre-jogo</span>
+            <h3>Resultado D-1 BR</h3>
+            <span class="pill" id="daily-br-date-pill">D-1</span>
           </div>
-          <div class="table-wrap">
-            <table id="connectivity-summary-table" class="compact-table"></table>
-          </div>
+          <div class="kpi-grid dense" id="daily-br-kpis"></div>
         </article>
 
-        <article class="panel connectivity-panel">
+        <article class="panel">
           <div class="panel-head">
-            <h3>Conectividade por hora</h3>
-            <span class="pill warning">Picker-hora</span>
+            <h3>InStore e Handoff compliance BR</h3>
+            <span class="pill" id="daily-service-compliance-pill">D-1</span>
           </div>
-          <div class="table-wrap matrix-wrap">
-            <table id="connectivity-hourly-table" class="matrix-table connectivity-hourly-table"></table>
+          <div class="kpi-grid dense" id="daily-service-compliance-kpis"></div>
+        </article>
+
+        <article class="panel">
+          <div class="panel-head">
+            <h3>Gerencial BR por hora</h3>
+            <span class="pill">Orders · InStore · Handoff</span>
+          </div>
+          <div class="table-wrap sticky-head-wrap">
+            <table id="daily-br-hourly-table" class="compact-table"></table>
           </div>
         </article>
 
         <article class="panel">
           <div class="panel-head">
-            <h3>Lojas com maior gap no último jogo</h3>
-            <span class="pill danger">Brasil x Escocia</span>
+            <h3>InStore compliance por loja</h3>
+            <span class="pill">Todas as lojas</span>
+          </div>
+          <div class="table-wrap sticky-head-wrap">
+            <table id="daily-store-compliance-table" class="compact-table"></table>
+          </div>
+        </article>
+
+        <article class="panel">
+          <div class="panel-head">
+            <h3>Resumo D-1 por loja</h3>
+            <span class="pill" id="daily-date-pill">D-1</span>
+          </div>
+          <div class="daily-controls">
+            <label for="daily-store-select">Loja</label>
+            <select id="daily-store-select"></select>
+          </div>
+          <div class="kpi-grid dense" id="daily-kpis"></div>
+          <div id="daily-store-detail" class="daily-detail"></div>
+        </article>
+
+        <article class="panel">
+          <div class="panel-head">
+            <h3>Loja por hora</h3>
+            <span class="pill" id="daily-store-hourly-pill">Orders · InStore · Handoff</span>
+          </div>
+          <div class="table-wrap sticky-head-wrap">
+            <table id="daily-store-hourly-table" class="compact-table"></table>
+          </div>
+        </article>
+
+        <article class="panel">
+          <div class="panel-head">
+            <h3>Tempos e orders por picker</h3>
+            <span class="pill danger">Ofensores da loja</span>
           </div>
           <div class="table-wrap">
-            <table id="connectivity-store-table" class="compact-table"></table>
+            <table id="daily-picker-table" class="compact-table"></table>
+          </div>
+        </article>
+
+        <article class="panel">
+          <div class="panel-head">
+            <h3>Compliance D-1</h3>
+            <span class="pill" id="daily-picking-compliance-pill">D-1</span>
+          </div>
+          <div class="table-wrap sticky-head-wrap">
+            <table id="daily-picking-compliance-table" class="compact-table"></table>
+          </div>
+        </article>
+
+        <article class="panel">
+          <div class="panel-head">
+            <h3>Ranking de atenção D-1</h3>
+            <span class="pill danger">Todas as lojas</span>
+          </div>
+          <div class="table-wrap">
+            <table id="daily-table" class="compact-table"></table>
           </div>
         </article>
       </section>
@@ -112,7 +226,7 @@
             <p class="eyebrow">Parte 1.2</p>
             <h2>Pickers, forecast e escala</h2>
           </div>
-          <p class="section-note">A visão usa a base real de forecast, pickers necessários, programados e conectados nas janelas dos jogos.</p>
+          <p class="section-note">A visão usa a fórmula customizada de pickers necessários, considerando tempo em loja, orders por hora e apoio de recebimento.</p>
         </div>
 
         <article class="panel gap-panel">
@@ -130,26 +244,106 @@
 
         <article class="panel">
           <div class="panel-head">
-            <h3>Modelo BR por dia e hora</h3>
-            <span class="pill">Jogos Brasil</span>
+            <h3>Sugestão de ajuste de HC</h3>
+            <span class="pill warning">HC Preview + Delta BR</span>
           </div>
+          <p class="chart-note">Need HC considera escala operacional por dia: madrugada, AM, PM e intermediários para picos, jornada 7h20, 6x1, sábado com time completo, dias úteis com 20% de folga e domingo com 30% do time em folga. Helppi entra só como cobertura pontual de pico, limitado a 3 por dia e 6 por semana por loja.</p>
+          <div class="kpi-grid dense hc-summary" id="hc-adjust-summary"></div>
+          <div class="table-wrap">
+            <table id="hc-adjust-table" class="compact-table"></table>
+          </div>
+          <div class="table-wrap slim">
+            <table id="hc-transfer-table" class="compact-table"></table>
+          </div>
+        </article>
+
+        <article class="panel">
+          <div class="panel-head">
+            <h3>Sugestão de escala - lojas ofensoras</h3>
+            <span class="pill danger">Top 5 InStore</span>
+          </div>
+          <p class="chart-note">Sugestão por dia e turno para as 5 lojas mais ofensoras em InStore. Jornada usada: 7h20. Domingo considera 30% do time em folga.</p>
+          <div class="table-wrap">
+            <table id="offender-schedule-table" class="compact-table"></table>
+          </div>
+        </article>
+
+      </section>
+
+      <section id="connectivity" class="section">
+        <div class="section-title">
+          <div>
+            <p class="eyebrow">Parte 1.3</p>
+            <h2>Conectividade</h2>
+          </div>
+          <p class="section-note">Leitura concentrada de conectividade, picking, intervalos, reception e outras atividades. A semana atual respeita o corte de ontem.</p>
+        </div>
+
+        <article class="panel">
+          <div class="panel-head">
+            <h3>Gerencial BR da semana atual</h3>
+            <span class="pill" id="connectivity-current-pill">Semana atual</span>
+          </div>
+          <p class="chart-note">Modelo BR por dia e hora com separação entre picking, rest, reception e outras atividades. O delta usa apenas `pickers in picking` contra o need.</p>
           <div class="matrix-legend">
             <span><i class="heat bad"></i> Delta negativo</span>
             <span><i class="heat ok"></i> Cobertura neutra</span>
             <span><i class="heat good"></i> Sobra de cobertura</span>
           </div>
           <div class="table-wrap matrix-wrap">
-            <table id="hourly-matrix" class="matrix-table"></table>
+            <table id="connectivity-current-table" class="matrix-table"></table>
           </div>
         </article>
 
         <article class="panel">
           <div class="panel-head">
-            <h3>Escala por loja ofensora em InStore</h3>
-            <span class="pill danger">Fora do InStore</span>
+            <h3>Semana passada completa por dia</h3>
+            <span class="pill">Fechada</span>
           </div>
-          <div class="table-wrap">
-            <table id="scale-priority-table" class="matrix-table store-matrix"></table>
+          <div class="table-wrap matrix-wrap">
+            <table id="connectivity-previous-table" class="matrix-table"></table>
+          </div>
+        </article>
+
+        <article class="panel">
+          <div class="panel-head">
+            <h3>Pickers ofensores da semana atual</h3>
+            <span class="pill danger">Baixa aderência ao picking</span>
+          </div>
+          <p class="chart-note">Mostra pickers que apareceram em mais de 4 dias na semana e concentraram menos tempo no módulo de picking.</p>
+          <div class="table-wrap sticky-head-wrap">
+            <table id="connectivity-picker-offenders-table" class="compact-table"></table>
+          </div>
+        </article>
+
+        <article class="panel">
+          <div class="panel-head">
+            <h3>Visão por loja</h3>
+            <span class="pill">Filtro único</span>
+          </div>
+          <div class="daily-controls">
+            <label for="connectivity-store-filter">Loja</label>
+            <select id="connectivity-store-filter"></select>
+          </div>
+          <div class="connectivity-store-grid">
+            <div>
+              <div class="panel-subhead">
+                <h4>Semana atual</h4>
+                <span class="pill" id="connectivity-store-current-pill">Até ontem</span>
+              </div>
+              <div class="table-wrap matrix-wrap">
+                <table id="connectivity-store-current-table" class="matrix-table store-matrix"></table>
+              </div>
+            </div>
+            <div>
+              <div class="panel-subhead">
+                <h4>Semana passada</h4>
+                <span class="pill">Fechada</span>
+              </div>
+              <div class="table-wrap matrix-wrap">
+                <table id="connectivity-store-previous-table" class="matrix-table store-matrix"></table>
+              </div>
+            </div>
           </div>
         </article>
       </section>
@@ -164,10 +358,24 @@
         </div>
 
         <div id="coord-grid" class="coord-grid"></div>
+
+        <article class="panel">
+          <div class="panel-head">
+            <h3>Compliance por coordenador</h3>
+            <span class="pill" id="coord-picking-compliance-pill">Última semana fechada</span>
+          </div>
+          <div class="table-wrap sticky-head-wrap">
+            <table id="coord-picking-compliance-table" class="compact-table"></table>
+          </div>
+        </article>
       </section>
     </main>
 
     <script src="./scale_data.js"></script>
+    <script src="./okrs_data.js"></script>
+    <script src="./hc_gap_data.js"></script>
+    <script src="./daily_data.js"></script>
+    <script src="./weekly_instore_data.js"></script>
     <script src="./app.js"></script>
   </body>
 </html>
