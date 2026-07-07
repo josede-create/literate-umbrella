@@ -10,11 +10,24 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".deps"))
 import snowflake.connector
 
 
-GOALS = {
-    "inStore": 2.6,
-    "handoffPost": 0.9,
+BASE_GOALS = {
     "handoffPre": 1.5,
     "total": 12.0,
+}
+
+BR_MONTHLY_GOALS = {
+    1: {"inStore": 2.65, "handoffPost": 1.24},
+    2: {"inStore": 2.63, "handoffPost": 1.20},
+    3: {"inStore": 2.60, "handoffPost": 1.17},
+    4: {"inStore": 2.57, "handoffPost": 1.14},
+    5: {"inStore": 2.55, "handoffPost": 1.10},
+    6: {"inStore": 2.60, "handoffPost": 1.07},
+    7: {"inStore": 2.65, "handoffPost": 1.04},
+    8: {"inStore": 2.47, "handoffPost": 1.01},
+    9: {"inStore": 2.45, "handoffPost": 0.98},
+    10: {"inStore": 2.47, "handoffPost": 0.95},
+    11: {"inStore": 2.50, "handoffPost": 0.92},
+    12: {"inStore": 2.52, "handoffPost": 0.89},
 }
 
 DAY_NAMES = {
@@ -47,6 +60,10 @@ def metric_template():
         "handoffPostSum": 0.0,
         "handoffPreSum": 0.0,
         "totalSum": 0.0,
+        "inStoreGoalSum": 0.0,
+        "handoffPostGoalSum": 0.0,
+        "handoffPreGoalSum": 0.0,
+        "totalGoalSum": 0.0,
         "inStoreOk": 0,
         "handoffPostOk": 0,
         "handoffPreOk": 0,
@@ -59,11 +76,15 @@ def add_order(bucket, row):
     bucket["handoffPostSum"] += row["handoffPost"]
     bucket["handoffPreSum"] += row["handoffPre"]
     bucket["totalSum"] += row["total"]
-    if row["inStore"] <= GOALS["inStore"]:
+    bucket["inStoreGoalSum"] += row["goals"]["inStore"]
+    bucket["handoffPostGoalSum"] += row["goals"]["handoffPost"]
+    bucket["handoffPreGoalSum"] += row["goals"]["handoffPre"]
+    bucket["totalGoalSum"] += row["goals"]["total"]
+    if row["inStore"] <= row["goals"]["inStore"]:
         bucket["inStoreOk"] += 1
-    if row["handoffPost"] <= GOALS["handoffPost"]:
+    if row["handoffPost"] <= row["goals"]["handoffPost"]:
         bucket["handoffPostOk"] += 1
-    if row["handoffPre"] <= GOALS["handoffPre"]:
+    if row["handoffPre"] <= row["goals"]["handoffPre"]:
         bucket["handoffPreOk"] += 1
 
 
@@ -75,11 +96,23 @@ def avg(total, orders):
     return round(total / orders, 2) if orders else 0.0
 
 
+def goals_for_date(date_value):
+    month = int(str(date_value)[5:7])
+    monthly = BR_MONTHLY_GOALS.get(month, BR_MONTHLY_GOALS[7])
+    return {
+        "inStore": monthly["inStore"],
+        "handoffPost": monthly["handoffPost"],
+        "handoffPre": BASE_GOALS["handoffPre"],
+        "total": BASE_GOALS["total"],
+    }
+
+
 def worst_stage(metric):
+    orders = metric["orders"]
     gaps = {
-        "InStore": avg(metric["inStoreSum"], metric["orders"]) - GOALS["inStore"],
-        "Handoff post": avg(metric["handoffPostSum"], metric["orders"]) - GOALS["handoffPost"],
-        "Handoff pre": avg(metric["handoffPreSum"], metric["orders"]) - GOALS["handoffPre"],
+        "InStore": avg(metric["inStoreSum"], orders) - avg(metric["inStoreGoalSum"], orders),
+        "Handoff post": avg(metric["handoffPostSum"], orders) - avg(metric["handoffPostGoalSum"], orders),
+        "Handoff pre": avg(metric["handoffPreSum"], orders) - avg(metric["handoffPreGoalSum"], orders),
     }
     offenders = [name for name, gap in gaps.items() if gap > 0]
     if not offenders:
@@ -95,6 +128,10 @@ def summarize(metric, extra=None):
         "handoffPost": avg(metric["handoffPostSum"], orders),
         "handoffPre": avg(metric["handoffPreSum"], orders),
         "total": avg(metric["totalSum"], orders),
+        "inStoreGoal": avg(metric["inStoreGoalSum"], orders),
+        "handoffPostGoal": avg(metric["handoffPostGoalSum"], orders),
+        "handoffPreGoal": avg(metric["handoffPreGoalSum"], orders),
+        "totalGoal": avg(metric["totalGoalSum"], orders),
         "inStoreCompliance": pct(metric["inStoreOk"], orders),
         "handoffPostCompliance": pct(metric["handoffPostOk"], orders),
         "handoffPreCompliance": pct(metric["handoffPreOk"], orders),
@@ -228,6 +265,7 @@ def main():
             "handoffPost": float(row["HANDOFF_POST"] or 0),
             "handoffPre": float(row["HANDOFF_PRE"] or 0),
             "total": float(row["TOTAL_TIME"] or 0),
+            "goals": goals_for_date(order_date),
         }
 
         add_order(br, item)
@@ -250,7 +288,7 @@ def main():
         summarize(metric, {"store": store})
         for store, metric in by_store.items()
     ]
-    store_rows.sort(key=lambda row: (row["total"] <= GOALS["total"], -row["total"], row["store"]))
+    store_rows.sort(key=lambda row: (row["total"] <= row["totalGoal"], -row["total"], row["store"]))
 
     store_day_rows = [
         summarize(value["metric"], {"store": value["store"], "date": value["date"], "dayName": value["dayName"]})
@@ -258,11 +296,19 @@ def main():
     ]
     store_day_rows.sort(key=lambda row: (row["store"], row["date"]))
 
-    offenders = [row for row in store_rows if row["total"] > GOALS["total"]]
+    offenders = [row for row in store_rows if row["total"] > row["totalGoal"]]
     offenders.sort(key=lambda row: (-row["total"], row["store"]))
+    br_summary = summarize(br)
 
     data = {
-        "goals": GOALS,
+        "goals": {
+            "inStore": br_summary["inStoreGoal"],
+            "handoffPost": br_summary["handoffPostGoal"],
+            "handoffPre": br_summary["handoffPreGoal"],
+            "total": br_summary["totalGoal"],
+        },
+        "monthlyGoals": BR_MONTHLY_GOALS,
+        "targetSource": "TARGETS ALIGNMENT / Resumen: BR rows for (Instore) Picking time and Handoff post; Handoff pre fixed at 1.5",
         "period": {"start": start_date, "end": end_date},
         "sourceColumns": {
             "inStore": "ASSING_TO_PICKER + PICKING + PACKING",
@@ -270,7 +316,7 @@ def main():
             "handoffPre": handoff_pre_col,
             "total": total_col or "inStore + handoffPost + handoffPre",
         },
-        "br": summarize(br),
+        "br": br_summary,
         "byDay": day_rows,
         "stores": store_rows,
         "storeDays": store_day_rows,

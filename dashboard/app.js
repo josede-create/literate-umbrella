@@ -210,8 +210,8 @@ const dailyServiceHourly = window.DAILY_SERVICE_HOURLY || { goals: { inStore: 2.
 const dailyPickers = Array.isArray(window.DAILY_PICKERS) ? window.DAILY_PICKERS : [];
 const weeklyInstoreRows = Array.isArray(window.WEEKLY_INSTORE_DATA?.weeks) ? window.WEEKLY_INSTORE_DATA.weeks : [];
 const weeklyInstoreGoal = Number(window.WEEKLY_INSTORE_DATA?.goal || 2.57);
-const serviceCompliance = window.SERVICE_COMPLIANCE_DATA || { goals: { inStore: 2.6, handoffPost: 0.9, handoffPre: 1.5, total: 12 }, period: {}, br: null, byDay: [], stores: [], storeDays: [], offenders: [], sourceColumns: {} };
-const serviceGoalsData = serviceCompliance.goals || { inStore: 2.6, handoffPost: 0.9, handoffPre: 1.5, total: 12 };
+const serviceCompliance = window.SERVICE_COMPLIANCE_DATA || { goals: { inStore: 2.65, handoffPost: 1.04, handoffPre: 1.5, total: 12 }, period: {}, br: null, byDay: [], stores: [], storeDays: [], offenders: [], sourceColumns: {} };
+const serviceGoalsData = serviceCompliance.goals || { inStore: 2.65, handoffPost: 1.04, handoffPre: 1.5, total: 12 };
 
 if (hcGapRows.length) {
   const gapByStore = new Map(hcGapRows.map((row) => [normalizeStore(row.store), row]));
@@ -1148,12 +1148,12 @@ function renderDaily() {
   renderDailyStore(dailyStores[0].store);
 }
 
-function serviceComplianceGoals() {
+function serviceComplianceGoals(row = null) {
   return {
-    inStore: num(serviceGoalsData.inStore, 2.6),
-    handoffPost: num(serviceGoalsData.handoffPost, 0.9),
-    handoffPre: num(serviceGoalsData.handoffPre, 1.5),
-    total: num(serviceGoalsData.total, 12),
+    inStore: num(row?.inStoreGoal, num(serviceGoalsData.inStore, 2.65)),
+    handoffPost: num(row?.handoffPostGoal, num(serviceGoalsData.handoffPost, 1.04)),
+    handoffPre: num(row?.handoffPreGoal, num(serviceGoalsData.handoffPre, 1.5)),
+    total: num(row?.totalGoal, num(serviceGoalsData.total, 12)),
   };
 }
 
@@ -1163,7 +1163,7 @@ function servicePeriodLabel() {
 }
 
 function serviceMetricSignal(row) {
-  const goals = serviceComplianceGoals();
+  const goals = serviceComplianceGoals(row);
   const issues = [];
   if (num(row.inStore) > goals.inStore) issues.push("InStore");
   if (num(row.handoffPost) > goals.handoffPost) issues.push("Handoff post");
@@ -1171,8 +1171,13 @@ function serviceMetricSignal(row) {
   return issues.length ? issues.join(", ") : "Dentro das metas";
 }
 
+function serviceTargetLabel(row) {
+  const goals = serviceComplianceGoals(row);
+  return `Metas: IS ${fixed(goals.inStore)} · Post ${fixed(goals.handoffPost)} · Pre ${fixed(goals.handoffPre)}`;
+}
+
 function serviceRowCells(row, includeStore = false, includeDay = false) {
-  const goals = serviceComplianceGoals();
+  const goals = serviceComplianceGoals(row);
   return `
     ${includeStore ? `<td><strong>${storeLink(row.store)}</strong></td>` : ""}
     ${includeDay ? `<td><strong>${row.dayName || weekdayPt(row.date)}</strong><br><span>${row.date}</span></td>` : ""}
@@ -1184,7 +1189,7 @@ function serviceRowCells(row, includeStore = false, includeDay = false) {
     <td>${status(fixed(row.handoffPre), "handoff", "", "down", goals.handoffPre)}</td>
     <td>${status(`${fixed(row.handoffPreCompliance, 1)}%`, "prod", "", "up", 70)}</td>
     <td>${status(fixed(row.total), "handoff", "", "down", goals.total)}</td>
-    <td>${row.offenderStage || serviceMetricSignal(row)}</td>`;
+    <td>${row.offenderStage || serviceMetricSignal(row)}<br><span>${serviceTargetLabel(row)}</span></td>`;
 }
 
 function renderServiceKpis() {
@@ -1197,13 +1202,14 @@ function renderServiceKpis() {
     target.innerHTML = `<article class="kpi"><p class="label">Status</p><p class="value">Sem dados</p><p class="sub">Rode a coleta de compliance semanal.</p></article>`;
     return;
   }
-  const goals = serviceComplianceGoals();
+  const goals = serviceComplianceGoals(br);
   const source = serviceCompliance.sourceColumns || {};
+  const targetSource = serviceCompliance.targetSource ? "Targets BR da planilha" : "Meta";
   const kpis = [
     ["Orders", fmtInt(br.orders), servicePeriodLabel(), "neutral"],
-    ["InStore médio", fixed(br.inStore), `Meta: ${fixed(goals.inStore)} · ${source.inStore || ""}`, statusClass(br.inStore, "inStore", "down", goals.inStore)],
+    ["InStore médio", fixed(br.inStore), `${targetSource}: ${fixed(goals.inStore)} · ${source.inStore || ""}`, statusClass(br.inStore, "inStore", "down", goals.inStore)],
     ["InStore comp.", `${fixed(br.inStoreCompliance, 1)}%`, "Orders dentro da meta", statusClass(br.inStoreCompliance, "prod", "up", 70)],
-    ["Handoff post", fixed(br.handoffPost), `Meta: ${fixed(goals.handoffPost)} · ${source.handoffPost || ""}`, br.handoffPost <= goals.handoffPost ? "green" : "red"],
+    ["Handoff post", fixed(br.handoffPost), `${targetSource}: ${fixed(goals.handoffPost)} · ${source.handoffPost || ""}`, br.handoffPost <= goals.handoffPost ? "green" : "red"],
     ["Handoff post comp.", `${fixed(br.handoffPostCompliance, 1)}%`, "Orders dentro da meta", statusClass(br.handoffPostCompliance, "prod", "up", 70)],
     ["Handoff pre", fixed(br.handoffPre), `Meta: ${fixed(goals.handoffPre)} · ${source.handoffPre || ""}`, br.handoffPre <= goals.handoffPre ? "green" : "red"],
     ["Handoff pre comp.", `${fixed(br.handoffPreCompliance, 1)}%`, "Orders dentro da meta", statusClass(br.handoffPreCompliance, "prod", "up", 70)],
