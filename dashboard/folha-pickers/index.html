@@ -466,10 +466,29 @@ body.coordinator-view .main-only {
   overflow: auto;
 }
 
+.matrix-block {
+  border-top: 1px solid var(--line);
+  margin-top: 18px;
+  padding-top: 16px;
+}
+
+.matrix-heading {
+  margin-bottom: 10px;
+}
+
+.matrix-heading h3 {
+  font-size: 16px;
+  margin: 0;
+}
+
 table {
   border-collapse: collapse;
   min-width: 1420px;
   width: 100%;
+}
+
+.cost-matrix {
+  min-width: 760px;
 }
 
 th,
@@ -496,6 +515,23 @@ th:first-child,
 th:nth-child(2),
 th:nth-child(3) {
   text-align: left;
+}
+
+.cost-matrix th,
+.cost-matrix td {
+  text-align: right;
+}
+
+.cost-matrix th:first-child,
+.cost-matrix td:first-child {
+  font-weight: 700;
+  text-align: left;
+}
+
+.cost-matrix .total-row td {
+  background: #f7faf7;
+  color: var(--ink);
+  font-weight: 800;
 }
 
 .pill {
@@ -731,6 +767,20 @@ th:nth-child(3) {
             </thead>
             <tbody id="financeTable"></tbody>
           </table>
+        </div>
+        <div class="matrix-block">
+          <div class="panel-heading matrix-heading">
+            <div>
+              <h3>Custos por origem</h3>
+              <span>Linhas por fornecedor e colunas por mês</span>
+            </div>
+          </div>
+          <div class="table-wrap">
+            <table class="cost-matrix">
+              <thead id="costOriginHead"></thead>
+              <tbody id="costOriginRows"></tbody>
+            </table>
+          </div>
         </div>
       </section>
 
@@ -1641,6 +1691,29 @@ function renderFinanceTable() {
         <td>${hasValue(row.ue_planejado) ? fmtMoneyCents.format(number(row.ue_planejado)) : "n/d"}</td>
         <td>${hasValue(row.ue_executado) ? fmtMoneyCents.format(number(row.ue_executado)) : "n/d"}</td>
         <td><span class="pill ${ueClass}">${deltaUe > 0 ? "+" : ""}${hasValue(row.delta_ue) ? fmtMoneyCents.format(deltaUe) : "n/d"}</span></td>
+      </tr>`;
+    })
+    .join("");
+  renderCostOriginTable(rows);
+}
+
+function renderCostOriginTable(rows) {
+  const sources = [
+    { label: "GNX", key: "custo_total_folha_bruto_gnx" },
+    { label: "Moustache", key: "custo_total_folha_bruto_moustache" },
+    { label: "3PL", key: "custo_3pl" },
+    { label: "Total", key: "custo_total_pickers_com_3pl", total: true },
+  ];
+  document.querySelector("#costOriginHead").innerHTML = `
+    <tr>
+      <th>Origem</th>
+      ${rows.map((row) => `<th>${monthLabel[row.mes] || row.mes}</th>`).join("")}
+    </tr>`;
+  document.querySelector("#costOriginRows").innerHTML = sources
+    .map((source) => {
+      return `<tr class="${source.total ? "total-row" : ""}">
+        <td>${source.label}</td>
+        ${rows.map((row) => `<td>${fmtMoney.format(number(row[source.key]))}</td>`).join("")}
       </tr>`;
     })
     .join("");
