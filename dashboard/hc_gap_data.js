@@ -1,241 +1,247 @@
-window.HC_GAP_DATA_UPDATED_AT = "2026-07-13T10:55:45-03:00";
+window.HC_GAP_DATA_UPDATED_AT = "2026-08-03T12:05:12-03:00";
 window.HC_GAP_DATA = {
-  "source": "Forecast Ops Pickers / semana fechada 2026-07-06 a 2026-07-12 / HC equivalente: soma dos slots-hora PICKERS_NEEDED vs PICKERS_SCHEDULED dividido por 48h",
-  "month": "Julho",
+  "source": "Forecast Ops Pickers / semana fechada 2026-07-27 a 2026-08-02 / HC equivalente: soma dos slots-hora PICKERS_NEEDED vs PICKERS_SCHEDULED dividido por 48h",
+  "month": "Agosto",
   "rows": [
     {
       "store": "Santana",
+      "plan": 5.2,
+      "real": 4.1,
+      "diff": -1.1
+    },
+    {
+      "store": "Aclimação",
       "plan": 5.5,
-      "real": 5,
-      "diff": -0.5
-    },
-    {
-      "store": "Vila Clementino",
-      "plan": 8,
-      "real": 8,
-      "diff": -0.1
-    },
-    {
-      "store": "Castelo",
-      "plan": 4.5,
-      "real": 4.4,
-      "diff": 0
-    },
-    {
-      "store": "Estoril",
-      "plan": 6.7,
-      "real": 6.7,
-      "diff": 0
-    },
-    {
-      "store": "Barra da Tijuca 2",
-      "plan": 4.8,
-      "real": 5,
-      "diff": 0.3
+      "real": 4.9,
+      "diff": -0.7
     },
     {
       "store": "Alphaville",
-      "plan": 4,
-      "real": 4.4,
+      "plan": 3.9,
+      "real": 3.9,
+      "diff": 0.0
+    },
+    {
+      "store": "Castelo",
+      "plan": 4.2,
+      "real": 4.6,
       "diff": 0.4
+    },
+    {
+      "store": "Vila Izabel",
+      "plan": 5.0,
+      "real": 5.5,
+      "diff": 0.5
+    },
+    {
+      "store": "Ipanema",
+      "plan": 5.7,
+      "real": 6.4,
+      "diff": 0.7
     },
     {
       "store": "PA Centro",
       "plan": 5.5,
-      "real": 5.9,
-      "diff": 0.4
-    },
-    {
-      "store": "Aclimação",
-      "plan": 5.8,
-      "real": 6.3,
-      "diff": 0.5
+      "real": 6.2,
+      "diff": 0.7
     },
     {
       "store": "Nova Recreio",
-      "plan": 3.8,
-      "real": 4.4,
-      "diff": 0.5
+      "plan": 3.7,
+      "real": 4.5,
+      "diff": 0.8
+    },
+    {
+      "store": "Vila Mascote",
+      "plan": 6.5,
+      "real": 7.3,
+      "diff": 0.8
+    },
+    {
+      "store": "Barra da Tijuca 2",
+      "plan": 5.0,
+      "real": 6.0,
+      "diff": 1.0
     },
     {
       "store": "Bonfinglioli",
-      "plan": 4.7,
-      "real": 5.8,
-      "diff": 1.1
+      "plan": 4.4,
+      "real": 5.7,
+      "diff": 1.3
     },
     {
-      "store": "Vila Izabel",
-      "plan": 5.1,
-      "real": 6.3,
-      "diff": 1.2
+      "store": "Cambui",
+      "plan": 5.7,
+      "real": 7.0,
+      "diff": 1.3
     },
     {
-      "store": "Santo André",
-      "plan": 5.6,
-      "real": 7,
-      "diff": 1.4
+      "store": "Santa Efigênia",
+      "plan": 6.2,
+      "real": 7.5,
+      "diff": 1.3
+    },
+    {
+      "store": "Barra da Tijuca 3",
+      "plan": 3.2,
+      "real": 4.7,
+      "diff": 1.5
+    },
+    {
+      "store": "Estoril",
+      "plan": 6.2,
+      "real": 7.7,
+      "diff": 1.5
     },
     {
       "store": "Tijuca",
       "plan": 5.3,
       "real": 6.9,
-      "diff": 1.7
+      "diff": 1.6
     },
     {
       "store": "BR800N",
       "plan": 2.3,
-      "real": 4.1,
-      "diff": 1.8
+      "real": 4.2,
+      "diff": 1.9
     },
     {
       "store": "Alto Do Ipiranga",
-      "plan": 6.3,
-      "real": 8.3,
-      "diff": 2
-    },
-    {
-      "store": "Barra da Tijuca 3",
-      "plan": 3.5,
-      "real": 5.7,
-      "diff": 2.2
-    },
-    {
-      "store": "Santa Efigênia",
-      "plan": 7,
-      "real": 9.2,
-      "diff": 2.2
+      "plan": 6.0,
+      "real": 8.0,
+      "diff": 2.0
     },
     {
       "store": "Alto do XV",
-      "plan": 5,
+      "plan": 5.0,
       "real": 7.5,
       "diff": 2.5
     },
     {
-      "store": "Cambui",
-      "plan": 5.7,
-      "real": 8.3,
-      "diff": 2.5
-    },
-    {
-      "store": "Ipanema",
-      "plan": 5.4,
-      "real": 8.1,
+      "store": "Santo André",
+      "plan": 5.6,
+      "real": 8.4,
       "diff": 2.8
     },
     {
-      "store": "Carrão",
-      "plan": 5.5,
-      "real": 8.8,
-      "diff": 3.3
-    },
-    {
       "store": "Catete II",
-      "plan": 5.4,
-      "real": 8.8,
-      "diff": 3.4
+      "plan": 5.6,
+      "real": 8.5,
+      "diff": 2.9
     },
     {
-      "store": "Santo Amaro",
-      "plan": 6.1,
-      "real": 10,
-      "diff": 3.9
+      "store": "Carrão",
+      "plan": 5.2,
+      "real": 8.2,
+      "diff": 3.0
     },
     {
       "store": "Recife Sul",
-      "plan": 5.8,
-      "real": 9.9,
-      "diff": 4.1
-    },
-    {
-      "store": "Lapa",
-      "plan": 6.7,
-      "real": 11.2,
-      "diff": 4.5
+      "plan": 6.1,
+      "real": 9.5,
+      "diff": 3.4
     },
     {
       "store": "Aldeota",
-      "plan": 6.9,
-      "real": 11.6,
-      "diff": 4.7
+      "plan": 6.8,
+      "real": 10.7,
+      "diff": 3.9
+    },
+    {
+      "store": "Santo Amaro",
+      "plan": 5.8,
+      "real": 10.0,
+      "diff": 4.2
     },
     {
       "store": "Leblon",
-      "plan": 6.5,
-      "real": 11.7,
-      "diff": 5.2
+      "plan": 6.4,
+      "real": 10.9,
+      "diff": 4.5
     },
     {
       "store": "Aflitos",
-      "plan": 8.2,
-      "real": 13.7,
+      "plan": 8.9,
+      "real": 14.1,
+      "diff": 5.2
+    },
+    {
+      "store": "Vila Clementino",
+      "plan": 7.6,
+      "real": 13.0,
       "diff": 5.5
     },
     {
       "store": "Brooklin II",
-      "plan": 9.8,
-      "real": 15.4,
-      "diff": 5.6
+      "plan": 9.3,
+      "real": 15.0,
+      "diff": 5.7
     },
     {
-      "store": "Moema",
-      "plan": 11.1,
-      "real": 16.9,
+      "store": "Vila Prudente",
+      "plan": 6.0,
+      "real": 11.9,
       "diff": 5.8
     },
     {
       "store": "Morumbi",
-      "plan": 7.8,
-      "real": 14,
-      "diff": 6.2
+      "plan": 6.8,
+      "real": 13.3,
+      "diff": 6.5
     },
     {
-      "store": "Vila Mascote",
-      "plan": 6.6,
+      "store": "BR801N",
+      "plan": 3.1,
+      "real": 9.8,
+      "diff": 6.7
+    },
+    {
+      "store": "Lapa",
+      "plan": 6.5,
       "real": 13.4,
-      "diff": 6.8
-    },
-    {
-      "store": "Vila Prudente",
-      "plan": 6.1,
-      "real": 14.1,
-      "diff": 8
+      "diff": 7.0
     },
     {
       "store": "Botafogo II",
-      "plan": 7.2,
-      "real": 15.6,
+      "plan": 7.0,
+      "real": 15.4,
       "diff": 8.4
     },
     {
-      "store": "Vila Olimpia",
-      "plan": 13.1,
-      "real": 21.8,
-      "diff": 8.7
-    },
-    {
-      "store": "Bela Vista",
-      "plan": 10.6,
-      "real": 20.1,
-      "diff": 9.5
-    },
-    {
-      "store": "Santa Cecília",
-      "plan": 14.9,
-      "real": 25.7,
-      "diff": 10.8
-    },
-    {
-      "store": "Vila Madalena",
-      "plan": 12.3,
-      "real": 23,
-      "diff": 10.8
+      "store": "Moema",
+      "plan": 10.9,
+      "real": 20.0,
+      "diff": 9.1
     },
     {
       "store": "Jardins",
-      "plan": 11.2,
-      "real": 24.9,
-      "diff": 13.7
+      "plan": 11.0,
+      "real": 20.5,
+      "diff": 9.5
+    },
+    {
+      "store": "Bela Vista",
+      "plan": 10.5,
+      "real": 20.5,
+      "diff": 10.0
+    },
+    {
+      "store": "Vila Olimpia",
+      "plan": 12.3,
+      "real": 23.9,
+      "diff": 11.6
+    },
+    {
+      "store": "Santa Cecília",
+      "plan": 14.1,
+      "real": 28.0,
+      "diff": 14.0
+    },
+    {
+      "store": "Vila Madalena",
+      "plan": 10.9,
+      "real": 26.9,
+      "diff": 16.0
     }
   ]
 };

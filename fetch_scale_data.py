@@ -350,6 +350,64 @@ def env(name, default=None):
     return default if value == "" else value
 
 
+def fmt_month(date_value):
+    months = {
+        "01": "Janeiro",
+        "02": "Fevereiro",
+        "03": "Marco",
+        "04": "Abril",
+        "05": "Maio",
+        "06": "Junho",
+        "07": "Julho",
+        "08": "Agosto",
+        "09": "Setembro",
+        "10": "Outubro",
+        "11": "Novembro",
+        "12": "Dezembro",
+    }
+    return months.get(str(date_value)[5:7], "")
+
+
+def build_hc_gap(previous_week_rows):
+    groups = {}
+    dates = []
+    for row in previous_week_rows:
+        store = str(row.get("WAREHOUSENAME") or "").strip()
+        if not store or store.lower().startswith("inactive") or store == "Santa Cecilia Farma":
+            continue
+        dates.append(str(row.get("DATE") or "")[:10])
+        current = groups.setdefault(store, {"store": store, "needed": 0.0, "scheduled": 0.0})
+        current["needed"] += float(row.get("PICKERS_NEEDED") or 0)
+        current["scheduled"] += float(row.get("PICKERS_SCHEDULED") or 0)
+
+    def round1(value):
+        return round(value, 1)
+
+    rows = [
+        {
+            "store": value["store"],
+            "plan": round1(value["needed"] / 48),
+            "real": round1(value["scheduled"] / 48),
+            "diff": round1((value["scheduled"] - value["needed"]) / 48),
+        }
+        for value in groups.values()
+        if value["needed"] > 0 or value["scheduled"] > 0
+    ]
+    rows.sort(key=lambda row: (row["diff"], row["store"]))
+
+    dates = sorted(date for date in dates if date)
+    start_date = dates[0] if dates else ""
+    end_date = dates[-1] if dates else ""
+    return {
+        "source": (
+            f"Forecast Ops Pickers / semana fechada {start_date} a {end_date} / "
+            "HC equivalente: soma dos slots-hora PICKERS_NEEDED vs PICKERS_SCHEDULED dividido por 48h"
+        ),
+        "month": fmt_month(end_date),
+        "rows": rows,
+    }
+
+
 def main():
     params = {
         "account": env("SNOWFLAKE_ACCOUNT", "HG51401"),
@@ -359,6 +417,7 @@ def main():
         "warehouse": env("SNOWFLAKE_WAREHOUSE", "RP_PERSONALUSER_WH"),
     }
     out = Path(__file__).parent / "dashboard" / "scale_data.js"
+    hc_out = Path(__file__).parent / "dashboard" / "hc_gap_data.js"
     with snowflake.connector.connect(**params) as conn:
         with conn.cursor(snowflake.connector.DictCursor) as cur:
             cur.execute(SQL_CONNECTIVITY)
@@ -377,10 +436,12 @@ def main():
             for row in previous_week_rows
             if str(row.get("DATE") or "")[:10] == current_week_cutoff
         ]
+    updated_at = datetime.now(ZoneInfo("America/Sao_Paulo")).isoformat(timespec="seconds")
+    hc_gap = build_hc_gap(previous_week_rows)
 
     out.write_text(
         "window.SCALE_DATA_UPDATED_AT = "
-        + json.dumps(datetime.now(ZoneInfo("America/Sao_Paulo")).isoformat(timespec="seconds"), ensure_ascii=False)
+        + json.dumps(updated_at, ensure_ascii=False)
         + ";\n"
         + "window.SCALE_QUERY_ROWS = "
         + json.dumps(previous_week_rows, ensure_ascii=False, default=str)
@@ -399,12 +460,22 @@ def main():
         + ";\n",
         encoding="utf-8",
     )
+    hc_out.write_text(
+        "window.HC_GAP_DATA_UPDATED_AT = "
+        + json.dumps(updated_at, ensure_ascii=False)
+        + ";\n"
+        + "window.HC_GAP_DATA = "
+        + json.dumps(hc_gap, ensure_ascii=False, indent=2)
+        + ";\n",
+        encoding="utf-8",
+    )
     print(
         "wrote "
         f"{len(previous_week_rows)} previous rows, "
         f"{len(current_week_rows)} current rows and "
         f"{len(picker_offenders)} picker offenders to {out}"
     )
+    print(f"wrote {len(hc_gap['rows'])} hc gap rows to {hc_out}")
 
 
 if __name__ == "__main__":
