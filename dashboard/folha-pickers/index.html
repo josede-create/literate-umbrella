@@ -782,6 +782,20 @@ th:nth-child(3) {
             </table>
           </div>
         </div>
+        <div class="matrix-block">
+          <div class="panel-heading matrix-heading">
+            <div>
+              <h3>CTC por origem</h3>
+              <span>Custo total / pickers ativos; combinado inclui 3PL</span>
+            </div>
+          </div>
+          <div class="table-wrap">
+            <table class="cost-matrix">
+              <thead id="ctcHead"></thead>
+              <tbody id="ctcRows"></tbody>
+            </table>
+          </div>
+        </div>
       </section>
 
       <section class="split-grid">
@@ -1695,6 +1709,7 @@ function renderFinanceTable() {
     })
     .join("");
   renderCostOriginTable(rows);
+  renderCtcTable(rows);
 }
 
 function renderCostOriginTable(rows) {
@@ -1714,6 +1729,48 @@ function renderCostOriginTable(rows) {
       return `<tr class="${source.total ? "total-row" : ""}">
         <td>${source.label}</td>
         ${rows.map((row) => `<td>${fmtMoney.format(number(row[source.key]))}</td>`).join("")}
+      </tr>`;
+    })
+    .join("");
+}
+
+function renderCtcTable(rows) {
+  const ctcRows = [
+    {
+      label: "GNX",
+      value(row) {
+        return number(row.pickers_ativos_gnx) ? number(row.custo_total_folha_bruto_gnx) / number(row.pickers_ativos_gnx) : null;
+      },
+    },
+    {
+      label: "Moustache",
+      value(row) {
+        return number(row.pickers_ativos_moustache) ? number(row.custo_total_folha_bruto_moustache) / number(row.pickers_ativos_moustache) : null;
+      },
+    },
+    {
+      label: "Combinado",
+      total: true,
+      value(row) {
+        return number(row.pickers_ativos) ? number(row.custo_total_pickers_com_3pl) / number(row.pickers_ativos) : null;
+      },
+    },
+  ];
+  document.querySelector("#ctcHead").innerHTML = `
+    <tr>
+      <th>Origem</th>
+      ${rows.map((row) => `<th>${monthLabel[row.mes] || row.mes}</th>`).join("")}
+    </tr>`;
+  document.querySelector("#ctcRows").innerHTML = ctcRows
+    .map((source) => {
+      return `<tr class="${source.total ? "total-row" : ""}">
+        <td>${source.label}</td>
+        ${rows
+          .map((row) => {
+            const value = source.value(row);
+            return `<td>${hasValue(value) ? fmtMoney.format(value) : "n/d"}</td>`;
+          })
+          .join("")}
       </tr>`;
     })
     .join("");
