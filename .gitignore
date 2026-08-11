@@ -5,3 +5,5 @@ __pycache__/
 outputs/
 token.json
 credentials.json
+churn-service-level/data/churn_orders_report.csv
+dashboard/churn-service-level/data/churn_orders_report.csv

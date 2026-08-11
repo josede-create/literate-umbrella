@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Churn Turbo por Service Level</title>
+    <meta name="description" content="Painel publico de churn Turbo por service level." />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="page">
+      <section class="hero">
+        <div>
+          <p class="eyebrow">Turbo BR | Retention</p>
+          <h1>Churn por service level</h1>
+          <p class="subtitle">
+            Usuarios sem compra Turbo concluida ha mais de 15 dias, com leitura dos ultimos pedidos,
+            cancelamentos, atraso acima de 20 minutos, DR e causa Ops loja vs RT.
+          </p>
+        </div>
+        <div class="statusBox">
+          <span>Status</span>
+          <strong id="loadStatus">Carregando dados...</strong>
+          <p>Dados embutidos nesta publicacao. Para atualizar, rode novamente a extracao e publique uma nova versao.</p>
+        </div>
+      </section>
+
+      <section class="kpiGrid" aria-label="Resumo geral">
+        <div class="kpi"><span>Usuarios filtrados</span><strong id="kpiUsers">-</strong></div>
+        <div class="kpi"><span>Media dias sem Turbo</span><strong id="kpiDays">-</strong></div>
+        <div class="kpi"><span>Ultimos pedidos cancelados</span><strong class="warn" id="kpiCancel">-</strong></div>
+        <div class="kpi"><span>Ultima compra &gt;20 min</span><strong class="danger" id="kpiDelayed">-</strong></div>
+        <div class="kpi"><span>DR na ultima compra</span><strong class="warn" id="kpiDr">-</strong></div>
+        <div class="kpi"><span>Atraso RT / Ops loja</span><strong id="kpiRoots">-</strong></div>
+      </section>
+
+      <section class="filters" aria-label="Filtros">
+        <input id="query" placeholder="Buscar usuario, loja, cidade..." />
+        <select id="serviceLevel"></select>
+        <select id="cityFilter"></select>
+        <select id="storeFilter"></select>
+        <select id="flagFilter">
+          <option>Todos</option>
+          <option>Cancelados</option>
+          <option>Atrasados &gt;20</option>
+          <option>DR</option>
+          <option>Ops loja</option>
+          <option>RT</option>
+        </select>
+        <input id="minDays" inputmode="numeric" aria-label="Minimo de dias sem Turbo" value="15" />
+        <select id="sortKey">
+          <option value="days_since_last_turbo">Ordenar por dias sem Turbo</option>
+          <option value="consecutive_cancelled_orders">Ordenar por cancelamentos</option>
+          <option value="last_deliver_to_user_min">Ordenar por tempo</option>
+        </select>
+      </section>
+
+      <section class="split">
+        <article class="panel">
+          <div class="panelHead">
+            <div>
+              <h2>Lista de usuarios</h2>
+              <p id="usersCount">-</p>
+            </div>
+            <div class="actions">
+              <button id="downloadUsersExcel">Excel filtrado</button>
+              <button id="downloadUsersCsv">CSV filtrado</button>
+            </div>
+          </div>
+          <div class="tableWrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Usuario</th>
+                  <th>Cidade</th>
+                  <th>Dias</th>
+                  <th>Loja ultima compra</th>
+                  <th>SL</th>
+                  <th>Cancel.</th>
+                  <th>DR</th>
+                  <th>Causa</th>
+                </tr>
+              </thead>
+              <tbody id="usersBody"></tbody>
+            </table>
+          </div>
+        </article>
+
+        <article class="panel">
+          <div class="panelHead">
+            <div>
+              <h2>Resumo por loja</h2>
+              <p id="storesCount">-</p>
+            </div>
+            <div class="actions">
+              <button id="downloadStoresExcel">Excel filtrado</button>
+              <button id="downloadStoresCsv">CSV filtrado</button>
+            </div>
+          </div>
+          <div class="tableWrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Loja</th>
+                  <th>Usuarios</th>
+                  <th>Dias medio</th>
+                  <th>&gt;20</th>
+                  <th>DR</th>
+                  <th>Cancel.</th>
+                  <th>RT</th>
+                  <th>Ops</th>
+                </tr>
+              </thead>
+              <tbody id="storesBody"></tbody>
+            </table>
+          </div>
+        </article>
+      </section>
+
+      <section class="panel wide">
+        <div class="panelHead">
+          <div>
+            <h2>Relatorios completos</h2>
+            <p>Arquivos publicados junto ao painel, sem necessidade de importar.</p>
+          </div>
+          <div class="actions">
+            <a class="button" href="data/churn_users_report.csv" download>Usuarios CSV</a>
+            <a class="button" href="data/churn_store_report.csv" download>Lojas CSV</a>
+          </div>
+        </div>
+      </section>
+    </main>
+    <script src="app.js"></script>
+  </body>
+</html>
