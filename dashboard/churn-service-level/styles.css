@@ -85,7 +85,7 @@ h2 { color: var(--ink); font-size: 18px; }
 .kpiGrid {
   display: grid;
   gap: 12px;
-  grid-template-columns: repeat(6, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   margin-top: 16px;
 }
 .kpi {
@@ -111,7 +111,7 @@ h2 { color: var(--ink); font-size: 18px; }
   border-radius: 8px;
   display: grid;
   gap: 10px;
-  grid-template-columns: 1.4fr repeat(5, minmax(130px, 1fr)) 1.2fr;
+  grid-template-columns: 1.4fr repeat(4, minmax(130px, 1fr)) 1.2fr;
   margin-top: 16px;
   padding: 12px;
 }
@@ -150,7 +150,7 @@ h2 { color: var(--ink); font-size: 18px; }
 .actions { display: flex; flex-wrap: wrap; gap: 8px; }
 .actions button:nth-child(even), .actions .button:nth-child(even) { background: #ffffff; color: var(--ink); }
 .tableWrap { max-height: 620px; overflow: auto; }
-table { border-collapse: collapse; font-size: 13px; min-width: 880px; width: 100%; }
+table { border-collapse: collapse; font-size: 13px; min-width: 1080px; width: 100%; }
 th, td {
   border-bottom: 1px solid #edf1ee;
   padding: 10px 12px;
@@ -188,7 +188,7 @@ td {
 .dangerBg { background: var(--soft-red); color: var(--red); }
 @media (max-width: 1180px) {
   .hero, .split { grid-template-columns: 1fr; }
-  .kpiGrid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .kpiGrid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .filters { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 }
 @media (max-width: 720px) {

@@ -14,8 +14,8 @@
           <p class="eyebrow">Turbo BR | Retention</p>
           <h1>Churn por service level</h1>
           <p class="subtitle">
-            Usuarios sem compra Turbo concluida ha mais de 15 dias, com leitura dos ultimos pedidos,
-            cancelamentos, atraso acima de 20 minutos, DR e causa Ops loja vs RT.
+            Usuarios sem compra Turbo concluida entre 15 e 30 dias, com leitura dos ultimos pedidos,
+            cancelamentos, atraso acima de 20 minutos, DR, causa Ops loja vs RT e frequencia anterior de compra.
           </p>
         </div>
         <div class="statusBox">
@@ -31,6 +31,8 @@
         <div class="kpi"><span>Ultimos pedidos cancelados</span><strong class="warn" id="kpiCancel">-</strong></div>
         <div class="kpi"><span>Ultima compra &gt;20 min</span><strong class="danger" id="kpiDelayed">-</strong></div>
         <div class="kpi"><span>DR na ultima compra</span><strong class="warn" id="kpiDr">-</strong></div>
+        <div class="kpi"><span>Freq. fora do padrão</span><strong class="danger" id="kpiFrequencyOut">-</strong></div>
+        <div class="kpi"><span>Freq. alta anterior</span><strong id="kpiHighFrequency">-</strong></div>
         <div class="kpi"><span>Atraso RT / Ops loja</span><strong id="kpiRoots">-</strong></div>
       </section>
 
@@ -44,12 +46,14 @@
           <option>Cancelados</option>
           <option>Atrasados &gt;20</option>
           <option>DR</option>
+          <option>Frequência fora do padrão</option>
+          <option>Frequência alta</option>
           <option>Ops loja</option>
           <option>RT</option>
         </select>
-        <input id="minDays" inputmode="numeric" aria-label="Minimo de dias sem Turbo" value="15" />
         <select id="sortKey">
           <option value="days_since_last_turbo">Ordenar por dias sem Turbo</option>
+          <option value="purchase_frequency_month_before_last">Ordenar por frequência</option>
           <option value="consecutive_cancelled_orders">Ordenar por cancelamentos</option>
           <option value="last_deliver_to_user_min">Ordenar por tempo</option>
         </select>
@@ -75,6 +79,8 @@
                   <th>Cidade</th>
                   <th>Dias</th>
                   <th>Loja ultima compra</th>
+                  <th>Freq./mês</th>
+                  <th>Status freq.</th>
                   <th>SL</th>
                   <th>Cancel.</th>
                   <th>DR</th>
@@ -104,6 +110,8 @@
                   <th>Loja</th>
                   <th>Usuarios</th>
                   <th>Dias medio</th>
+                  <th>Freq./mês</th>
+                  <th>Fora padrão</th>
                   <th>&gt;20</th>
                   <th>DR</th>
                   <th>Cancel.</th>

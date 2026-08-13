@@ -1,1044 +1,591 @@
-store_id,store_name,store_city,users,avg_days_since_last_turbo,avg_last_deliver_to_user_min,cancel_streak_users,cancel_streak_orders,delayed_last_users,dr_last_purchase_users,ops_store_delay_users,rt_delay_users,mixed_delay_users,no_breakdown_delay_users
-900574966,"Turbo, Fresh, Santa Cecília",Grande São Paulo,3958,74.1,7.06,82,133,35,49,0,35,0,0
-900730894,"Turbo Fresh, Jardins",Grande São Paulo,3938,73.6,6.91,70,117,37,38,0,37,0,0
-900574964,"Turbo, Fresh, Vila Olimpia",Grande São Paulo,3851,76.2,7.21,54,89,36,32,0,36,0,0
-900574958,"Turbo, Fresh, Vila Madalena",Grande São Paulo,3572,77.5,6.73,76,119,25,28,0,24,1,0
-900574960,"Turbo, Fresh, Bela Vista",Grande São Paulo,3321,75.3,9.02,66,125,86,52,0,85,1,0
-900574967,"Turbo, Fresh, Brooklin",Grande São Paulo,3098,73.6,6.9,47,81,22,22,0,22,0,0
-900574963,"Turbo, Fresh, Moema",Grande São Paulo,3052,69.2,6.29,38,66,18,30,0,18,0,0
-900561336,"Turbo, Fresh, Aflitos",Recife,2407,74.6,9.41,95,169,92,10,0,92,0,0
-900561322,"Turbo, Fresh, Aldeota",Fortaleza,2386,80.6,8.8,51,90,34,26,0,33,1,0
-900561331,"Turbo, Fresh, Leblon",Rio De Janeiro,2193,73.0,5.54,28,64,10,22,0,10,0,0
-900574943,"Turbo, Fresh, Vila Clementino",Grande São Paulo,2098,76.0,6.52,50,85,21,22,0,21,0,0
-900580719,"Turbo, Fresh, Santa Efigênia",Belo Horizonte,2021,76.9,10.73,90,142,97,31,4,84,9,0
-900574956,"Turbo, Fresh, Lapa",Grande São Paulo,1961,78.3,9.0,44,86,77,50,2,73,2,0
-900574961,"Turbo, Fresh, Morumbi",Grande São Paulo,1877,86.1,9.58,60,110,63,20,0,63,0,0
-900721381,"Turbo, Fresh Botafogo II",Rio De Janeiro,1872,74.8,9.01,29,56,78,16,0,78,0,0
-900536629,"Turbo, Fresh, Vila Mascote",Grande São Paulo,1749,80.3,8.76,66,114,59,30,0,58,1,0
-900561318,"Turbo, Fresh, Recife Sul",Recife,1705,82.6,8.0,49,78,17,17,0,17,0,0
-900561335,"Turbo Fresh, Estoril",Belo Horizonte,1644,76.9,8.89,76,117,33,17,1,31,1,0
-900574962,"Turbo, Fresh, Santo Amaro",Grande São Paulo,1580,79.1,7.33,29,48,27,26,0,27,0,0
-900561330,"Turbo, Fresh, Ipanema",Rio De Janeiro,1555,77.7,4.93,20,37,6,20,0,6,0,0
-900561339,"Turbo, Fresh, Barra da Tijuca 2",Rio De Janeiro,1544,78.9,6.32,17,29,12,13,0,12,0,0
-900602957,"Turbo, Fresh, Vila Izabel",Curitiba,1455,78.7,9.7,47,90,58,16,0,55,3,0
-900574949,"Turbo, Fresh, Alto do Ipiranga",Grande São Paulo,1362,78.2,7.94,33,58,34,19,2,32,0,0
-900561328,"Turbo, Fresh, PA Centro",Porto Alegre,1343,76.4,8.46,49,115,16,6,0,16,0,0
-900602958,"Turbo, Fresh, Alto do XV",Curitiba,1192,78.7,8.65,43,64,26,6,0,26,0,0
-900574938,"Turbo, Fresh, Vila Prudente",Grande São Paulo,1175,79.8,9.0,40,85,52,13,0,48,4,0
-900722640,"Turbo, Catete II",Rio De Janeiro,1174,80.3,8.59,22,50,37,15,0,37,0,0
-900574944,"Turbo, Fresh, Aclimação",Grande São Paulo,1135,80.3,7.67,37,56,20,13,0,19,1,0
-900581196,"Turbo, Fresh, Carrão",Grande São Paulo,1112,81.3,11.32,43,84,96,16,0,92,4,0
-900574954,"Turbo, Fresh, Santana",Grande São Paulo,1106,81.8,11.09,62,131,74,11,0,69,5,0
-900601551,"Turbo, Fresh, Santo André",Grande São Paulo,1078,79.7,9.1,67,132,41,13,1,38,2,0
-900561338,"Turbo, Fresh, Tijuca",Rio De Janeiro,1040,76.1,7.99,24,47,19,22,0,19,0,0
-900581708,"Turbo, Fresh, Cambui",Campinas,1029,85.1,8.83,28,64,23,9,0,23,0,0
-900714349,Doce aquarella vila olimpia,Grande São Paulo,960,65.3,7.4,13,16,12,3,0,12,0,0
-900561332,"Turbo, Fresh, Nova Recreio",Rio De Janeiro,948,78.3,7.75,27,49,6,13,0,6,0,0
-900578430,"Turbo, Fresh, Barra da Tijuca 3",Rio De Janeiro,931,76.4,7.12,16,23,5,5,0,5,0,0
-900604367,"Turbo, Fresh, Bonfinglioli",Grande São Paulo,681,80.8,7.65,20,30,10,10,0,10,0,0
-900732329,"Doce aquarella, Jardins",Grande São Paulo,671,65.3,6.88,8,11,3,5,0,3,0,0
-900714353,Doce aquarella brooklin,Grande São Paulo,622,63.0,7.27,3,4,8,4,0,8,0,0
-900581226,"Turbo, Fresh, Alphaville",Grande São Paulo,593,78.6,9.99,18,37,22,8,0,22,0,0
-900714355,Doce aquarella bela vista,Grande São Paulo,515,63.1,9.14,5,5,9,1,0,9,0,0
-900580711,"Turbo, fresh, Castelo",Belo Horizonte,502,80.1,7.17,28,66,1,9,0,1,0,0
-900714348,Doce aquarella moema,Grande São Paulo,386,59.8,6.56,2,2,3,2,0,3,0,0
-900714346,Doce aquarella vila madalena,Grande São Paulo,340,66.3,7.01,6,11,4,5,0,4,0,0
-900714347,Doce aquarella santa cecília,Grande São Paulo,323,61.8,7.47,2,2,3,1,0,3,0,0
-900737759,"Turbo 20, Market Santo André",Grande São Paulo,277,65.5,13.69,17,34,32,7,0,29,3,0
-900714354,Doce aquarella vila clementino,Grande São Paulo,270,63.2,7.15,6,7,4,1,0,4,0,0
-900737756,"Turbo 20, Market Santana",Grande São Paulo,259,66.6,14.98,18,31,33,4,0,33,0,0
-900739646,"Turbo, Vila Andrade",Grande São Paulo,259,21.4,7.42,6,42,2,1,0,2,0,0
-900737732,"Turbo 20, Market Cambui",Campinas,226,42.0,12.23,4,15,7,0,0,7,0,0
-900737733,"Turbo 20, Market Aldeota",Fortaleza,224,47.6,13.63,5,12,10,2,0,10,0,0
-900737737,"Turbo 20, Market Estoril",Belo Horizonte,202,52.5,11.81,11,16,11,1,0,11,0,0
-900737757,"Turbo 20, Market Vila Prudente",Grande São Paulo,196,63.8,14.71,10,33,26,1,0,24,2,0
-900737763,"Turbo 20, Market Lapa",Grande São Paulo,193,78.9,13.27,5,14,16,1,0,16,0,0
-900737735,"Turbo 20, Market Santa Efigênia",Belo Horizonte,188,61.0,15.49,8,20,37,1,0,33,4,0
-900737755,"Turbo 20, Market Alphaville",Grande São Paulo,181,69.2,14.14,6,12,21,3,0,21,0,0
-900737748,"Turbo 20, Market Carrão",Grande São Paulo,179,58.9,15.99,13,28,34,4,0,31,3,0
-900737731,"Turbo 20, Market Recife Sul",Recife,178,37.6,10.92,5,9,3,1,0,3,0,0
-900714352,Doce aquarella santo amaro,Grande São Paulo,178,69.2,7.28,2,6,0,1,0,0,0,0
-900714342,Doce aquarella lapa,Grande São Paulo,172,62.8,9.17,0,0,3,4,0,3,0,0
-900737730,"Turbo 20, Market Aflitos",Recife,170,41.1,15.86,9,20,36,4,0,36,0,0
-900739791,"Turbo, Fresh Botafogo II",Rio De Janeiro,170,39.1,11.35,2,3,6,1,0,6,0,0
-900737751,"Turbo 20, Market Morumbi",Grande São Paulo,169,54.6,12.65,3,12,13,4,0,13,0,0
-900737764,"Turbo 20, Market Santo Amaro",Grande São Paulo,165,57.5,11.85,8,16,12,3,0,12,0,0
-900737118,Turbo Farmácia,Grande São Paulo,162,110.6,9.69,1,1,3,0,0,3,0,0
-900739645,"Turbo, Osasco",Grande São Paulo,132,38.0,15.96,5,5,24,2,0,24,0,0
-900714343,Doce aquarella morumbi,Grande São Paulo,129,63.5,9.67,3,4,3,0,1,2,0,0
-900737762,"Turbo 20, Market Brooklin",Grande São Paulo,124,38.9,10.83,1,1,3,2,0,3,0,0
-900737734,"Turbo 20, Market Vila Izabel",Curitiba,118,40.5,13.12,13,16,7,1,0,7,0,0
-900737750,"Turbo 20, Market Vila Olimpia",Grande São Paulo,118,35.5,10.2,3,3,1,0,0,1,0,0
-900733456," Doce Aquarella, Cambui",Campinas,115,61.6,8.86,0,0,2,0,0,2,0,0
-900737754,"Turbo 20, Market Vila Mascote",Grande São Paulo,100,55.7,13.68,5,9,15,2,0,15,0,0
-900688579,Mercado Rappi - Santa Cecília,Grande São Paulo,100,67.9,10.3,3,3,3,3,0,3,0,0
-900737736,"Turbo 20, Market Alto do XV",Curitiba,96,31.9,12.35,3,3,5,2,0,5,0,0
-900707191,"Turbo, Fresh, Aldeota",Fortaleza,95,87.8,9.05,0,0,0,0,0,0,0,0
-900737766,"Turbo 20, Market Alto do Ipiranga",Grande São Paulo,92,46.7,14.52,4,8,12,2,0,12,0,0
-900714356,Doce aquarella vila mascote,Grande São Paulo,87,59.7,7.72,1,1,3,0,0,3,0,0
-900737758,"Turbo 20, Market Santa Cecília",Grande São Paulo,84,58.0,11.75,2,3,1,1,0,1,0,0
-900685550,Mercado Rappi - Aldeota,Fortaleza,82,109.4,10.95,0,0,4,0,0,4,0,0
-900737741,"Turbo 20, Market Castelo",Belo Horizonte,72,51.6,11.83,4,4,2,2,0,1,1,0
-900688588,Mercado Rappi - Vila Madalena,Grande São Paulo,71,85.2,7.59,4,5,0,0,0,0,0,0
-900737761,"Turbo 20, Market Bonfinglioli",Grande São Paulo,67,60.4,11.64,1,1,3,0,0,3,0,0
-900737753,"Turbo 20, Market Aclimação",Grande São Paulo,63,49.8,12.9,2,2,3,3,0,3,0,0
-900714344,Doce aquarella carrão,Grande São Paulo,60,69.8,10.14,2,3,6,0,0,5,1,0
-900731548,Rappi Bebida Jardins,Grande São Paulo,57,90.1,10.21,0,0,1,1,0,1,0,0
-900685590,Mercado Rappi - Santa Efigênia,Belo Horizonte,56,82.7,11.11,3,4,5,0,0,5,0,0
-900707205,"Turbo, Fresh, Aflitos",Recife,56,84.5,9.05,1,1,3,1,0,3,0,0
-900714338,Doce aquarella santana,Grande São Paulo,54,70.2,10.62,0,0,2,1,0,2,0,0
-900714339,Doce aquarella alphaville,Grande São Paulo,53,58.1,10.59,0,0,4,0,0,4,0,0
-900707188,"Turbo, Fresh, Recife Sul",Recife,50,78.7,7.97,2,2,0,0,0,0,0,0
-900685580,Mercado Rappi - Aflitos,Recife,49,76.2,10.52,1,4,5,2,0,5,0,0
-900737765,"Turbo 20, Market Moema",Grande São Paulo,48,43.6,7.96,1,10,0,3,0,0,0,0
-900714350,Doce aquarella aclimação,Grande São Paulo,48,73.5,8.48,0,0,0,1,0,0,0,0
-900685582,Mercado Rappi - Recife Sul,Recife,46,85.1,8.01,2,3,0,1,0,0,0,0
-900722108,"Turbo, Fresh Botafogo II",Rio De Janeiro,45,70.3,10.93,1,1,2,0,0,2,0,0
-900714351,Doce aquarella alto do ipiranga,Grande São Paulo,44,61.3,8.91,0,0,2,1,0,2,0,0
-900685610,Mercado Rappi - Lapa,Grande São Paulo,43,147.0,12.62,0,0,7,1,0,7,0,0
-900707219,"Turbo, Fresh, Moema",Grande São Paulo,41,89.5,6.61,0,0,0,0,0,0,0,0
-900707196,"Turbo, Fresh, Vila Olimpia",Grande São Paulo,41,113.6,8.03,0,0,0,0,0,0,0,0
-900707220,"Turbo, Fresh, Vila Izabel",Curitiba,39,72.9,9.71,2,2,1,0,0,1,0,0
-900707214,"Turbo, Fresh, Bela Vista",Grande São Paulo,39,91.5,8.5,1,1,1,0,0,1,0,0
-900707202,"Turbo, Fresh, Leblon",Rio De Janeiro,39,83.1,6.92,0,0,1,0,0,1,0,0
-900737729,"Turbo 20, Market Vila Madalena",Grande São Paulo,39,43.3,9.41,1,1,0,0,0,0,0,0
-900714345,Doce aquarella santo andré,Grande São Paulo,38,69.9,11.53,0,0,4,0,0,4,0,0
-900688575,Mercado Rappi - Vila Olimpia,Grande São Paulo,38,64.8,7.77,0,0,0,1,0,0,0,0
-900731571,"Turbo Fresh, Jardins",Grande São Paulo,37,45.0,10.29,0,0,2,3,0,2,0,0
-900707199,"Turbo, Fresh, Morumbi",Grande São Paulo,36,100.0,12.75,2,2,4,0,0,4,0,0
-900685593,Mercado Rappi - Vila Izabel,Curitiba,35,89.9,13.12,0,0,6,0,0,6,0,0
-900724371,Mercado Rappi - Botafogo II,Rio De Janeiro,35,70.8,8.41,0,0,2,0,0,2,0,0
-900561631,"Turbo, Fresh, Aflitos",Recife,33,46.0,10.69,1,2,4,0,0,4,0,0
-900731570,"Turbo Fresh, Jardins",Grande São Paulo,33,57.0,11.11,2,3,2,0,0,1,1,0
-900707215,"Turbo, Fresh, Santa Efigênia",Belo Horizonte,33,93.1,10.39,1,2,1,2,0,1,0,0
-900685589,Mercado Rappi - Estoril,Belo Horizonte,32,90.8,8.66,3,8,0,0,0,0,0,0
-900707209,"Turbo, Fresh, Brooklin",Grande São Paulo,32,83.9,7.04,0,0,0,0,0,0,0,0
-900707224,"Turbo, Fresh, Ipanema",Rio De Janeiro,31,65.2,5.47,0,0,0,0,0,0,0,0
-900707192,"Turbo Fresh, Estoril",Belo Horizonte,30,92.5,11.11,1,1,2,0,0,2,0,0
-900685611,Mercado Rappi - Morumbi,Grande São Paulo,30,101.3,10.7,0,0,2,2,0,2,0,0
-900707201,"Turbo, Fresh, Barra da Tijuca 2",Rio De Janeiro,30,74.0,7.24,0,0,1,0,0,1,0,0
-900707217,"Turbo, Fresh, Santa Cecília",Grande São Paulo,30,86.8,6.97,2,6,0,0,0,0,0,0
-900731572,"Turbo Fresh, Jardins",Grande São Paulo,30,62.8,8.62,1,2,0,0,0,0,0,0
-900739798,"Turbo, Fresh, PA Centro",Porto Alegre,30,32.0,11.56,0,0,0,0,0,0,0,0
-900561547,"Turbo, Fresh, Aldeota",Fortaleza,30,64.5,7.93,0,0,0,1,0,0,0,0
-900688578,Mercado Rappi - Moema,Grande São Paulo,29,60.3,6.41,1,1,0,1,0,0,0,0
-900561629,"Turbo, Fresh, Aflitos",Recife,29,65.4,8.65,1,2,0,1,0,0,0,0
-900731566,"Turbo Fresh, Jardins",Grande São Paulo,29,84.2,10.05,0,0,0,0,0,0,0,0
-900723137,"Turbo, Catete II",Rio De Janeiro,29,66.2,9.06,0,0,0,0,0,0,0,0
-900688582,Mercado Rappi - Vila Clementino,Grande São Paulo,29,92.0,5.64,0,0,0,1,0,0,0,0
-900688569,Mercado Rappi - Ipanema,Rio De Janeiro,29,65.1,4.94,0,0,0,1,0,0,0,0
-900731573,"Turbo Fresh, Jardins",Grande São Paulo,28,51.9,9.83,0,0,1,0,0,1,0,0
-900561523,"Turbo, Fresh, Recife Sul",Recife,28,71.9,8.19,0,0,0,0,0,0,0,0
-900731577,"Turbo Fresh, Jardins",Grande São Paulo,27,56.6,10.49,0,0,2,0,0,2,0,0
-900707197,"Turbo, Fresh, Tijuca",Rio De Janeiro,27,59.2,10.37,0,0,2,0,0,2,0,0
-900685595,Mercado Rappi - PA Centro,Porto Alegre,27,72.0,8.19,1,1,1,0,0,0,1,0
-900688565,Mercado Rappi - Leblon,Rio De Janeiro,27,75.4,5.5,1,1,0,0,0,0,0,0
-900707222,"Turbo, Fresh, Alto do XV",Curitiba,27,82.1,9.95,0,0,0,1,0,0,0,0
-900737110,"Turbo Oakberry , Jardins",Grande São Paulo,26,124.3,13.55,1,1,3,0,0,3,0,0
-900707216,"Turbo, Fresh, Santo André",Grande São Paulo,26,87.2,10.04,4,13,1,0,0,1,0,0
-900731557,"Turbo Fresh, Jardins",Grande São Paulo,26,86.6,7.02,0,0,1,1,0,1,0,0
-900707198,"Turbo, Fresh, Nova Recreio",Rio De Janeiro,26,67.7,8.94,0,0,1,0,0,1,0,0
-900685594,Mercado Rappi - Alto do XV,Curitiba,26,107.1,10.24,1,2,0,1,0,0,0,0
-900707218,"Turbo, Fresh, Vila Madalena",Grande São Paulo,26,95.1,6.93,0,0,0,2,0,0,0,0
-900650584,"Turbo, Fresh, Aldeota",Fortaleza,26,102.7,10.73,0,0,0,1,0,0,0,0
-900707223,"Turbo, Fresh, PA Centro",Porto Alegre,25,70.4,8.15,1,4,0,0,0,0,0,0
-900707195,"Turbo, Fresh, Vila Mascote",Grande São Paulo,24,61.7,11.75,1,1,2,0,0,2,0,0
-900688579,Despensa - Santa Cecília,Grande São Paulo,24,144.2,11.29,0,0,1,0,0,1,0,0
-900707203,"Turbo, Fresh, Santo Amaro",Grande São Paulo,24,72.1,7.97,0,0,1,1,0,1,0,0
-900688567,Mercado Rappi - Barra da Tijuca 2,Rio De Janeiro,24,68.6,6.26,0,0,1,0,0,1,0,0
-900688577,Mercado Rappi - Bela Vista,Grande São Paulo,24,59.1,11.54,0,0,1,1,0,1,0,0
-900707213,"Turbo, Fresh, Lapa",Grande São Paulo,23,74.3,9.66,2,3,0,0,0,0,0,0
-900731563,"Turbo Fresh, Jardins",Grande São Paulo,23,58.0,9.45,0,0,0,0,0,0,0,0
-900714341,Doce aquarella vila prudente,Grande São Paulo,22,57.5,10.38,2,2,1,2,0,1,0,0
-900685574,Mercado Rappi - Cambui,Campinas,22,126.3,10.91,0,0,1,1,0,1,0,0
-900688571,Mercado Rappi - Vila Mascote,Grande São Paulo,22,74.5,9.05,1,2,0,3,0,0,0,0
-900737752,"Turbo 20, Market Bela Vista",Grande São Paulo,22,62.1,8.52,0,0,0,1,0,0,0,0
-900707200,"Turbo, Fresh, Carrão",Grande São Paulo,21,76.6,15.0,2,2,4,1,0,4,0,0
-900561522,"Turbo, Fresh, Recife Sul",Recife,21,100.0,8.34,1,2,0,0,0,0,0,0
-900688585,Mercado Rappi - Brooklin,Grande São Paulo,21,66.4,6.06,0,0,0,0,0,0,0,0
-900707210,"Turbo, Fresh, Cambui",Campinas,21,100.7,8.31,0,0,0,0,0,0,0,0
-900724415,Mercado Rappi - Catete II,Rio De Janeiro,20,83.2,9.05,2,3,1,0,0,1,0,0
-900706477,"Turbo, Fresh, Aflitos",Recife,20,57.6,11.81,1,1,1,0,0,1,0,0
-900737739,"Turbo 20, Market Leblon",Rio De Janeiro,20,119.8,9.57,0,0,1,0,0,1,0,0
-900706848,"Turbo, Fresh, Aflitos",Recife,20,75.8,10.01,1,1,0,1,0,0,0,0
-900707189,"Turbo, Fresh, Aclimação",Grande São Paulo,20,65.8,7.46,0,0,0,0,0,0,0,0
-900707186,"Turbo, Fresh, Barra da Tijuca 3",Rio De Janeiro,20,75.5,7.31,0,0,0,0,0,0,0,0
-900688583,Mercado Rappi - Vila Prudente,Grande São Paulo,19,105.7,8.78,2,7,0,0,0,0,0,0
-900731574,"Turbo Fresh, Jardins",Grande São Paulo,19,57.5,9.13,1,1,0,1,0,0,0,0
-900731560,"Turbo Fresh, Jardins",Grande São Paulo,19,69.4,9.3,0,0,0,0,0,0,0,0
-900707212,"Turbo, Fresh, Vila Clementino",Grande São Paulo,19,68.2,6.28,0,0,0,0,0,0,0,0
-900685608,Mercado Rappi - Santana,Grande São Paulo,18,77.6,11.81,0,0,2,2,1,1,0,0
-900580720,"Turbo, Bebidas, Santa Efignênia",Belo Horizonte,18,70.2,11.43,0,0,1,0,0,1,0,0
-900561630,"Turbo, Fresh, Aflitos",Recife,18,109.7,9.6,0,0,1,0,0,1,0,0
-900685592,Mercado Rappi - Castelo,Belo Horizonte,18,80.7,7.89,3,4,0,0,0,0,0,0
-900561546,"Turbo, Fresh, Aldeota",Fortaleza,18,85.7,9.26,0,0,0,0,0,0,0,0
-900688564,Mercado Rappi - Recreio,Rio De Janeiro,18,87.6,8.56,0,0,0,0,0,0,0,0
-900739729,"Turbo 20, Market Santa Cecília",Grande São Paulo,17,39.2,10.79,1,1,2,1,0,2,0,0
-900685612,Mercado Rappi - Bonfiglioli,Grande São Paulo,17,120.3,9.48,1,1,0,0,0,0,0,0
-900737760,Turbo 20 Market Jardins,Grande São Paulo,17,59.0,6.33,1,1,0,1,0,0,0,0
-900739862,"Turbo 20, Market Santa Cecília",Grande São Paulo,16,47.1,16.57,0,0,6,0,2,4,0,0
-900731561,"Turbo Fresh, Jardins",Grande São Paulo,16,46.3,10.55,0,0,1,0,0,1,0,0
-900706921,"Turbo, Fresh, Tijuca",Rio De Janeiro,16,49.3,7.86,0,0,1,0,0,1,0,0
-900706717,"Turbo, Fresh, Aflitos",Recife,16,104.4,10.17,2,2,0,0,0,0,0,0
-900575134,"Turbo, Bebidas, Moema",Grande São Paulo,16,83.4,5.31,1,2,0,0,0,0,0,0
-900707206,"Turbo, Fresh, Alto do Ipiranga",Grande São Paulo,16,84.3,7.31,1,1,0,1,0,0,0,0
-900650543,"Turbo, Fresh, Bela Vista",Grande São Paulo,16,92.5,7.65,0,0,0,0,0,0,0,0
-900561583,"Turbo, Fresh, PA Centro",Porto Alegre,16,67.4,7.29,0,0,0,0,0,0,0,0
-900731564,"Turbo Fresh, Jardins",Grande São Paulo,15,40.7,11.55,0,0,3,0,0,3,0,0
-900714340,Doce aquarella jardim bonfiglioli,Grande São Paulo,15,56.7,9.53,0,0,2,0,0,2,0,0
-900688573,Mercado Rappi - Santo Amaro,Grande São Paulo,15,81.2,8.22,0,0,1,0,0,1,0,0
-900739682,"Turbo 20, Market Vila Olimpia",Grande São Paulo,15,36.1,9.61,0,0,1,0,0,1,0,0
-900731568,"Turbo Fresh, Jardins",Grande São Paulo,15,49.1,9.49,1,1,0,0,0,0,0,0
-900706708,"Turbo, Fresh, Vila Olimpia",Grande São Paulo,15,86.2,7.73,0,0,0,0,0,0,0,0
-900739713,"Turbo 20, Market Aldeota",Fortaleza,15,40.9,10.35,0,0,0,1,0,0,0,0
-900706663,"Turbo, Fresh, Aldeota",Fortaleza,15,101.1,8.95,0,0,0,1,0,0,0,0
-900707221,"Turbo, Fresh, Santana",Grande São Paulo,15,99.6,8.39,0,0,0,0,0,0,0,0
-900706792,"Turbo, Fresh, Aldeota",Fortaleza,15,110.6,9.6,0,0,0,0,0,0,0,0
-900737738,"Turbo 20, Market PA Centro",Porto Alegre,14,85.3,16.1,1,2,2,1,0,2,0,0
-900650564,"Turbo, Fresh, Aflitos",Recife,14,91.1,8.89,1,1,1,1,0,1,0,0
-900561625,"Turbo Fresh, Estoril",Belo Horizonte,14,85.8,10.56,1,1,1,0,0,1,0,0
-900739670,"Turbo 20, Market Aldeota",Fortaleza,14,34.2,12.78,0,0,1,0,0,1,0,0
-900707207,"Turbo, fresh, Castelo",Belo Horizonte,14,125.6,6.88,2,2,0,0,0,0,0,0
-900688576,Mercado Rappi - Alto Do Ipiranga,Grande São Paulo,14,62.5,6.39,1,2,0,1,0,0,0,0
-900706489,"Turbo, Fresh, Santa Cecília",Grande São Paulo,14,97.4,5.41,0,0,0,0,0,0,0,0
-900707208,"Turbo, Fresh, Vila Prudente",Grande São Paulo,14,68.2,8.3,0,0,0,0,0,0,0,0
-900706481,"Turbo, Fresh, Brooklin",Grande São Paulo,14,89.8,6.98,0,0,0,0,0,0,0,0
-900561545,"Turbo, Bebidas, Aldeota",Fortaleza,14,93.6,9.44,0,0,0,0,0,0,0,0
-900575153,"Turbo, Fresh, Santa Cecilia",Grande São Paulo,14,97.8,6.71,0,0,0,1,0,0,0,0
-900731575,"Turbo Fresh, Jardins",Grande São Paulo,14,91.7,10.43,0,0,0,0,0,0,0,0
-900581710,"Turbo, Fresh, Cambui",Campinas,14,63.4,8.5,0,0,0,0,0,0,0,0
-900561521,"Turbo, Fresh, Recife Sul",Recife,14,87.3,7.39,0,0,0,0,0,0,0,0
-900707132,"Turbo, Fresh, Aflitos",Recife,14,64.1,7.46,0,0,0,0,0,0,0,0
-900739705,"Turbo 20, Market Aflitos",Recife,13,27.1,16.29,4,5,3,0,0,3,0,0
-900706703,"Turbo, Fresh, Aldeota",Fortaleza,13,81.7,9.81,1,1,2,0,0,2,0,0
-900739802,"Turbo, Fresh, Bonfinglioli",Grande São Paulo,13,54.2,12.4,1,4,1,0,0,1,0,0
-900731559,"Turbo Fresh, Jardins",Grande São Paulo,13,60.2,10.74,0,0,1,0,0,1,0,0
-900731567,"Turbo Fresh, Jardins",Grande São Paulo,13,53.5,8.85,1,1,0,0,0,0,0,0
-900561600,"Turbo, Fresh, Leblon",Rio De Janeiro,13,142.5,7.51,0,0,0,0,0,0,0,0
-900685552,Mercado Rappi- Barra da Tijuca 3,Rio De Janeiro,13,80.0,7.24,0,0,0,0,0,0,0,0
-900685607,Mercado Rappi - Tijuca,Rio De Janeiro,13,65.8,7.11,0,0,0,0,0,0,0,0
-900574986,"Turbo, Fresh, Vila Prudente",Grande São Paulo,13,70.0,8.51,0,0,0,1,0,0,0,0
-900706677,"Turbo, Fresh, Aflitos",Recife,13,87.6,9.28,0,0,0,2,0,0,0,0
-900739043,"Turbo 20 Market, Osasco",Grande São Paulo,12,25.8,15.99,0,0,3,0,0,3,0,0
-900706816,"Turbo, Fresh, Santa Efigênia",Belo Horizonte,12,95.7,14.49,0,0,2,1,0,2,0,0
-900581197,"Turbo, Bebidas, Carrão",Grande São Paulo,12,47.8,15.53,0,0,2,0,0,2,0,0
-900706806,"Turbo, Fresh, Aflitos",Recife,12,81.2,12.09,0,0,2,0,0,2,0,0
-900739697,"Turbo 20, Market Brooklin",Grande São Paulo,12,43.6,11.87,0,0,1,1,0,1,0,0
-900602964,"Turbo, Fresh, Vila Izabel",Curitiba,12,60.3,11.82,0,0,1,0,0,1,0,0
-900602963,"Turbo, Bebidas, Vila Izabel",Curitiba,12,86.4,10.04,0,0,1,0,0,1,0,0
-900575124,"Turbo, Fresh, Morumbi",Grande São Paulo,12,42.6,10.77,0,0,1,0,0,1,0,0
-900723149,"Turbo, Catete II",Rio De Janeiro,12,43.5,10.1,0,0,1,1,0,1,0,0
-900650619,"Turbo, Fresh, Recife Sul",Recife,12,133.8,7.73,1,4,0,0,0,0,0,0
-900706765,"Turbo, Fresh, Aflitos",Recife,12,112.2,8.05,1,1,0,0,0,0,0,0
-900575117,"Turbo, Fresh, Bela Vista",Grande São Paulo,12,85.4,7.91,0,0,0,0,0,0,0,0
-900706689,"Turbo, Fresh, Santa Cecília",Grande São Paulo,12,84.7,8.38,0,0,0,0,0,0,0,0
-900706624,"Turbo, Fresh, Aldeota",Fortaleza,12,96.2,8.76,0,0,0,0,0,0,0,0
-900685609,Mercado Rappi - Carrão,Grande São Paulo,12,49.4,9.06,0,0,0,0,0,0,0,0
-900739817,"Turbo, Fresh, Alto do XV",Curitiba,12,30.5,13.24,0,0,0,0,0,0,0,0
-900706929,"Turbo, Fresh, Aflitos",Recife,12,62.8,8.53,0,0,0,0,0,0,0,0
-900739787,"Turbo, Fresh, Santa Efigênia",Belo Horizonte,12,32.8,13.01,0,0,0,0,0,0,0,0
-900739743,"Turbo 20, Market Aflitos",Recife,11,52.5,14.76,0,0,3,0,0,3,0,0
-900706471,"Turbo, Fresh, Morumbi",Grande São Paulo,11,77.4,12.15,1,1,2,0,0,2,0,0
-900650542,"Turbo, Fresh, Santa Efigênia",Belo Horizonte,11,90.7,14.91,0,0,2,1,0,0,2,0
-900707142,"Turbo, Fresh, Santa Efigênia",Belo Horizonte,11,93.5,11.17,0,0,1,0,0,1,0,0
-900706660,"Turbo, Fresh, Recife Sul",Recife,11,114.9,7.57,0,0,1,1,0,1,0,0
-900580721,"Turbo, Fresh, Santa Efignênia",Belo Horizonte,11,77.3,9.48,1,2,0,0,0,0,0,0
-900706490,"Turbo, Fresh, Vila Madalena",Grande São Paulo,11,54.0,7.52,0,0,0,0,0,0,0,0
-900739717,"Turbo 20, Market Vila Olimpia",Grande São Paulo,11,43.5,6.5,0,0,0,0,0,0,0,0
-900685614,Mercado Rappi - Santo André,Grande São Paulo,11,95.9,8.04,0,0,0,0,0,0,0,0
-900706681,"Turbo, Fresh, Brooklin",Grande São Paulo,11,124.6,7.48,0,0,0,0,0,0,0,0
-900739740,"Turbo 20, Market Brooklin",Grande São Paulo,11,45.6,8.31,0,0,0,0,0,0,0,0
-900575135,"Turbo, Fresh, Moema",Grande São Paulo,11,127.5,7.16,0,0,0,0,0,0,0,0
-900706648,"Turbo, Fresh, Santa Efigênia",Belo Horizonte,11,69.1,9.55,0,0,0,0,0,0,0,0
-900706789,"Turbo, Fresh, Recife Sul",Recife,11,85.6,8.04,0,0,0,1,0,0,0,0
-900706463,"Turbo, Fresh, Aldeota",Fortaleza,11,68.6,6.18,0,0,0,0,0,0,0,0
-900575118,"Turbo, Fresh, Bela Vista",Grande São Paulo,10,41.5,11.8,0,0,2,0,0,2,0,0
-900739676,"Turbo 20, Market Santana",Grande São Paulo,10,32.8,13.84,0,0,2,0,0,2,0,0
-900601554,"Turbo, Fresh, Santo André",Grande São Paulo,10,86.2,10.61,0,0,2,0,0,2,0,0
-900580723,"Turbo, Fresh, Santa Efigênia",Belo Horizonte,10,98.5,10.79,1,2,1,0,0,1,0,0
-900706726,"Turbo, Fresh, Bela Vista",Grande São Paulo,10,83.5,8.1,0,0,1,0,0,1,0,0
-900737749,"Turbo 20, Market Vila Clementino",Grande São Paulo,10,56.7,8.92,0,0,1,0,0,1,0,0
-900536647,"Turbo, Fresh, Vila Mascote",Grande São Paulo,10,61.6,7.24,0,0,1,1,0,1,0,0
-900706997,"Turbo, Fresh, Aldeota",Fortaleza,10,85.0,8.58,0,0,1,0,0,1,0,0
-900707011,"Turbo, Fresh, Aflitos",Recife,10,82.1,12.39,0,0,1,0,0,1,0,0
-900706464,"Turbo Fresh, Estoril",Belo Horizonte,10,87.4,12.56,0,0,1,0,0,1,0,0
-900575123,"Turbo, Fresh, Morumbi",Grande São Paulo,10,114.2,9.68,2,2,0,0,0,0,0,0
-900706797,"Turbo, Fresh, Vila Olimpia",Grande São Paulo,10,154.5,8.48,1,9,0,0,0,0,0,0
-900601555,"Turbo, Fresh, Santo André",Grande São Paulo,10,58.9,8.45,1,1,0,0,0,0,0,0
-900602970,"Turbo, Fresh, Alto do XV",Curitiba,10,74.7,9.36,1,1,0,0,0,0,0,0
-900739687,"Turbo 20, Market Santa Efigênia",Belo Horizonte,10,29.0,13.81,1,1,0,1,0,0,0,0
-900706707,"Turbo, Fresh, Vila Mascote",Grande São Paulo,10,81.9,11.17,1,1,0,1,0,0,0,0
-900739709,"Turbo 20, Market Recife Sul",Recife,10,31.7,7.05,1,1,0,0,0,0,0,0
-900706729,"Turbo, Fresh, Santa Cecília",Grande São Paulo,10,60.4,6.41,0,0,0,0,0,0,0,0
-900689006,Rappi Bebidas - Aflitos,Recife,10,97.5,7.37,0,0,0,0,0,0,0,0
-900575159,"Turbo, Fresh, Brooklin",Grande São Paulo,10,89.1,7.05,0,0,0,0,0,0,0,0
-900706491,"Turbo, Fresh, Moema",Grande São Paulo,10,82.1,6.0,0,0,0,0,0,0,0,0
-900706941,"Turbo, Fresh, Santa Cecília",Grande São Paulo,10,79.3,7.02,0,0,0,0,0,0,0,0
-900575105,"Turbo, Fresh, Vila Madalena",Grande São Paulo,10,105.8,6.77,0,0,0,0,0,0,0,0
-900632430,"Turbo, Vila Prudente",Grande São Paulo,10,157.6,13.91,0,0,0,0,0,0,0,0
-900580714,"Turbo, fresh, Castelo",Belo Horizonte,10,126.4,7.36,0,0,0,0,0,0,0,0
-900706857,"Turbo, Fresh, Bela Vista",Grande São Paulo,10,125.8,9.7,0,0,0,1,0,0,0,0
-900581709,"Turbo, Fresh, Cambui",Campinas,10,36.5,8.42,0,0,0,0,0,0,0,0
-900707115,"Turbo, Fresh, Recife Sul",Recife,10,73.5,7.69,0,0,0,0,0,0,0,0
-900575094,"Turbo, Fresh, Lapa",Grande São Paulo,10,119.6,9.85,0,0,0,1,0,0,0,0
-900706926,"Turbo, Fresh, Leblon",Rio De Janeiro,10,47.3,6.13,0,0,0,0,0,0,0,0
-900722116,"Turbo, Fresh Botafogo II",Rio De Janeiro,10,71.4,7.77,0,0,0,0,0,0,0,0
-900706510,"Turbo, Fresh, Morumbi",Grande São Paulo,10,111.7,10.23,0,0,0,0,0,0,0,0
-900739790,"Turbo, Fresh, Aflitos",Recife,9,29.2,13.88,3,6,2,0,0,2,0,0
-900707090,"Turbo, Fresh, Aflitos",Recife,9,81.0,14.69,3,4,2,1,0,2,0,0
-900739672,"Turbo 20, Market Vila Prudente",Grande São Paulo,9,30.1,15.62,0,0,2,1,0,2,0,0
-900536646,"Turbo, Fresh, Vila Mascote",Grande São Paulo,9,132.2,10.91,1,1,1,0,0,1,0,0
-900706672,"Turbo, Fresh, Carrão",Grande São Paulo,9,70.8,11.53,1,1,1,0,0,1,0,0
-900739681,"Turbo 20, Market Vila Madalena",Grande São Paulo,9,43.4,10.75,0,0,1,0,0,1,0,0
-900575093,"Turbo, Fresh, Lapa",Grande São Paulo,9,103.8,12.28,0,0,1,0,0,1,0,0
-900575141,"Turbo, Fresh, Vila Olimpia",Grande São Paulo,9,105.3,8.94,1,1,0,0,0,0,0,0
-900706494,"Turbo, Fresh, Alto do XV",Curitiba,9,78.2,8.28,1,2,0,1,0,0,0,0
-900707022,"Turbo, Fresh, Santo André",Grande São Paulo,9,77.3,10.43,1,1,0,0,0,0,0,0
-900739792,"Turbo, Fresh, Barra da Tijuca 3",Rio De Janeiro,9,45.3,9.01,1,1,0,0,0,0,0,0
-900575104,"Turbo, Bebidas, Vila Madalena",Grande São Paulo,9,99.3,5.32,0,0,0,0,0,0,0,0
-900706686,"Turbo, Fresh, Bela Vista",Grande São Paulo,9,85.2,9.65,0,0,0,0,0,0,0,0
-900575116,"Turbo, Bebidas, Bela Vista",Grande São Paulo,9,69.8,7.02,0,0,0,0,0,0,0,0
-900706820,"Turbo, Fresh, Moema",Grande São Paulo,9,60.8,8.24,0,0,0,0,0,0,0,0
-900650602,"Turbo, Fresh, Moema",Grande São Paulo,9,98.8,5.5,0,0,0,0,0,0,0,0
-900707136,"Turbo, Fresh, Brooklin",Grande São Paulo,9,85.3,10.43,0,0,0,0,0,0,0,0
-900706467,"Turbo, Fresh, Vila Mascote",Grande São Paulo,9,100.9,9.36,0,0,0,0,0,0,0,0
-900561623,"Turbo Fresh, Estoril",Belo Horizonte,9,107.4,7.83,0,0,0,0,0,0,0,0
-900575154,"Turbo, Fresh, Santa Cecilia",Grande São Paulo,9,120.9,7.14,0,0,0,0,0,0,0,0
-900706915,"Turbo, Fresh, Aldeota",Fortaleza,9,40.0,7.89,0,0,0,0,0,0,0,0
-900739739,"Turbo 20, Market Santo André",Grande São Paulo,9,41.9,10.53,0,0,0,0,0,0,0,0
-900706948,"Turbo, Fresh, Ipanema",Rio De Janeiro,9,68.2,3.97,0,0,0,0,0,0,0,0
-900706638,"Turbo, Fresh, Aflitos",Recife,9,74.2,10.47,0,0,0,0,0,0,0,0
-900575050,"Turbo, Bebidas, Alto do Ipiranga",Grande São Paulo,9,63.2,7.09,0,0,0,1,0,0,0,0
-900706486,"Turbo, Fresh, Bela Vista",Grande São Paulo,9,67.6,7.13,0,0,0,0,0,0,0,0
-900575160,"Turbo, Fresh, Brooklin",Grande São Paulo,9,77.9,6.78,0,0,0,0,0,0,0,0
-900575051,"Turbo, Fresh, Alto do Ipiranga",Grande São Paulo,9,99.4,8.23,0,0,0,0,0,0,0,0
-900706468,"Turbo, Fresh, Vila Olimpia",Grande São Paulo,9,59.2,7.2,0,0,0,0,0,0,0,0
-900688572,Mercado Rappi - Aclimação,Grande São Paulo,9,95.3,10.68,0,0,0,1,0,0,0,0
-900707151,"Turbo, Fresh, Ipanema",Rio De Janeiro,9,52.8,5.9,0,0,0,0,0,0,0,0
-900706469,"Turbo, Fresh, Tijuca",Rio De Janeiro,9,31.8,8.56,0,0,0,1,0,0,0,0
-900561624,"Turbo Fresh, Estoril",Belo Horizonte,9,73.7,9.37,0,0,0,0,0,0,0,0
-900739690,"Turbo 20, Market Santo André",Grande São Paulo,9,29.1,12.04,0,0,0,0,0,0,0,0
-900706940,"Turbo, Fresh, Santo André",Grande São Paulo,8,66.9,10.29,2,3,1,0,0,1,0,0
-900707140,"Turbo, Fresh, Lapa",Grande São Paulo,8,51.1,10.23,1,2,1,0,0,1,0,0
-900581199,"Turbo, Fresh, Carrão",Grande São Paulo,8,90.6,14.46,1,1,1,0,0,1,0,0
-900707194,"Turbo, Fresh, Bonfinglioli",Grande São Paulo,8,73.8,10.69,0,0,1,0,0,1,0,0
-900739816,"Turbo, Vila Andrade",Grande São Paulo,8,19.1,11.28,0,0,1,0,0,1,0,0
-900706944,"Turbo, Fresh, Vila Izabel",Curitiba,8,53.0,8.3,2,4,0,0,0,0,0,0
-900650604,"Turbo, Fresh, Brooklin",Grande São Paulo,8,83.5,7.76,1,1,0,0,0,0,0,0
-900650540,"Turbo, Fresh, Lapa",Grande São Paulo,8,100.8,9.99,1,2,0,0,0,0,0,0
-900739702,"Turbo 20, Market Vila Izabel",Curitiba,8,30.4,10.05,1,1,0,0,0,0,0,0
-900706487,"Turbo, Fresh, Santa Efigênia",Belo Horizonte,8,49.8,9.11,1,3,0,0,0,0,0,0
-900650537,"Turbo, Fresh, Santa Cecília",Grande São Paulo,8,105.8,7.02,1,4,0,1,0,0,0,0
-900707187,"Turbo, Fresh, Alphaville",Grande São Paulo,8,99.9,13.03,0,0,0,0,0,0,0,0
-900575052,"Turbo, Fresh, Alto do Ipiranga",Grande São Paulo,8,85.5,7.16,0,0,0,0,0,0,0,0
-900731569,"Turbo Fresh, Jardins",Grande São Paulo,8,59.1,5.73,0,0,0,0,0,0,0,0
-900706668,"Turbo, Fresh, Vila Olimpia",Grande São Paulo,8,91.9,7.83,0,0,0,0,0,0,0,0
-900650614,"Turbo, Fresh, Vila Olimpia",Grande São Paulo,8,81.9,6.84,0,0,0,0,0,0,0,0
-900706813,"Turbo, Fresh, Vila Clementino",Grande São Paulo,8,103.0,6.66,0,0,0,0,0,0,0,0
-900575014,"Turbo, Bebidas, Vila Clementino",Grande São Paulo,8,85.8,6.75,0,0,0,1,0,0,0,0
-900737122,"Turbo Oakberry , Jardins",Grande São Paulo,8,134.0,9.01,0,0,0,0,0,0,0,0
-900706842,"Turbo, Fresh, Morumbi",Grande São Paulo,8,93.4,8.55,0,0,0,0,0,0,0,0
-900706804,"Turbo, Fresh, Santo Amaro",Grande São Paulo,8,92.6,8.29,0,0,0,1,0,0,0,0
-900739742,"Turbo 20, Market Vila Izabel",Curitiba,8,47.9,9.87,0,0,0,0,0,0,0,0
-900650550,"Turbo, Fresh, Santo Amaro",Grande São Paulo,8,146.9,10.46,0,0,0,1,0,0,0,0
-900706818,"Turbo, Fresh, Santa Cecília",Grande São Paulo,8,99.0,7.64,0,0,0,0,0,0,0,0
-900739685,"Turbo 20, Market Alto do XV",Curitiba,8,24.0,9.54,0,0,0,0,0,0,0,0
-900602971,"Turbo, Fresh, Alto do XV",Curitiba,8,90.0,8.54,0,0,0,0,0,0,0,0
-900706730,"Turbo, Fresh, Vila Madalena",Grande São Paulo,8,67.1,8.29,0,0,0,0,0,0,0,0
-900707118,"Turbo, Fresh, Aldeota",Fortaleza,8,79.2,9.93,0,0,0,0,0,0,0,0
-900706831,"Turbo, Fresh, Recife Sul",Recife,8,95.9,8.19,0,0,0,0,0,0,0,0
-900706807,"Turbo, Fresh, Alto do Ipiranga",Grande São Paulo,8,69.0,9.46,0,0,0,0,0,0,0,0
-900575142,"Turbo, Fresh, Vila Olimpia",Grande São Paulo,8,70.0,5.35,0,0,0,0,0,0,0,0
-900706946,"Turbo, Fresh, Alto do XV",Curitiba,8,72.5,9.92,0,0,0,0,0,0,0,0
-900650580,"Turbo, Fresh, Morumbi",Grande São Paulo,8,111.5,9.03,0,0,0,0,0,0,0,0
-900707124,"Turbo, Fresh, Tijuca",Rio De Janeiro,8,68.1,9.69,0,0,0,1,0,0,0,0
-900739691,"Turbo 20, Market Cambui",Campinas,8,52.4,11.44,0,0,0,0,0,0,0,0
-900575130,"Turbo, Fresh, Santo Amaro",Grande São Paulo,8,105.8,6.77,0,0,0,0,0,0,0,0
-900707099,"Turbo, Fresh, Bela Vista",Grande São Paulo,8,77.5,8.18,0,0,0,0,0,0,0,0
-900722122,"Turbo, Fresh Botafogo II",Rio De Janeiro,8,139.5,8.83,0,0,0,0,0,0,0,0
-900689029,Rappi Bebidas - Santa Cecília,Grande São Paulo,7,103.6,12.65,0,0,2,0,0,2,0,0
-900739714,"Turbo 20, Market Lapa",Grande São Paulo,7,41.3,11.35,1,1,1,0,0,1,0,0
-900706472,"Turbo, Fresh, Carrão",Grande São Paulo,7,60.6,13.16,1,1,1,0,0,1,0,0
-900706810,"Turbo, Fresh, Brooklin",Grande São Paulo,7,57.1,11.14,0,0,1,0,0,1,0,0
-900739721,"Turbo 20, Market Vila Prudente",Grande São Paulo,7,37.6,13.05,0,0,1,0,0,1,0,0
-900706687,"Turbo, Fresh, Santa Efigênia",Belo Horizonte,7,84.9,13.5,0,0,1,0,0,0,1,0
-900706850,"Turbo, fresh, Castelo",Belo Horizonte,7,62.1,10.31,0,0,1,0,0,0,1,0
-900561601,"Turbo, Fresh, Leblon",Rio De Janeiro,7,70.4,9.26,0,0,1,0,0,1,0,0
-900706752,"Turbo Fresh, Estoril",Belo Horizonte,7,123.3,12.46,0,0,1,0,0,1,0,0
-900689041,Rappi Bebidas - Vila Madalena,Grande São Paulo,7,111.4,10.7,1,6,0,0,0,0,0,0
-900706478,"Turbo, Fresh, Alto do Ipiranga",Grande São Paulo,7,89.3,8.11,1,4,0,0,0,0,0,0
-900706485,"Turbo, Fresh, Lapa",Grande São Paulo,7,76.6,7.69,1,1,0,0,0,0,0,0
-900575015,"Turbo, Fresh, Vila Clementino",Grande São Paulo,7,94.9,7.41,1,3,0,0,0,0,0,0
-900575082,"Turbo, Fresh, Santana",Grande São Paulo,7,82.3,8.05,0,0,0,0,0,0,0,0
-900739693,"Turbo 20, Market Santa Cecília",Grande São Paulo,7,29.9,6.75,0,0,0,0,0,0,0,0
-900561581,"Turbo, Bebidas, PA Centro",Porto Alegre,7,99.4,7.25,0,0,0,0,0,0,0,0
-900739981,"Adega Rappi, Vila Andrade",Grande São Paulo,7,20.0,7.13,0,0,0,0,0,0,0,0
-900707130,"Turbo, Fresh, Santo Amaro",Grande São Paulo,7,60.6,6.8,0,0,0,0,0,0,0,0
-900706839,"Turbo, Fresh, Vila Olimpia",Grande São Paulo,7,88.9,9.09,0,0,0,1,0,0,0,0
-900706735,"Turbo, Fresh, PA Centro",Porto Alegre,7,81.7,10.94,0,0,0,0,0,0,0,0
-900739683,"Turbo 20, Market Alphaville",Grande São Paulo,7,44.7,13.36,0,0,0,0,0,0,0,0
-900650538,"Turbo, Fresh, Alto do Ipiranga",Grande São Paulo,7,87.4,6.8,0,0,0,0,0,0,0,0
-900706814,"Turbo, Fresh, Lapa",Grande São Paulo,7,74.6,7.77,0,0,0,0,0,0,0,0
-900706731,"Turbo, Fresh, Moema",Grande São Paulo,7,42.7,5.55,0,0,0,0,0,0,0,0
-900706502,"Turbo, Fresh, Aldeota",Fortaleza,7,124.3,10.15,0,0,0,0,0,0,0,0
-900706690,"Turbo, Fresh, Vila Madalena",Grande São Paulo,7,88.0,7.47,0,0,0,0,0,0,0,0
-900602965,"Turbo, Fresh, Vila Izabel",Curitiba,7,101.7,6.06,0,0,0,0,0,0,0,0
-900575136,"Turbo, Fresh, Moema",Grande São Paulo,7,88.6,5.63,0,0,0,0,0,0,0,0
-900707020,"Turbo, Fresh, Bela Vista",Grande São Paulo,7,88.6,9.68,0,0,0,0,0,0,0,0
-900707133,"Turbo, Fresh, Alto do Ipiranga",Grande São Paulo,7,53.4,8.65,0,0,0,0,0,0,0,0
-900707141,"Turbo, Fresh, Bela Vista",Grande São Paulo,7,54.3,6.73,0,0,0,2,0,0,0,0
-900731565,"Turbo Fresh, Jardins",Grande São Paulo,7,42.3,6.39,0,0,0,0,0,0,0,0
-900706722,"Turbo, Fresh, Cambui",Campinas,7,122.3,7.24,0,0,0,0,0,0,0,0
-900706901,"Turbo, Fresh, Santo André",Grande São Paulo,7,103.1,10.12,0,0,0,0,0,0,0,0
-900706955,"Turbo, Fresh, Aldeota",Fortaleza,7,108.4,9.22,0,0,0,0,0,0,0,0
-900706890,"Turbo, Fresh, Aflitos",Recife,7,81.1,11.42,0,0,0,0,0,0,0,0
-900706488,"Turbo, Fresh, Santo André",Grande São Paulo,7,51.3,7.1,0,0,0,0,0,0,0,0
-900706704,"Turbo Fresh, Estoril",Belo Horizonte,7,145.4,11.84,0,0,0,0,0,0,0,0
-900706460,"Turbo, Fresh, Recife Sul",Recife,7,53.1,7.17,0,0,0,1,0,0,0,0
-900574984,"Turbo, Bebidas, Vila Prudente",Grande São Paulo,7,49.9,5.2,0,0,0,0,0,0,0,0
-900706598,"Turbo, Fresh, Aflitos",Recife,7,60.4,6.47,0,0,0,0,0,0,0,0
-900575081,"Turbo, Fresh, Santana",Grande São Paulo,6,135.0,17.81,0,0,2,0,0,2,0,0
-900739727,"Turbo 20, Market Bela Vista",Grande São Paulo,6,40.0,15.38,0,0,2,0,0,2,0,0
-900739696,"Turbo 20, Market Alto do Ipiranga",Grande São Paulo,6,31.0,11.74,0,0,2,0,0,1,1,0
-900650612,"Turbo Fresh, Estoril",Belo Horizonte,6,127.7,10.51,1,1,1,0,0,1,0,0
-900706793,"Turbo Fresh, Estoril",Belo Horizonte,6,109.7,11.85,1,1,1,0,0,1,0,0
-900739719,"Turbo 20, Market Alphaville",Grande São Paulo,6,32.0,11.65,0,0,1,0,0,1,0,0
-900707122,"Turbo, Fresh, Vila Mascote",Grande São Paulo,6,59.5,10.8,0,0,1,0,0,1,0,0
-900706680,"Turbo, Fresh, Vila Prudente",Grande São Paulo,6,71.7,11.13,0,0,1,0,0,1,0,0
-900723153,"Turbo, Catete II",Rio De Janeiro,6,137.5,12.77,0,0,1,1,0,1,0,0
-900722128,"Turbo, Fresh Botafogo II",Rio De Janeiro,6,118.2,10.64,0,0,1,0,0,1,0,0
-900707095,"Turbo, Fresh, Cambui",Campinas,6,94.2,9.64,0,0,1,0,0,1,0,0
-900706969,"Turbo, Fresh, Aflitos",Recife,6,80.0,11.27,0,0,1,0,0,1,0,0
-900706727,"Turbo, Fresh, Santa Efigênia",Belo Horizonte,6,95.3,13.96,0,0,1,0,0,1,0,0
-900723138,"Turbo, Catete II",Rio De Janeiro,6,127.3,13.48,0,0,1,0,0,1,0,0
-900650571,"Turbo, Fresh, Cambui",Campinas,6,114.3,11.09,2,7,0,0,0,0,0,0
-900706492,"Turbo, Fresh, Vila Izabel",Curitiba,6,100.0,8.71,1,1,0,0,0,0,0,0
-900689021,Rappi Bebidas - Vila Mascote,Grande São Paulo,6,34.3,8.42,1,3,0,0,0,0,0,0
-900706664,"Turbo Fresh, Estoril",Belo Horizonte,6,133.0,9.36,1,7,0,0,0,0,0,0
-900650541,"Turbo, Fresh, Vila Madalena",Grande São Paulo,6,73.2,6.73,1,3,0,0,0,0,0,0
-900706877,"Turbo Fresh, Estoril",Belo Horizonte,6,126.3,10.49,1,1,0,0,0,0,0,0
-900706642,"Turbo, Fresh, Brooklin",Grande São Paulo,6,67.0,6.4,0,0,0,0,0,0,0,0
-900706646,"Turbo, Fresh, Lapa",Grande São Paulo,6,52.7,10.27,0,0,0,0,0,0,0,0
-900706629,"Turbo, Fresh, Vila Olimpia",Grande São Paulo,6,99.0,7.76,0,0,0,0,0,0,0,0
-900575022,"Turbo, Fresh, Aclimação",Grande São Paulo,6,65.7,7.99,0,0,0,0,0,0,0,0
-900650617,"Turbo, Fresh, Vila Clementino",Grande São Paulo,6,131.3,5.88,0,0,0,0,0,0,0,0
-900707144,"Turbo, Fresh, Santa Cecília",Grande São Paulo,6,41.2,7.24,0,0,0,0,0,0,0,0
-900561643,"Turbo, Fresh, Tijuca",Rio De Janeiro,6,176.0,8.09,0,0,0,0,0,0,0,0
-900739989,"Turbo, Vila Andrade",Grande São Paulo,6,19.8,7.75,0,0,0,1,0,0,0,0
-900706592,"Turbo, Fresh, Morumbi",Grande São Paulo,6,76.2,10.74,0,0,0,0,0,0,0,0
-900706815,"Turbo, Fresh, Bela Vista",Grande São Paulo,6,68.2,5.77,0,0,0,1,0,0,0,0
-900739674,"Turbo 20, Market Vila Mascote",Grande São Paulo,6,16.3,8.97,0,0,0,0,0,0,0,0
-900706908,"Turbo, Fresh, PA Centro",Porto Alegre,6,68.5,7.44,0,0,0,0,0,0,0,0
-900739731,"Turbo 20, Market Santa Efigênia",Belo Horizonte,6,49.3,10.67,0,0,0,0,0,0,0,0
-900739733,"Turbo 20, Market Estoril",Belo Horizonte,6,43.3,12.04,0,0,0,0,0,0,0,0
-900707137,"Turbo, Fresh, Cambui",Campinas,6,80.7,9.74,0,0,0,1,0,0,0,0
-900706932,"Turbo, Fresh, Vila Prudente",Grande São Paulo,6,67.5,9.12,0,0,0,0,0,0,0,0
-900723150,"Turbo, Catete II",Rio De Janeiro,6,98.7,8.8,0,0,0,0,0,0,0,0
-900604380,"Turbo, Fresh, Bonfinglioli",Grande São Paulo,6,31.3,7.61,0,0,0,1,0,0,0,0
-900706496,"Turbo, Fresh, Ipanema",Rio De Janeiro,6,92.8,4.01,0,0,0,0,0,0,0,0
-900706819,"Turbo, Fresh, Vila Madalena",Grande São Paulo,6,84.7,6.71,0,0,0,0,0,0,0,0
-900706694,"Turbo, Fresh, Alto do XV",Curitiba,6,56.0,9.68,0,0,0,0,0,0,0,0
-900578433,"Turbo, Fresh, Barra da Tijuca 3",Rio De Janeiro,6,122.0,6.42,0,0,0,0,0,0,0,0
-900706852,"Turbo, Fresh, Brooklin",Grande São Paulo,6,85.8,8.78,0,0,0,0,0,0,0,0
-900739715,"Turbo 20, Market Santana",Grande São Paulo,6,29.8,11.82,0,0,0,0,0,0,0,0
-900706669,"Turbo, Fresh, Tijuca",Rio De Janeiro,6,124.7,8.88,0,0,0,0,0,0,0,0
-900575129,"Turbo, Fresh, Santo Amaro",Grande São Paulo,6,101.0,7.66,0,0,0,0,0,0,0,0
-900706860,"Turbo, Fresh, Santa Cecília",Grande São Paulo,6,123.0,7.94,0,0,0,0,0,0,0,0
-900575122,"Turbo, Bebidas, Morumbi",Grande São Paulo,6,41.3,7.9,0,0,0,0,0,0,0,0
-900706777,"Turbo, Fresh, Santa Cecília",Grande São Paulo,6,76.8,6.33,0,0,0,0,0,0,0,0
-900706555,"Turbo, Fresh, Aflitos",Recife,6,86.8,6.73,0,0,0,0,0,0,0,0
-900722117,"Turbo, Fresh Botafogo II",Rio De Janeiro,6,127.2,8.85,0,0,0,0,0,0,0,0
-900706994,"Turbo, Fresh, Recife Sul",Recife,6,77.2,6.16,0,0,0,0,0,0,0,0
-900739744,"Turbo 20, Market Recife Sul",Recife,6,38.8,10.83,0,0,0,0,0,0,0,0
-900706887,"Turbo, Fresh, Leblon",Rio De Janeiro,6,102.3,5.99,0,0,0,0,0,0,0,0
-900706858,"Turbo, Fresh, Santa Efigênia",Belo Horizonte,6,92.8,8.11,0,0,0,0,0,0,0,0
-900706516,"Turbo, Fresh, Aflitos",Recife,6,69.5,9.63,0,0,0,0,0,0,0,0
-900706480,"Turbo, Fresh, Vila Prudente",Grande São Paulo,6,34.5,8.43,0,0,0,0,0,0,0,0
-900706751,"Turbo, Fresh, Aldeota",Fortaleza,6,71.5,6.66,0,0,0,0,0,0,0,0
-900706924,"Turbo, Fresh, Carrão",Grande São Paulo,6,50.8,8.66,0,0,0,0,0,0,0,0
-900707006,"Turbo, Fresh, Carrão",Grande São Paulo,6,61.2,10.71,0,0,0,1,0,0,0,0
-900739689,"Turbo 20, Market Santo Amaro",Grande São Paulo,6,29.8,9.65,0,0,0,0,0,0,0,0
-900739711,"Turbo 20, Market Vila Mascote",Grande São Paulo,6,30.3,7.77,0,0,0,0,0,0,0,0
-900706873,"Turbo, Fresh, Recife Sul",Recife,6,84.7,7.59,0,0,0,0,0,0,0,0
-900723145,"Turbo, Catete II",Rio De Janeiro,6,51.2,9.03,0,0,0,0,0,0,0,0
-900706647,"Turbo, Fresh, Bela Vista",Grande São Paulo,6,80.5,7.34,0,0,0,0,0,0,0,0
-900706621,"Turbo, Fresh, Recife Sul",Recife,6,135.8,6.05,0,0,0,0,0,0,0,0
-900650611,"Turbo, Fresh, Vila Prudente",Grande São Paulo,6,71.2,10.43,0,0,0,0,0,0,0,0
-900731576,"Turbo Fresh, Jardins",Grande São Paulo,6,24.5,7.97,0,0,0,0,0,0,0,0
-900581198,"Turbo, Fresh, Carrão",Grande São Paulo,6,80.2,10.26,0,0,0,1,0,0,0,0
-900689027,Rappi Bebidas - Bela Vista,Grande São Paulo,6,83.7,7.6,0,0,0,0,0,0,0,0
-900706916,"Turbo Fresh, Estoril",Belo Horizonte,6,79.7,9.2,0,0,0,0,0,0,0,0
-900706584,"Turbo, Fresh, Aldeota",Fortaleza,6,54.2,7.66,0,0,0,0,0,0,0,0
-900706961,"Turbo, Fresh, Tijuca",Rio De Janeiro,6,60.0,11.48,0,0,0,0,0,0,0,0
-900706725,"Turbo, Fresh, Lapa",Grande São Paulo,6,97.5,8.12,0,0,0,0,0,0,0,0
-900722107,"Turbo, Fresh Botafogo II",Rio De Janeiro,6,45.8,9.03,0,0,0,0,0,0,0,0
-900739851,"Turbo 20, Market Vila Clementino",Grande São Paulo,5,44.0,16.42,0,0,2,0,0,2,0,0
-900575152,"Turbo, Bebidas, Santa Cecilia",Grande São Paulo,5,21.0,9.96,0,0,1,0,0,1,0,0
-900707119,"Turbo Fresh, Estoril",Belo Horizonte,5,88.4,12.75,0,0,1,0,0,1,0,0
-900706834,"Turbo, Fresh, Aldeota",Fortaleza,5,119.2,11.87,0,0,1,0,0,1,0,0
-900575092,"Turbo, Bebidas, Lapa",Grande São Paulo,5,110.4,12.82,0,0,1,0,0,1,0,0
-900706835,"Turbo Fresh, Estoril",Belo Horizonte,5,112.6,10.85,0,0,1,0,0,1,0,0
-900706876,"Turbo, Fresh, Aldeota",Fortaleza,5,89.8,10.79,0,0,1,0,0,1,0,0
-900581711,"Turbo, Fresh, Cambui",Campinas,5,85.8,11.43,0,0,1,0,0,1,0,0
-900706853,"Turbo, Fresh, Cambui",Campinas,5,106.2,13.22,0,0,1,0,0,1,0,0
-900707021,"Turbo, Fresh, Santa Efigênia",Belo Horizonte,5,157.4,13.1,0,0,1,0,0,1,0,0
-900739728,"Turbo 20, Market Cambui",Campinas,5,45.0,15.83,0,0,1,0,0,1,0,0
-900575080,"Turbo, Bebidas, Santana",Grande São Paulo,5,105.2,15.02,0,0,1,1,0,1,0,0
-900706859,"Turbo, Fresh, Santo André",Grande São Paulo,5,76.6,8.95,2,2,0,0,0,0,0,0
-900575140,"Turbo, Bebidas, Vila Olimpia",Grande São Paulo,5,80.2,6.78,1,1,0,0,0,0,0,0
-900706721,"Turbo, Fresh, Brooklin",Grande São Paulo,5,91.4,7.13,1,1,0,0,0,0,0,0
-900722123,"Turbo, Fresh Botafogo II",Rio De Janeiro,5,108.2,8.36,1,1,0,0,0,0,0,0
-900706528,"Turbo, Fresh, Santa Cecília",Grande São Paulo,5,86.8,6.33,1,2,0,0,0,0,0,0
-900706861,"Turbo, Fresh, Vila Madalena",Grande São Paulo,5,87.6,9.42,1,2,0,0,0,0,0,0
-900706838,"Turbo, Fresh, Vila Mascote",Grande São Paulo,5,130.4,10.01,1,4,0,0,0,0,0,0
-900706493,"Turbo, Fresh, Santana",Grande São Paulo,5,88.4,6.8,1,1,0,0,0,0,0,0
-900739708,"Turbo 20, Market Moema",Grande São Paulo,5,41.6,6.33,0,0,0,0,0,0,0,0
-900706461,"Turbo, Fresh, Aclimação",Grande São Paulo,5,71.0,9.91,0,0,0,0,0,0,0,0
-900575106,"Turbo, Fresh, Vila Madalena",Grande São Paulo,5,72.8,6.37,0,0,0,0,0,0,0,0
-900706774,"Turbo, Fresh, Bela Vista",Grande São Paulo,5,44.2,8.76,0,0,0,0,0,0,0,0
-900706783,"Turbo, Fresh, PA Centro",Porto Alegre,5,93.0,10.46,0,0,0,0,0,0,0,0
-900739720,"Turbo 20, Market Vila Clementino",Grande São Paulo,5,38.4,6.07,0,0,0,0,0,0,0,0
-900706531,"Turbo, Fresh, Vila Izabel",Curitiba,5,78.0,7.54,0,0,0,0,0,0,0,0
-900575021,"Turbo, Fresh, Aclimação",Grande São Paulo,5,80.6,9.38,0,0,0,0,0,0,0,0
-900650607,"Turbo, Fresh, Aclimação",Grande São Paulo,5,80.8,6.25,0,0,0,0,0,0,0,0
-900707023,"Turbo, Fresh, Santa Cecília",Grande São Paulo,5,99.8,6.13,0,0,0,0,0,0,0,0
-900706655,"Turbo, Fresh, Alto do XV",Curitiba,5,111.0,8.47,0,0,0,0,0,0,0,0
-900706938,"Turbo, Fresh, Bela Vista",Grande São Paulo,5,70.8,10.32,0,0,0,0,0,0,0,0
-900561594,"Turbo, Fresh, Ipanema",Rio De Janeiro,5,143.4,5.35,0,0,0,0,0,0,0,0
-900706947,"Turbo, Fresh, PA Centro",Porto Alegre,5,29.8,8.53,0,0,0,0,0,0,0,0
-900706837,"Turbo, Fresh, Bonfinglioli",Grande São Paulo,5,101.4,7.72,0,0,0,0,0,0,0,0
-900706800,"Turbo, Fresh, Morumbi",Grande São Paulo,5,64.4,8.35,0,0,0,0,0,0,0,0
-900706822,"Turbo, Fresh, Santana",Grande São Paulo,5,89.2,10.0,0,0,0,0,0,0,0,0
-900706605,"Turbo, Fresh, Vila Clementino",Grande São Paulo,5,69.6,7.2,0,0,0,0,0,0,0,0
-900739735,"Turbo 20, Market Aclimação",Grande São Paulo,5,45.8,4.87,0,0,0,0,0,0,0,0
-900706653,"Turbo, Fresh, Vila Izabel",Curitiba,5,97.4,6.56,0,0,0,0,0,0,0,0
-900650577,"Turbo, Fresh, Vila Mascote",Grande São Paulo,5,94.6,7.26,0,0,0,0,0,0,0,0
-900739973,"Turbo, Vila Andrade",Grande São Paulo,5,18.6,8.5,0,0,0,0,0,0,0,0
-900723143,"Turbo, Catete II",Rio De Janeiro,5,102.0,6.64,0,0,0,0,0,0,0,0
-900706823,"Turbo, Fresh, Alto do XV",Curitiba,5,83.6,9.1,0,0,0,0,0,0,0,0
-900706656,"Turbo, Fresh, PA Centro",Porto Alegre,5,113.0,8.87,0,0,0,0,0,0,0,0
-900575158,"Turbo, Bebidas, Brooklin",Grande São Paulo,5,55.0,5.9,0,0,0,0,0,0,0,0
-900561642,"Turbo, Fresh, Tijuca",Rio De Janeiro,5,134.8,5.97,0,0,0,1,0,0,0,0
-900689008,Rappi Bebidas - Recife Sul,Recife,5,80.8,7.41,0,0,0,0,0,0,0,0
-900706934,"Turbo, Fresh, Cambui",Campinas,5,44.2,8.33,0,0,0,0,0,0,0,0
-900706939,"Turbo, Fresh, Santa Efigênia",Belo Horizonte,5,122.6,9.31,0,0,0,0,0,0,0,0
-900561593,"Turbo, Fresh, Ipanema",Rio De Janeiro,5,99.4,4.32,0,0,0,0,0,0,0,0
-900706682,"Turbo, Fresh, Cambui",Campinas,5,84.0,8.43,0,0,0,0,0,0,0,0
-900706734,"Turbo, Fresh, Alto do XV",Curitiba,5,70.4,9.19,0,0,0,0,0,0,0,0
-900706635,"Turbo, Fresh, Leblon",Rio De Janeiro,5,116.8,5.64,0,0,0,0,0,0,0,0
-900706506,"Turbo, Fresh, Vila Mascote",Grande São Paulo,5,82.8,11.15,0,0,0,0,0,0,0,0
-900722120,"Turbo, Fresh Botafogo II",Rio De Janeiro,5,66.4,8.54,0,0,0,0,0,0,0,0
-900650615,"Turbo, Fresh, Carrão",Grande São Paulo,5,97.8,10.45,0,0,0,0,0,0,0,0
-900706688,"Turbo, Fresh, Santo André",Grande São Paulo,5,121.4,7.5,0,0,0,0,0,0,0,0
-900706796,"Turbo, Fresh, Vila Mascote",Grande São Paulo,5,111.6,8.77,0,0,0,0,0,0,0,0
-900706581,"Turbo, Fresh, Recife Sul",Recife,5,49.6,8.15,0,0,0,0,0,0,0,0
-900650585,"Turbo, Fresh, Nova Recreio",Rio De Janeiro,5,133.4,8.67,0,0,0,0,0,0,0,0
-900561582,"Turbo, Fresh, PA Centro",Porto Alegre,5,58.0,8.66,0,0,0,0,0,0,0,0
-900707150,"Turbo, Fresh, PA Centro",Porto Alegre,5,60.0,8.71,0,0,0,0,0,0,0,0
-900739724,"Turbo 20, Market Alto do XV",Curitiba,5,37.4,9.35,0,0,0,0,0,0,0,0
-900739675,"Turbo 20, Market Moema",Grande São Paulo,5,29.6,6.63,0,0,0,0,0,0,0,0
-900707148,"Turbo, Fresh, Santana",Grande São Paulo,5,54.6,11.13,0,0,0,0,0,0,0,0
-900707028,"Turbo, Fresh, Alto do XV",Curitiba,5,102.6,8.51,0,0,0,0,0,0,0,0
-900706639,"Turbo, Fresh, Alto do Ipiranga",Grande São Paulo,5,76.0,6.44,0,0,0,0,0,0,0,0
-900601553,"Turbo, Bebidas, Santo André",Grande São Paulo,5,35.4,10.27,0,0,0,0,0,0,0,0
-900707149,"Turbo, Fresh, Alto do XV",Curitiba,5,70.2,6.51,0,0,0,0,0,0,0,0
-900706880,"Turbo, Fresh, Vila Mascote",Grande São Paulo,5,92.2,8.01,0,0,0,0,0,0,0,0
-900580712,"Turbo, Bebidas, Castelo",Belo Horizonte,5,58.4,5.77,0,0,0,0,0,0,0,0
-900706693,"Turbo, Fresh, Santana",Grande São Paulo,4,73.5,17.72,0,0,2,0,0,2,0,0
-900706884,"Turbo, Fresh, Morumbi",Grande São Paulo,4,78.0,12.64,0,0,1,0,0,1,0,0
-900723146,"Turbo, Catete II",Rio De Janeiro,4,119.2,11.1,0,0,1,0,0,1,0,0
-900650620,"Turbo, Fresh, Alto do XV",Curitiba,4,96.2,11.93,0,0,1,0,0,1,0,0
-900739694,"Turbo 20, Market Estoril",Belo Horizonte,4,44.0,12.25,0,0,1,0,0,1,0,0
-900706585,"Turbo Fresh, Estoril",Belo Horizonte,4,95.8,15.7,0,0,1,0,0,1,0,0
-900706479,"Turbo, fresh, Castelo",Belo Horizonte,4,35.0,8.99,0,0,1,0,0,1,0,0
-900706636,"Turbo, Fresh, Santo Amaro",Grande São Paulo,4,98.2,9.11,0,0,1,0,0,1,0,0
-900706798,"Turbo, Fresh, Tijuca",Rio De Janeiro,4,147.5,12.98,0,0,1,0,0,1,0,0
-900707143,"Turbo, Fresh, Santo André",Grande São Paulo,4,37.8,13.87,0,0,1,0,0,1,0,0
-900707121,"Turbo, Fresh, Bonfinglioli",Grande São Paulo,4,62.2,10.03,2,3,0,0,0,0,0,0
-900689000,Rappi Bebidas - Alto do XV,Curitiba,4,96.2,4.65,1,2,0,0,0,0,0,0
-900706748,"Turbo, Fresh, Recife Sul",Recife,4,104.2,8.5,1,1,0,0,0,0,0,0
-900707107,"Turbo, Fresh, Alto do XV",Curitiba,4,81.2,7.9,1,1,0,0,0,0,0,0
-900739825,"Turbo, fresh, Castelo",Belo Horizonte,4,28.2,10.63,1,1,0,1,0,0,0,0
-900706652,"Turbo, Fresh, Moema",Grande São Paulo,4,52.8,6.67,1,1,0,0,0,0,0,0
-900706770,"Turbo, Fresh, Cambui",Campinas,4,110.0,14.3,1,4,0,0,0,0,0,0
-900706903,"Turbo, Fresh, Vila Madalena",Grande São Paulo,4,103.8,6.92,1,1,0,0,0,0,0,0
-900706610,"Turbo, Fresh, Santa Cecília",Grande São Paulo,4,67.8,5.56,1,1,0,0,0,0,0,0
-900706614,"Turbo, Fresh, Santana",Grande São Paulo,4,57.2,11.56,1,1,0,0,0,0,0,0
-900739993,"Turbo, Vila Andrade",Grande São Paulo,4,23.5,8.09,1,1,0,0,0,0,0,0
-900706913,"Turbo, Fresh, Aclimação",Grande São Paulo,4,75.5,8.23,0,0,0,0,0,0,0,0
-900706643,"Turbo, Fresh, Cambui",Campinas,4,130.8,8.93,0,0,0,0,0,0,0,0
-900561641,"Turbo, Bebidas, Tijuca",Rio De Janeiro,4,140.8,7.34,0,0,0,0,0,0,0,0
-900706616,"Turbo, Fresh, PA Centro",Porto Alegre,4,68.2,8.85,0,0,0,0,0,0,0,0
-900706685,"Turbo, Fresh, Lapa",Grande São Paulo,4,88.2,10.5,0,0,0,0,0,0,0,0
-900706474,"Turbo, Fresh, Leblon",Rio De Janeiro,4,30.2,5.52,0,0,0,0,0,0,0,0
-900707025,"Turbo, Fresh, Moema",Grande São Paulo,4,64.8,5.8,0,0,0,0,0,0,0,0
-900706625,"Turbo Fresh, Estoril",Belo Horizonte,4,123.2,9.87,0,0,0,0,0,0,0,0
-900578432,"Turbo, Fresh, Barra da Tijuca 3",Rio De Janeiro,4,113.2,7.61,0,0,0,0,0,0,0,0
-900575020,"Turbo, Bebidas, Aclimação",Grande São Paulo,4,116.0,8.42,0,0,0,0,0,0,0,0
-900723152,"Turbo, Catete II",Rio De Janeiro,4,105.8,6.74,0,0,0,0,0,0,0,0
-900707135,"Turbo, Fresh, Vila Prudente",Grande São Paulo,4,129.5,10.55,0,0,0,1,0,0,0,0
-900706603,"Turbo, Fresh, Cambui",Campinas,4,59.2,7.73,0,0,0,0,0,0,0,0
-900706678,"Turbo, Fresh, Alto do Ipiranga",Grande São Paulo,4,154.2,7.63,0,0,0,0,0,0,0,0
-900706589,"Turbo, Fresh, Vila Olimpia",Grande São Paulo,4,140.5,9.66,0,0,0,0,0,0,0,0
-900706512,"Turbo, Fresh, Barra da Tijuca 2",Rio De Janeiro,4,129.8,8.38,0,0,0,0,0,0,0,0
-900739730,"Turbo 20, Market Vila Madalena",Grande São Paulo,4,39.5,6.27,0,0,0,0,0,0,0,0
-900706499,"Turbo, Fresh, Recife Sul",Recife,4,117.8,7.43,0,0,0,0,0,0,0,0
-900706607,"Turbo, Fresh, Bela Vista",Grande São Paulo,4,49.2,10.33,0,0,0,0,0,0,0,0
-900739716,"Turbo 20, Market Morumbi",Grande São Paulo,4,31.2,10.16,0,0,0,0,0,0,0,0
-900739677,"Turbo 20, Market Morumbi",Grande São Paulo,4,27.5,8.37,0,0,0,0,0,0,0,0
-900706692,"Turbo, Fresh, Vila Izabel",Curitiba,4,74.2,8.0,0,0,0,0,0,0,0,0
-900707145,"Turbo, Fresh, Vila Madalena",Grande São Paulo,4,101.2,6.68,0,0,0,0,0,0,0,0
-900707147,"Turbo, Fresh, Vila Izabel",Curitiba,4,39.8,9.1,0,0,0,0,0,0,0,0
-900706634,"Turbo, Fresh, Barra da Tijuca 2",Rio De Janeiro,4,152.0,7.0,0,0,0,0,0,0,0,0
-900706611,"Turbo, Fresh, Vila Madalena",Grande São Paulo,4,50.8,5.53,0,0,0,0,0,0,0,0
-900706552,"Turbo, Fresh, Leblon",Rio De Janeiro,4,154.2,3.78,0,0,0,0,0,0,0,0
-900706930,"Turbo, Fresh, Alto do Ipiranga",Grande São Paulo,4,46.5,6.62,0,0,0,0,0,0,0,0
-900706507,"Turbo, Fresh, Vila Olimpia",Grande São Paulo,4,148.2,8.41,0,0,0,0,0,0,0,0
-900602969,"Turbo, Bebidas, Alto do XV",Curitiba,4,53.8,9.82,0,0,0,0,0,0,0,0
-900739990,"Turbo, Osasco",Grande São Paulo,4,31.2,10.42,0,0,0,0,0,0,0,0
-900706863,"Turbo, Fresh, Vila Izabel",Curitiba,4,141.5,8.19,0,0,0,1,0,0,0,0
-900739955,"Turbo, Vila Andrade",Grande São Paulo,4,20.8,8.8,0,0,0,0,0,0,0,0
-900650603,"Turbo, Fresh, Santana",Grande São Paulo,4,63.5,8.82,0,0,0,0,0,0,0,0
-900706475,"Turbo, Fresh, Santo Amaro",Grande São Paulo,4,37.2,7.85,0,0,0,1,0,0,0,0
-900707005,"Turbo, Fresh, Morumbi",Grande São Paulo,4,99.8,9.05,0,0,0,0,0,0,0,0
-900706684,"Turbo, Fresh, Vila Clementino",Grande São Paulo,4,145.5,7.45,0,0,0,0,0,0,0,0
-900739824,"Turbo, Fresh, Aldeota",Fortaleza,4,67.0,10.01,0,0,0,0,0,0,0,0
-900739979,"Turbo, Vila Andrade",Grande São Paulo,4,20.5,6.91,0,0,0,0,0,0,0,0
-900604381,"Turbo, Fresh, Bonfinglioli",Grande São Paulo,4,122.8,6.9,0,0,0,0,0,0,0,0
-900706942,"Turbo, Fresh, Vila Madalena",Grande São Paulo,4,56.8,6.76,0,0,0,0,0,0,0,0
-900575016,"Turbo, Fresh, Vila Clementino",Grande São Paulo,4,54.2,5.97,0,0,0,1,0,0,0,0
-900683264,"Heineken, Vila Izabel",Curitiba,4,71.5,9.78,0,0,0,0,0,0,0,0
-900739678,"Turbo 20, Market Lapa",Grande São Paulo,4,32.0,10.55,0,0,0,0,0,0,0,0
-900706508,"Turbo, Fresh, Tijuca",Rio De Janeiro,4,111.2,10.73,0,0,0,0,0,0,0,0
-900706790,"Turbo, Fresh, Aclimação",Grande São Paulo,4,89.5,4.71,0,0,0,0,0,0,0,0
-900706849,"Turbo, Fresh, Alto do Ipiranga",Grande São Paulo,4,100.0,8.62,0,0,0,0,0,0,0,0
-900706760,"Turbo, Fresh, Carrão",Grande São Paulo,4,76.5,10.77,0,0,0,0,0,0,0,0
-900706893,"Turbo, Fresh, Vila Prudente",Grande São Paulo,4,109.5,9.57,0,0,0,0,0,0,0,0
-900536645,"Turbo, Bebidas, Vila Mascote",Grande São Paulo,4,63.0,8.16,0,0,0,0,0,0,0,0
-900706952,"Turbo, Fresh, Recife Sul",Recife,4,107.8,7.02,0,0,0,0,0,0,0,0
-900707002,"Turbo, Fresh, Vila Olimpia",Grande São Paulo,4,70.0,6.79,0,0,0,0,0,0,0,0
-900650606,"Turbo, Fresh, Santo André",Grande São Paulo,4,72.0,7.59,0,0,0,0,0,0,0,0
-900707125,"Turbo, Fresh, Nova Recreio",Rio De Janeiro,4,43.5,7.52,0,0,0,0,0,0,0,0
-900561599,"Turbo, Fresh, Leblon",Rio De Janeiro,4,123.8,5.7,0,0,0,0,0,0,0,0
-900706473,"Turbo, Fresh, Barra da Tijuca 2",Rio De Janeiro,4,55.8,6.07,0,0,0,0,0,0,0,0
-900723157,"Turbo, Catete II",Rio De Janeiro,4,71.2,8.06,0,0,0,0,0,0,0,0
-900706596,"Turbo, Fresh, Santo Amaro",Grande São Paulo,4,17.5,5.35,0,0,0,0,0,0,0,0
-900706529,"Turbo, Fresh, Vila Madalena",Grande São Paulo,4,94.5,6.43,0,0,0,0,0,0,0,0
-900706482,"Turbo, Fresh, Cambui",Campinas,4,66.8,9.35,0,0,0,0,0,0,0,0
-900706895,"Turbo, Fresh, Cambui",Campinas,4,114.5,11.88,0,0,0,1,0,0,0,0
-900689025,Rappi Bebidas - Vila Olimpia,Grande São Paulo,4,55.2,6.8,0,0,0,0,0,0,0,0
-900707027,"Turbo, Fresh, Santana",Grande São Paulo,4,86.0,10.12,0,0,0,0,0,0,0,0
-900723156,"Turbo, Catete II",Rio De Janeiro,4,139.2,9.4,0,0,0,1,0,0,0,0
-900706799,"Turbo, Fresh, Nova Recreio",Rio De Janeiro,4,124.5,8.41,0,0,0,0,0,0,0,0
-900706691,"Turbo, Fresh, Moema",Grande São Paulo,4,119.5,5.41,0,0,0,0,0,0,0,0
-900707080,"Turbo, Fresh, Vila Mascote",Grande São Paulo,4,98.2,7.8,0,0,0,0,0,0,0,0
-900722127,"Turbo, Fresh Botafogo II",Rio De Janeiro,4,168.0,10.25,0,0,0,0,0,0,0,0
-900706718,"Turbo, Fresh, Alto do Ipiranga",Grande São Paulo,4,73.2,8.6,0,0,0,0,0,0,0,0
-900706728,"Turbo, Fresh, Santo André",Grande São Paulo,4,105.2,10.15,0,0,0,0,0,0,0,0
-900650605,"Turbo, Fresh, Alphaville",Grande São Paulo,3,121.7,16.05,1,1,1,0,0,1,0,0
-900706720,"Turbo, Fresh, Vila Prudente",Grande São Paulo,3,73.3,14.84,0,0,1,0,0,1,0,0
-900707100,"Turbo, Fresh, Santa Efigênia",Belo Horizonte,3,68.7,10.07,0,0,1,0,0,1,0,0
-900707085,"Turbo, Fresh, Carrão",Grande São Paulo,3,102.0,14.37,0,0,1,0,0,1,0,0
-900581229,"Turbo, Fresh, Alphaville",Grande São Paulo,3,127.7,16.92,0,0,1,0,0,1,0,0
-900706671,"Turbo, Fresh, Morumbi",Grande São Paulo,3,97.0,12.64,0,0,1,0,0,1,0,0
-900706922,"Turbo, Fresh, Nova Recreio",Rio De Janeiro,3,45.0,12.41,0,0,1,0,0,1,0,0
-900706756,"Turbo, Fresh, Vila Olimpia",Grande São Paulo,3,88.3,9.15,1,1,0,0,0,0,0,0
-900739176,"Itigo Poke, Turbo",Grande São Paulo,3,31.3,11.52,1,1,0,0,0,0,0,0
-900561606,"Turbo, Fresh, Nova Recreio",Rio De Janeiro,3,112.3,11.2,1,1,0,0,0,0,0,0
-900688999,Rappi Bebidas - Vila Izabel,Curitiba,3,121.3,4.74,1,1,0,0,0,0,0,0
-900650530,"Turbo, fresh, Castelo",Belo Horizonte,3,72.7,7.33,1,1,0,0,0,0,0,0
-900706700,"Turbo, Fresh, Recife Sul",Recife,3,84.0,7.29,1,1,0,0,0,0,0,0
-900706503,"Turbo Fresh, Estoril",Belo Horizonte,3,176.0,7.84,1,1,0,0,0,0,0,0
-900650573,"Turbo, Fresh, Bonfinglioli",Grande São Paulo,3,55.3,9.24,1,1,0,0,0,0,0,0
-900706897,"Turbo, Fresh, Vila Clementino",Grande São Paulo,3,95.0,4.84,0,0,0,0,0,0,0,0
-900707116,"Turbo, Fresh, Aclimação",Grande São Paulo,3,45.0,7.43,0,0,0,0,0,0,0,0
-900706832,"Turbo, Fresh, Aclimação",Grande São Paulo,3,69.3,4.21,0,0,0,0,0,0,0,0
-900706484,"Turbo, Fresh, Vila Clementino",Grande São Paulo,3,149.0,6.57,0,0,0,0,0,0,0,0
-900706762,"Turbo, Fresh, Leblon",Rio De Janeiro,3,89.0,9.69,0,0,0,0,0,0,0,0
-900739725,"Turbo 20, Market Santo Amaro",Grande São Paulo,3,29.7,7.57,0,0,0,0,0,0,0,0
-900707139,"Turbo, Fresh, Vila Clementino",Grande São Paulo,3,42.0,4.01,0,0,0,0,0,0,0,0
-900706933,"Turbo, Fresh, Brooklin",Grande São Paulo,3,52.0,11.61,0,0,0,0,0,0,0,0
-900683260,"Heineken, Aldeota",Fortaleza,3,44.3,4.52,0,0,0,0,0,0,0,0
-900706943,"Turbo, Fresh, Moema",Grande São Paulo,3,83.0,7.11,0,0,0,0,0,0,0,0
-900706784,"Turbo, Fresh, Ipanema",Rio De Janeiro,3,104.3,2.19,0,0,0,0,0,0,0,0
-900707029,"Turbo, Fresh, PA Centro",Porto Alegre,3,27.3,8.16,0,0,0,0,0,0,0,0
-900706695,"Turbo, Fresh, PA Centro",Porto Alegre,3,96.0,15.43,0,0,0,0,0,0,0,0
-900706710,"Turbo, Fresh, Nova Recreio",Rio De Janeiro,3,92.3,9.23,0,0,0,0,0,0,0,0
-900706919,"Turbo, Fresh, Vila Mascote",Grande São Paulo,3,94.7,9.15,0,0,0,0,0,0,0,0
-900739975,"Turbo, Vila Andrade",Grande São Paulo,3,18.3,7.26,0,0,0,0,0,0,0,0
-900706809,"Turbo, Fresh, Vila Prudente",Grande São Paulo,3,70.0,9.02,0,0,0,0,0,0,0,0
-900706699,"Turbo, Fresh, Alphaville",Grande São Paulo,3,118.7,5.69,0,0,0,0,0,0,0,0
-900707102,"Turbo, Fresh, Santa Cecília",Grande São Paulo,3,134.0,5.26,0,0,0,0,0,0,0,0
-900706612,"Turbo, Fresh, Moema",Grande São Paulo,3,46.3,6.08,0,0,0,0,0,0,0,0
-900706775,"Turbo, Fresh, Santa Efigênia",Belo Horizonte,3,126.0,11.03,0,0,0,0,0,0,0,0
-900706912,"Turbo, Fresh, Recife Sul",Recife,3,69.0,6.04,0,0,0,0,0,0,0,0
-900689038,Rappi Bebidas - Lapa,Grande São Paulo,3,132.7,14.78,0,0,0,0,0,0,0,0
-900706615,"Turbo, Fresh, Alto do XV",Curitiba,3,113.7,9.98,0,0,0,0,0,0,0,0
-900706937,"Turbo, Fresh, Lapa",Grande São Paulo,3,40.3,8.56,0,0,0,0,0,0,0,0
-900706724,"Turbo, Fresh, Vila Clementino",Grande São Paulo,3,139.3,7.63,0,0,0,0,0,0,0,0
-900739732,"Turbo 20, Market Carrão",Grande São Paulo,3,23.7,13.09,0,0,0,0,0,0,0,0
-900707074,"Turbo, Fresh, Aclimação",Grande São Paulo,3,56.3,5.49,0,0,0,0,0,0,0,0
-900707014,"Turbo, Fresh, Vila Prudente",Grande São Paulo,3,49.0,6.67,0,0,0,0,0,0,0,0
-900706988,"Turbo, Fresh, Ipanema",Rio De Janeiro,3,34.7,3.87,0,0,0,0,0,0,0,0
-900604382,"Turbo, Fresh, Bonfinglioli",Grande São Paulo,3,145.0,10.08,0,0,0,0,0,0,0,0
-900707126,"Turbo, Fresh, Morumbi",Grande São Paulo,3,48.7,8.24,0,0,0,0,0,0,0,0
-900685613,Mercado Rappi  - Alphaville,Grande São Paulo,3,61.0,9.21,0,0,0,0,0,0,0,0
-900739718,Turbo 20 Market Jardins,Grande São Paulo,3,30.7,12.17,0,0,0,0,0,0,0,0
-900706632,"Turbo, Fresh, Morumbi",Grande São Paulo,3,97.3,7.77,0,0,0,0,0,0,0,0
-900723154,"Turbo, Catete II",Rio De Janeiro,3,102.7,11.57,0,0,0,0,0,0,0,0
-900731558,"Turbo Fresh, Jardins",Grande São Paulo,3,57.7,10.18,0,0,0,0,0,0,0,0
-900683286,"Heineken, Vila Olimpia",Grande São Paulo,3,55.3,6.85,0,0,0,0,0,0,0,0
-900650578,"Turbo, Fresh, PA Centro",Porto Alegre,3,82.0,10.1,0,0,0,0,0,0,0,0
-900722121,"Turbo, Fresh Botafogo II",Rio De Janeiro,3,83.0,7.13,0,0,0,1,0,0,0,0
-900574985,"Turbo, Fresh, Vila Prudente",Grande São Paulo,3,106.3,13.74,0,0,0,0,0,0,0,0
-900683268,"Heineken, Aflitos",Recife,3,78.0,10.23,0,0,0,0,0,0,0,0
-900707076,"Turbo, Fresh, Aldeota",Fortaleza,3,96.3,14.65,0,0,0,0,0,0,0,0
-900706514,"Turbo, Fresh, Santo Amaro",Grande São Paulo,3,130.7,6.52,0,0,0,0,0,0,0,0
-900706769,"Turbo, Fresh, Brooklin",Grande São Paulo,3,51.0,5.86,0,0,0,0,0,0,0,0
-900707015,"Turbo, Fresh, Brooklin",Grande São Paulo,3,58.7,5.76,0,0,0,0,0,0,0,0
-900581228,"Turbo, Bebidas, Alphaville",Grande São Paulo,3,49.0,7.13,0,0,0,0,0,0,0,0
-900706565,"Turbo, Fresh, Santa Efigênia",Belo Horizonte,3,102.7,12.09,0,0,0,0,0,0,0,0
-900688577,Despensa - Bela Vista,Grande São Paulo,3,144.3,6.61,0,0,0,0,0,0,0,0
-900706866,"Turbo, Fresh, PA Centro",Porto Alegre,3,50.7,8.84,0,0,0,0,0,0,0,0
-900706608,"Turbo, Fresh, Santa Efigênia",Belo Horizonte,3,85.0,8.82,0,0,0,0,0,0,0,0
-900706505,"Turbo, Fresh, Bonfinglioli",Grande São Paulo,3,187.0,8.22,0,0,0,0,0,0,0,0
-900706846,"Turbo, Fresh, Santo Amaro",Grande São Paulo,3,114.0,7.74,0,0,0,0,0,0,0,0
-900706892,"Turbo, fresh, Castelo",Belo Horizonte,3,59.3,9.26,0,0,0,0,0,0,0,0
-900706925,"Turbo, Fresh, Barra da Tijuca 2",Rio De Janeiro,3,137.3,6.13,0,0,0,0,0,0,0,0
-900706766,"Turbo, Fresh, Alto do Ipiranga",Grande São Paulo,3,75.7,7.29,0,0,0,0,0,0,0,0
-900650599,"Turbo, Fresh, Tijuca",Rio De Janeiro,3,101.3,7.76,0,0,0,0,0,0,0,0
-900688996,Rappi Bebidas - Castelo,Belo Horizonte,3,68.0,7.08,0,0,0,0,0,0,0,0
-900739988,"Turbo, Osasco",Grande São Paulo,3,41.7,12.59,0,0,0,0,0,0,0,0
-900739692,"Turbo 20, Market Bela Vista",Grande São Paulo,3,45.3,10.06,0,0,0,0,0,0,0,0
-900706902,"Turbo, Fresh, Santa Cecília",Grande São Paulo,3,95.7,7.06,0,0,0,0,0,0,0,0
-900706658,"Turbo, Fresh, Barra da Tijuca 3",Rio De Janeiro,3,144.3,7.59,0,0,0,0,0,0,0,0
-900707128,"Turbo, Fresh, Barra da Tijuca 2",Rio De Janeiro,3,21.0,4.31,0,0,0,0,0,0,0,0
-900706530,"Turbo, Fresh, Moema",Grande São Paulo,3,104.0,6.69,0,0,0,0,0,0,0,0
-900706601,"Turbo, Fresh, Vila Prudente",Grande São Paulo,3,43.0,9.63,0,0,0,0,0,0,0,0
-900650616,"Turbo, Fresh, Leblon",Rio De Janeiro,3,161.0,6.25,0,0,0,0,0,0,0,0
-900706459,"Turbo, Fresh, Alphaville",Grande São Paulo,3,61.3,9.82,0,0,0,0,0,0,0,0
-900707098,"Turbo, Fresh, Lapa",Grande São Paulo,3,89.0,8.34,0,0,0,0,0,0,0,0
-900706856,"Turbo, Fresh, Lapa",Grande São Paulo,3,123.7,11.51,0,0,0,0,0,0,0,0
-900739980,"Adega Rappi, Osasco",Grande São Paulo,3,27.0,9.67,0,0,0,0,0,0,0,0
-900706560,"Turbo, Fresh, Cambui",Campinas,3,100.7,10.05,0,0,0,0,0,0,0,0
-900706867,"Turbo, Fresh, Ipanema",Rio De Janeiro,3,121.7,8.82,0,0,0,0,0,0,0,0
-900706661,"Turbo, Fresh, Aclimação",Grande São Paulo,3,119.3,8.48,0,0,0,0,0,0,0,0
-900739700,"Turbo 20, Market Castelo",Belo Horizonte,3,19.7,8.45,0,0,0,0,0,0,0,0
-900706817,"Turbo, Fresh, Santo André",Grande São Paulo,3,60.3,8.81,0,0,0,0,0,0,0,0
-900723158,"Turbo, Catete II",Rio De Janeiro,3,25.7,6.96,0,0,0,0,0,0,0,0
-900706675,"Turbo, Fresh, Santo Amaro",Grande São Paulo,3,143.3,8.77,0,0,0,0,0,0,0,0
-900706521,"Turbo, Fresh, Cambui",Campinas,3,148.7,12.37,0,0,0,0,0,0,0,0
-900650546,"Turbo, Fresh, Barra da Tijuca 2",Rio De Janeiro,3,120.7,7.67,0,0,0,0,0,0,0,0
-900706609,"Turbo, Fresh, Santo André",Grande São Paulo,3,101.3,5.45,0,0,0,0,0,0,0,0
-900722114,"Turbo, Fresh Botafogo II",Rio De Janeiro,3,117.3,6.63,0,0,0,0,0,0,0,0
-900706538,"Turbo, Fresh, Recife Sul",Recife,3,91.0,7.53,0,0,0,0,0,0,0,0
-900706801,"Turbo, Fresh, Carrão",Grande São Paulo,3,93.0,7.39,0,0,0,0,0,0,0,0
-900739668,"Turbo 20, Market Bonfinglioli",Grande São Paulo,3,48.7,10.46,0,0,0,0,0,0,0,0
-900739991,"Turbo, Vila Andrade",Grande São Paulo,3,22.3,10.85,0,0,0,0,0,0,0,0
-900707113,"Turbo, Fresh, Barra da Tijuca 3",Rio De Janeiro,3,29.7,8.24,0,0,0,0,0,0,0,0
-900707134,"Turbo, fresh, Castelo",Belo Horizonte,3,47.0,10.48,0,0,0,0,0,0,0,0
-900706527,"Turbo, Fresh, Santo André",Grande São Paulo,3,91.7,10.48,0,0,0,0,0,0,0,0
-900707016,"Turbo, Fresh, Cambui",Campinas,3,110.7,8.27,0,0,0,0,0,0,0,0
-900706666,"Turbo, Fresh, Bonfinglioli",Grande São Paulo,3,101.0,6.89,0,0,0,0,0,0,0,0
-900706541,"Turbo, Fresh, Aldeota",Fortaleza,3,74.0,7.08,0,0,0,0,0,0,0,0
-900707094,"Turbo, Fresh, Brooklin",Grande São Paulo,3,100.3,10.64,0,0,0,0,0,0,0,0
-900706945,"Turbo, Fresh, Santana",Grande São Paulo,3,50.3,11.01,0,0,0,0,0,0,0,0
-900739931,"Turbo, Vila Andrade",Grande São Paulo,2,16.5,24.6,0,0,2,0,0,2,0,0
-900722119,"Turbo, Fresh Botafogo II",Rio De Janeiro,2,169.5,22.01,0,0,2,0,0,2,0,0
-900706821,"Turbo, Fresh, Vila Izabel",Curitiba,2,48.5,12.72,0,0,1,0,0,1,0,0
-900706864,"Turbo, Fresh, Santana",Grande São Paulo,2,137.0,15.12,0,0,1,0,0,1,0,0
-900739684,"Turbo 20, Market Vila Clementino",Grande São Paulo,2,48.5,17.19,0,0,1,0,0,0,1,0
-900739964,"Turbo, Osasco",Grande São Paulo,2,42.0,32.59,0,0,1,0,0,1,0,0
-900739695,"Turbo 20, Market Carrão",Grande São Paulo,2,18.5,21.92,0,0,1,0,0,1,0,0
-900706588,"Turbo, Fresh, Vila Mascote",Grande São Paulo,2,49.0,13.47,0,0,1,0,0,1,0,0
-900706606,"Turbo, Fresh, Lapa",Grande São Paulo,2,24.5,9.42,1,1,0,0,0,0,0,0
-900688998,Rappi Bebidas - Cambui,Campinas,2,83.5,11.67,1,4,0,0,0,0,0,0
-900706518,"Turbo, fresh, Castelo",Belo Horizonte,2,199.5,6.5,1,1,0,0,0,0,0,0
-900706862,"Turbo, Fresh, Moema",Grande São Paulo,2,77.0,8.92,1,6,0,0,0,0,0,0
-900706602,"Turbo, Fresh, Brooklin",Grande São Paulo,2,95.5,10.83,1,2,0,0,0,0,0,0
-900706843,"Turbo, Fresh, Carrão",Grande São Paulo,2,99.0,8.48,1,1,0,0,0,0,0,0
-900739985,"Turbo, Vila Andrade",Grande São Paulo,2,25.0,10.01,1,1,0,0,0,0,0,0
-900707084,"Turbo, Fresh, Morumbi",Grande São Paulo,2,26.5,11.77,1,1,0,0,0,0,0,0
-900739952,"Turbo, Osasco",Grande São Paulo,2,32.5,9.71,1,1,0,0,0,0,0,0
-900706719,"Turbo, fresh, Castelo",Belo Horizonte,2,73.0,10.35,1,1,0,0,0,0,0,0
-900739857,"Turbo 20, Market Vila Madalena",Grande São Paulo,2,42.5,5.03,0,0,0,0,0,0,0,0
-900739957,"Turbo, Vila Andrade",Grande São Paulo,2,26.0,7.67,0,0,0,0,0,0,0,0
-900706830,"Turbo, Fresh, Alphaville",Grande São Paulo,2,81.0,7.53,0,0,0,0,0,0,0,0
-900561647,"Turbo, Bebidas, Barra da Tijuca 2",Rio De Janeiro,2,76.5,2.69,0,0,0,0,0,0,0,0
-900706904,"Turbo, Fresh, Moema",Grande São Paulo,2,74.0,4.94,0,0,0,0,0,0,0,0
-900739959,"Turbo, Vila Andrade",Grande São Paulo,2,20.0,6.98,0,0,0,0,0,0,0,0
-900706549,"Turbo, Fresh, Morumbi",Grande São Paulo,2,82.0,11.32,0,0,0,0,0,0,0,0
-900706732,"Turbo, Fresh, Vila Izabel",Curitiba,2,75.5,11.97,0,0,0,0,0,0,0,0
-900706803,"Turbo, Fresh, Leblon",Rio De Janeiro,2,86.5,8.28,0,0,0,0,0,0,0,0
-900706992,"Turbo, Fresh, Barra da Tijuca 3",Rio De Janeiro,2,109.0,7.45,0,0,0,0,0,0,0,0
-900739845,"Turbo 20, Market Aflitos",Recife,2,22.0,10.45,0,0,0,0,0,0,0,0
-900722109,"Turbo, Fresh Botafogo II",Rio De Janeiro,2,90.5,5.56,0,0,0,0,0,0,0,0
-900706701,"Turbo, Fresh, Aclimação",Grande São Paulo,2,40.5,5.13,0,0,0,0,0,0,0,0
-900707012,"Turbo, Fresh, Alto do Ipiranga",Grande São Paulo,2,87.0,9.16,0,0,0,0,0,0,0,0
-900683300,"Heineken, Vila Madalena",Grande São Paulo,2,125.0,9.27,0,0,0,0,0,0,0,0
-900706466,"Turbo, Fresh, Bonfinglioli",Grande São Paulo,2,76.0,9.68,0,0,0,0,0,0,0,0
-900707123,"Turbo, Fresh, Vila Olimpia",Grande São Paulo,2,57.0,10.69,0,0,0,0,0,0,0,0
-900706982,"Turbo, Fresh, Vila Madalena",Grande São Paulo,2,92.0,6.74,0,0,0,0,0,0,0,0
-900706920,"Turbo, Fresh, Vila Olimpia",Grande São Paulo,2,56.5,9.57,0,0,0,0,0,0,0,0
-900707146,"Turbo, Fresh, Moema",Grande São Paulo,2,61.0,3.44,0,0,0,0,0,0,0,0
-900739961,"Turbo, Vila Andrade",Grande São Paulo,2,22.5,5.07,0,0,0,0,0,0,0,0
-900739712,"Turbo 20, Market Bonfinglioli",Grande São Paulo,2,34.0,7.12,0,0,0,0,0,0,0,0
-900739976,"Turbo, Osasco",Grande São Paulo,2,39.5,9.98,0,0,0,0,0,0,0,0
-900722115,"Turbo, Fresh Botafogo II",Rio De Janeiro,2,57.0,7.93,0,0,0,0,0,0,0,0
-900706546,"Turbo, Fresh, Vila Olimpia",Grande São Paulo,2,89.0,4.31,0,0,0,0,0,0,0,0
-900699318,"Heineken, Vila Madalena",Grande São Paulo,2,22.5,9.72,0,0,0,0,0,0,0,0
-900706956,"Turbo Fresh, Estoril",Belo Horizonte,2,85.0,11.13,0,0,0,0,0,0,0,0
-900706772,"Turbo, Fresh, Vila Clementino",Grande São Paulo,2,125.5,8.98,0,0,0,0,0,0,0,0
-900650598,"Turbo, Fresh, Ipanema",Rio De Janeiro,2,108.5,3.55,0,0,0,1,0,0,0,0
-900706495,"Turbo, Fresh, PA Centro",Porto Alegre,2,33.5,12.0,0,0,0,0,0,0,0,0
-900739983,"Turbo, Vila Andrade",Grande São Paulo,2,25.5,7.57,0,0,0,0,0,0,0,0
-900683272,"Heineken, Recife Sul",Recife,2,112.0,6.59,0,0,0,0,0,0,0,0
-900581230,"Turbo, Fresh, Alphaville",Grande São Paulo,2,132.0,7.9,0,0,0,0,0,0,0,0
-900706511,"Turbo, Fresh, Carrão",Grande São Paulo,2,142.0,6.22,0,0,0,0,0,0,0,0
-900706654,"Turbo, Fresh, Santana",Grande São Paulo,2,88.0,16.32,0,0,0,0,0,0,0,0
-900706517,"Turbo, Fresh, Alto do Ipiranga",Grande São Paulo,2,172.0,8.55,0,0,0,0,0,0,0,0
-900706758,"Turbo, Fresh, Nova Recreio",Rio De Janeiro,2,202.5,4.47,0,0,0,0,0,0,0,0
-900689040,Rappi Bebidas - Morumbi,Grande São Paulo,2,118.5,6.63,0,0,0,0,0,0,0,0
-900706788,"Turbo, Fresh, Alphaville",Grande São Paulo,2,161.0,8.39,0,0,0,0,0,0,0,0
-900706844,"Turbo, Fresh, Barra da Tijuca 2",Rio De Janeiro,2,158.5,9.31,0,0,0,0,0,0,0,0
-900683257,"Heineken, Alto do XV",Curitiba,2,33.5,5.65,0,0,0,0,0,0,0,0
-900706556,"Turbo, Fresh, Alto do Ipiranga",Grande São Paulo,2,34.0,9.92,0,0,0,0,0,0,0,0
-900707007,"Turbo, Fresh, Barra da Tijuca 2",Rio De Janeiro,2,104.0,4.26,0,0,0,0,0,0,0,0
-900650597,"Turbo, Fresh, Barra da Tijuca 3",Rio De Janeiro,2,122.0,7.1,0,0,0,0,0,0,0,0
-900706787,"Turbo, Fresh, Barra da Tijuca 3",Rio De Janeiro,2,173.5,7.32,0,0,0,0,0,0,0,0
-900706855,"Turbo, Fresh, Vila Clementino",Grande São Paulo,2,38.5,8.02,0,0,0,0,0,0,0,0
-900722110,"Turbo, Fresh Botafogo II",Rio De Janeiro,2,120.0,6.58,0,0,0,0,0,0,0,0
-900706711,"Turbo, Fresh, Morumbi",Grande São Paulo,2,132.0,8.98,0,0,0,0,0,0,0,0
-900706709,"Turbo, Fresh, Tijuca",Rio De Janeiro,2,73.5,10.05,0,0,0,0,0,0,0,0
-900706533,"Turbo, Fresh, Alto do XV",Curitiba,2,132.5,8.03,0,0,0,0,0,0,0,0
-900706851,"Turbo, Fresh, Vila Prudente",Grande São Paulo,2,97.5,12.59,0,0,0,0,0,0,0,0
-900723140,"Turbo, Catete II",Rio De Janeiro,2,102.0,9.98,0,0,0,0,0,0,0,0
-900706910,"Turbo, Fresh, Barra da Tijuca 3",Rio De Janeiro,2,115.5,5.39,0,0,0,0,0,0,0,0
-900706553,"Turbo, Fresh, Santo Amaro",Grande São Paulo,2,76.5,6.41,0,0,0,0,0,0,0,0
-900561649,"Turbo, Fresh, Barra da Tijuca 2",Rio De Janeiro,2,142.5,8.62,0,0,0,0,0,0,0,0
-900689028,Rappi Bebidas - Moema,Grande São Paulo,2,39.0,10.81,0,0,0,0,0,0,0,0
-900706595,"Turbo, Fresh, Leblon",Rio De Janeiro,2,137.5,6.36,0,0,0,0,0,0,0,0
-900723151,"Turbo, Catete II",Rio De Janeiro,2,185.5,7.56,0,0,0,1,0,0,0,0
-900689016,Rappi Bebidas - Tijuca,Rio De Janeiro,2,101.0,5.03,0,0,0,0,0,0,0,0
-900706591,"Turbo, Fresh, Nova Recreio",Rio De Janeiro,2,136.5,5.37,0,0,0,0,0,0,0,0
-900689026,Rappi Bebidas - Alto Do Ipiranga,Grande São Paulo,2,56.0,6.98,0,0,0,0,0,0,0,0
-900650552,"Turbo, Fresh, Vila Izabel",Curitiba,2,92.5,12.61,0,0,0,0,0,0,0,0
-900707079,"Turbo, Fresh, Bonfinglioli",Grande São Paulo,2,86.5,7.55,0,0,0,0,0,0,0,0
-900689034,Rappi Bebidas - Carrão,Grande São Paulo,2,82.5,11.44,0,0,0,0,0,0,0,0
-900706900,"Turbo, Fresh, Santa Efigênia",Belo Horizonte,2,70.5,9.16,0,0,0,0,0,0,0,0
-900739978,"Turbo, Osasco",Grande São Paulo,2,40.5,15.81,0,0,0,0,0,0,0,0
-900689018,Rappi Bebidas - Ipanema,Rio De Janeiro,2,146.5,6.03,0,0,0,0,0,0,0,0
-900706679,"Turbo, fresh, Castelo",Belo Horizonte,2,195.5,11.83,0,0,0,0,0,0,0,0
-900707013,"Turbo, fresh, Castelo",Belo Horizonte,2,23.5,7.83,0,0,0,0,0,0,0,0
-900706649,"Turbo, Fresh, Santo André",Grande São Paulo,2,82.0,7.71,0,0,0,0,0,0,0,0
-900706776,"Turbo, Fresh, Santo André",Grande São Paulo,2,69.0,11.6,0,0,0,0,0,0,0,0
-900707019,"Turbo, Fresh, Lapa",Grande São Paulo,2,77.0,7.08,0,0,0,0,0,0,0,0
-900688994,Rappi Bebidas - Santa Efigênia,Belo Horizonte,2,60.0,6.78,0,0,0,0,0,0,0,0
-900632432,"Turbo, Santo André",Grande São Paulo,2,50.0,9.22,0,0,0,0,0,0,0,0
-900575128,"Turbo, Bebidas, Santo Amaro",Grande São Paulo,2,50.0,8.04,0,0,0,0,0,0,0,0
-900706526,"Turbo, Fresh, Santa Efigênia",Belo Horizonte,2,56.5,11.31,0,0,0,0,0,0,0,0
-900706980,"Turbo, Fresh, Santo André",Grande São Paulo,2,76.0,10.52,0,0,0,0,0,0,0,0
-900706782,"Turbo, Fresh, Alto do XV",Curitiba,2,56.0,8.13,0,0,0,0,0,0,0,0
-900706674,"Turbo, Fresh, Leblon",Rio De Janeiro,2,145.5,4.0,0,0,0,0,0,0,0,0
-900706525,"Turbo, Fresh, Bela Vista",Grande São Paulo,2,111.5,10.61,0,0,0,0,0,0,0,0
-900706959,"Turbo, Fresh, Vila Mascote",Grande São Paulo,2,106.0,9.56,0,0,0,0,0,0,0,0
-900706973,"Turbo, Fresh, Brooklin",Grande São Paulo,2,43.5,6.09,0,0,0,0,0,0,0,0
-900739965,"Turbo, Vila Andrade",Grande São Paulo,2,26.0,7.37,0,0,0,0,0,0,0,0
-900706599,"Turbo, Fresh, Alto do Ipiranga",Grande São Paulo,2,53.0,10.36,0,0,0,0,0,0,0,0
-900707129,"Turbo, Fresh, Leblon",Rio De Janeiro,2,69.0,3.62,0,0,0,0,0,0,0,0
-900689023,Rappi Bebidas - Santo Amaro,Grande São Paulo,2,77.5,11.39,0,0,0,0,0,0,0,0
-900706811,"Turbo, Fresh, Cambui",Campinas,2,29.5,10.47,0,0,0,0,0,0,0,0
-900706650,"Turbo, Fresh, Santa Cecília",Grande São Paulo,2,193.0,6.69,0,0,0,0,0,0,0,0
-900689001,Rappi Bebidas - Aldeota,Fortaleza,2,49.5,9.1,0,0,0,0,0,0,0,0
-900706841,"Turbo, Fresh, Nova Recreio",Rio De Janeiro,2,108.0,7.18,0,0,0,0,0,0,0,0
-900707106,"Turbo, Fresh, Santana",Grande São Paulo,2,113.0,8.4,0,0,0,0,0,0,0,0
-900706923,"Turbo, Fresh, Morumbi",Grande São Paulo,2,35.0,5.39,0,0,0,0,0,0,0,0
-900706755,"Turbo, Fresh, Vila Mascote",Grande São Paulo,2,142.5,5.11,0,0,0,0,0,0,0,0
-900706886,"Turbo, Fresh, Barra da Tijuca 2",Rio De Janeiro,2,68.5,6.75,0,0,0,0,0,0,0,0
-900706545,"Turbo, Fresh, Vila Mascote",Grande São Paulo,2,69.0,10.68,0,0,0,0,0,0,0,0
-900706613,"Turbo, Fresh, Vila Izabel",Curitiba,2,19.5,8.72,0,0,0,0,0,0,0,0
-900706547,"Turbo, Fresh, Tijuca",Rio De Janeiro,2,113.0,7.52,0,0,0,0,0,0,0,0
-900706458,"Turbo, Fresh, Barra da Tijuca 3",Rio De Janeiro,2,58.5,8.36,0,0,0,0,0,0,0,0
-900706550,"Turbo, Fresh, Carrão",Grande São Paulo,2,67.5,5.47,0,0,0,0,0,0,0,0
-900739688,"Turbo 20, Market Aclimação",Grande São Paulo,2,18.5,9.82,0,0,0,0,0,0,0,0
-900706519,"Turbo, Fresh, Vila Prudente",Grande São Paulo,2,143.5,7.48,0,0,0,0,0,0,0,0
-900706802,"Turbo, Fresh, Barra da Tijuca 2",Rio De Janeiro,2,81.0,8.24,0,0,0,0,0,0,0,0
-900578431,"Turbo, Bebidas, Barra da Tijuca 3",Rio De Janeiro,2,109.5,5.13,0,0,0,0,0,0,0,0
-900706840,"Turbo, Fresh, Tijuca",Rio De Janeiro,2,114.0,9.58,0,0,0,0,0,0,0,0
-900722126,"Turbo, Fresh Botafogo II",Rio De Janeiro,2,114.5,6.62,0,0,0,0,0,0,0,0
-900706667,"Turbo, Fresh, Vila Mascote",Grande São Paulo,2,130.0,6.94,0,0,0,0,0,0,0,0
-900739982,"Turbo, Osasco",Grande São Paulo,2,44.0,13.27,0,0,0,0,0,0,0,0
-900707104,"Turbo, Fresh, Moema",Grande São Paulo,2,116.0,4.52,0,0,0,0,0,0,0,0
-900706532,"Turbo, Fresh, Santana",Grande São Paulo,2,155.0,11.38,0,0,0,0,0,0,0,0
-900706470,"Turbo, Fresh, Nova Recreio",Rio De Janeiro,2,35.0,5.95,0,0,0,0,0,0,0,0
-900706570,"Turbo, Fresh, Vila Izabel",Curitiba,2,65.5,7.12,0,0,0,0,0,0,0,0
-900706825,"Turbo, Fresh, Ipanema",Rio De Janeiro,2,74.0,8.49,0,0,0,0,0,0,0,0
-900706539,"Turbo, Fresh, Aclimação",Grande São Paulo,1,112.0,29.47,0,0,1,0,0,1,0,0
-900725051,Rappi Bebida - Catete II,Rio De Janeiro,1,68.0,20.8,0,0,1,0,0,1,0,0
-900689020,Rappi Bebidas - Santana,Grande São Paulo,1,86.0,35.8,0,0,1,0,0,1,0,0
-900706781,"Turbo, Fresh, Santana",Grande São Paulo,1,210.0,20.77,0,0,1,0,0,1,0,0
-900739864,"Turbo 20, Market Alto do Ipiranga",Grande São Paulo,1,40.0,35.13,0,0,1,0,0,1,0,0
-900706906,"Turbo, Fresh, Santana",Grande São Paulo,1,81.0,13.63,1,1,0,0,0,0,0,0
-900739986,"Turbo, Osasco",Grande São Paulo,1,28.0,13.88,1,1,0,0,0,0,0,0
-900707101,"Turbo, Fresh, Santo André",Grande São Paulo,1,138.0,6.48,1,3,0,0,0,0,0,0
-900739930,"Turbo, Osasco",Grande São Paulo,1,48.0,13.28,1,1,0,0,0,0,0,0
-900699331,"Heineken, Vila Clementino",Grande São Paulo,1,38.0,3.4,0,0,0,0,0,0,0,0
-900706523,"Turbo, Fresh, Vila Clementino",Grande São Paulo,1,183.0,8.03,0,0,0,0,0,0,0,0
-900706564,"Turbo, Fresh, Bela Vista",Grande São Paulo,1,212.0,9.78,0,0,0,0,0,0,0,0
-900706978,"Turbo, Fresh, Bela Vista",Grande São Paulo,1,82.0,9.28,0,0,0,0,0,0,0,0
-900683253,"Heineken, Santa Efigênia",Belo Horizonte,1,81.0,5.1,0,0,0,0,0,0,0,0
-900722125,"Turbo, Fresh Botafogo II",Rio De Janeiro,1,171.0,5.93,0,0,0,0,0,0,0,0
-900739860,"Turbo 20, Market Vila Olimpia",Grande São Paulo,1,25.0,8.6,0,0,0,0,0,0,0,0
-900739176,"itiGO Turbo, Jardins",Grande São Paulo,1,79.0,14.43,0,0,0,0,0,0,0,0
-900706808,"Turbo, fresh, Castelo",Belo Horizonte,1,86.0,3.25,0,0,0,0,0,0,0,0
-900706773,"Turbo, Fresh, Lapa",Grande São Paulo,1,95.0,13.85,0,0,0,0,0,0,0,0
-900739738,"Turbo 20, Market Castelo",Belo Horizonte,1,64.0,12.05,0,0,0,0,0,0,0,0
-900699360,"Heineken, Estoril",Belo Horizonte,1,202.0,8.48,0,0,0,0,0,0,0,0
-900706657,"Turbo, Fresh, Ipanema",Rio De Janeiro,1,186.0,2.75,0,0,0,0,0,0,0,0
-900739969,"Turbo, Vila Andrade",Grande São Paulo,1,19.0,9.25,0,0,0,0,0,0,0,0
-900706715,"Turbo, Fresh, Santo Amaro",Grande São Paulo,1,107.0,9.97,0,0,0,0,0,0,0,0
-900739858,"Turbo 20, Market Bela Vista",Grande São Paulo,1,59.0,4.73,0,0,0,0,0,0,0,0
-900739843,"Turbo 20, Market Bonfinglioli",Grande São Paulo,1,48.0,6.53,0,0,0,0,0,0,0,0
-900683265,"Heineken, PA Centro",Porto Alegre,1,79.0,4.28,0,0,0,0,0,0,0,0
-900683290,"Heineken, Moema",Grande São Paulo,1,40.0,6.08,0,0,0,0,0,0,0,0
-900683283,"Heineken, Santo Amaro",Grande São Paulo,1,40.0,8.73,0,0,0,0,0,0,0,0
-900706659,"Turbo, Fresh, Alphaville",Grande São Paulo,1,198.0,8.82,0,0,0,0,0,0,0,0
-900706905,"Turbo, Fresh, Vila Izabel",Curitiba,1,124.0,3.88,0,0,0,0,0,0,0,0
-900706899,"Turbo, Fresh, Bela Vista",Grande São Paulo,1,161.0,6.47,0,0,0,0,0,0,0,0
-900699344,"Heineken, Ipanema",Rio De Janeiro,1,197.0,3.65,0,0,0,0,0,0,0,0
-900706535,"Turbo, Fresh, Ipanema",Rio De Janeiro,1,96.0,2.42,0,0,0,0,0,0,0,0
-900683301,"Turbo PicPay, Lapa",Grande São Paulo,1,37.0,7.22,0,0,0,0,0,0,0,0
-900707008,"Turbo, Fresh, Leblon",Rio De Janeiro,1,139.0,3.65,0,0,0,0,0,0,0,0
-900722124,"Turbo, Fresh Botafogo II",Rio De Janeiro,1,162.0,4.88,0,0,0,0,0,0,0,0
-900683292,"Heineken, Santa Cecília",Grande São Paulo,1,49.0,15.05,0,0,0,0,0,0,0,0
-900707000,"Turbo, Fresh, Bonfinglioli",Grande São Paulo,1,56.0,5.85,0,0,0,0,0,0,0,0
-900706767,"Turbo, fresh, Castelo",Belo Horizonte,1,30.0,8.85,0,0,0,0,0,0,0,0
-900706865,"Turbo, Fresh, Alto do XV",Curitiba,1,28.0,5.27,0,0,0,0,0,0,0,0
-900706985,"Turbo, Fresh, Santana",Grande São Paulo,1,121.0,7.58,0,0,0,0,0,0,0,0
-900706746,"Turbo, Fresh, Barra da Tijuca 3",Rio De Janeiro,1,142.0,11.03,0,0,0,0,0,0,0,0
-900561648,"Turbo, Fresh, Barra da Tijuca 2",Rio De Janeiro,1,135.0,8.13,0,0,0,0,0,0,0,0
-900706537,"Turbo, Fresh, Alphaville",Grande São Paulo,1,80.0,14.88,0,0,0,0,0,0,0,0
-900706714,"Turbo, Fresh, Leblon",Rio De Janeiro,1,104.0,3.22,0,0,0,0,0,0,0,0
-900706582,"Turbo, Fresh, Aclimação",Grande São Paulo,1,16.0,9.92,0,0,0,0,0,0,0,0
-900706749,"Turbo, Fresh, Aclimação",Grande São Paulo,1,87.0,3.77,0,0,0,0,0,0,0,0
-900707127,"Turbo, Fresh, Carrão",Grande São Paulo,1,39.0,10.33,0,0,0,0,0,0,0,0
-900706580,"Turbo, Fresh, Alphaville",Grande São Paulo,1,34.0,7.6,0,0,0,0,0,0,0,0
-900739848,"Turbo 20, Market Moema",Grande São Paulo,1,78.0,15.87,0,0,0,0,0,0,0,0
-900739081,"Turbo Itigo, Jardins",Grande São Paulo,1,109.0,8.12,0,0,0,0,0,0,0,0
-900706965,"Turbo, Fresh, Barra da Tijuca 2",Rio De Janeiro,1,81.0,11.12,0,0,0,0,0,0,0,0
-900689043,Rappi Bebidas - Alphaville,Grande São Paulo,1,112.0,10.12,0,0,0,0,0,0,0,0
-900707093,"Turbo, Fresh, Vila Prudente",Grande São Paulo,1,40.0,5.5,0,0,0,0,0,0,0,0
-900706524,"Turbo, Fresh, Lapa",Grande São Paulo,1,181.0,4.12,0,0,0,0,0,0,0,0
-900706888,"Turbo, Fresh, Santo Amaro",Grande São Paulo,1,151.0,5.73,0,0,0,0,0,0,0,0
-900706898,"Turbo, Fresh, Lapa",Grande São Paulo,1,145.0,12.62,0,0,0,0,0,0,0,0
-900706993,"Turbo, Fresh, Alphaville",Grande São Paulo,1,30.0,12.77,0,0,0,0,0,0,0,0
-900706953,"Turbo, Fresh, Aclimação",Grande São Paulo,1,21.0,8.5,0,0,0,0,0,0,0,0
-900699321,"Heineken, Alto Do Ipiranga",Grande São Paulo,1,61.0,7.52,0,0,0,0,0,0,0,0
-900706974,"Turbo, Fresh, Cambui",Campinas,1,36.0,14.15,0,0,0,0,0,0,0,0
-900707086,"Turbo, Fresh, Barra da Tijuca 2",Rio De Janeiro,1,141.0,5.28,0,0,0,0,0,0,0,0
-900706712,"Turbo, Fresh, Carrão",Grande São Paulo,1,90.0,5.25,0,0,0,0,0,0,0,0
-900706622,"Turbo, Fresh, Aclimação",Grande São Paulo,1,148.0,9.9,0,0,0,0,0,0,0,0
-900707108,"Turbo, Fresh, PA Centro",Porto Alegre,1,62.0,2.87,0,0,0,0,0,0,0,0
-900706619,"Turbo, Fresh, Barra da Tijuca 3",Rio De Janeiro,1,206.0,10.93,0,0,0,0,0,0,0,0
-900739974,"Turbo, Osasco",Grande São Paulo,1,40.0,18.9,0,0,0,0,0,0,0,0
-900739861,"Turbo 20, Market Brooklin",Grande São Paulo,1,49.0,10.3,0,0,0,0,0,0,0,0
-900706562,"Turbo, Fresh, Vila Clementino",Grande São Paulo,1,88.0,5.12,0,0,0,0,0,0,0,0
-900707073,"Turbo, Fresh, Recife Sul",Recife,1,43.0,8.27,0,0,0,0,0,0,0,0
-900689042,Rappi Bebidas - Bonfliglioli,Grande São Paulo,1,180.0,9.52,0,0,0,0,0,0,0,0
-900722118,"Turbo, Fresh Botafogo II",Rio De Janeiro,1,84.0,3.57,0,0,0,0,0,0,0,0
-900706829,"Turbo, Fresh, Barra da Tijuca 3",Rio De Janeiro,1,120.0,5.3,0,0,0,0,0,0,0,0
-900580715,"Turbo, fresh, Castelo",Belo Horizonte,1,133.0,8.93,0,0,0,0,0,0,0,0
-900706824,"Turbo, Fresh, PA Centro",Porto Alegre,1,198.0,8.32,0,0,0,0,0,0,0,0
-900706651,"Turbo, Fresh, Vila Madalena",Grande São Paulo,1,62.0,7.42,0,0,0,0,0,0,0,0
-900706641,"Turbo, Fresh, Vila Prudente",Grande São Paulo,1,22.0,6.62,0,0,0,0,0,0,0,0
-900739954,"Turbo, Osasco",Grande São Paulo,1,26.0,9.3,0,0,0,0,0,0,0,0
-900706778,"Turbo, Fresh, Vila Madalena",Grande São Paulo,1,124.0,7.32,0,0,0,0,0,0,0,0
-900706568,"Turbo, Fresh, Vila Madalena",Grande São Paulo,1,100.0,0.5,0,0,0,0,0,0,0,0
-900706964,"Turbo, Fresh, Carrão",Grande São Paulo,1,33.0,6.97,0,0,0,0,0,0,0,0
-900683301,"Heineken, Lapa",Grande São Paulo,1,185.0,6.25,0,0,0,0,0,0,0,0
-900706779,"Turbo, Fresh, Moema",Grande São Paulo,1,30.0,7.43,0,0,0,0,0,0,0,0
-900706936,"Turbo, Fresh, Vila Clementino",Grande São Paulo,1,78.0,5.22,0,0,0,0,0,0,0,0
-900707114,"Turbo, Fresh, Alphaville",Grande São Paulo,1,170.0,10.28,0,0,0,0,0,0,0,0
-900706713,"Turbo, Fresh, Barra da Tijuca 2",Rio De Janeiro,1,84.0,4.2,0,0,0,0,0,0,0,0
-900739707,"Turbo 20 Market, Osasco",Grande São Paulo,1,22.0,13.67,0,0,0,0,0,0,0,0
-900707001,"Turbo, Fresh, Vila Mascote",Grande São Paulo,1,70.0,10.65,0,0,0,0,0,0,0,0
-900707072,"Turbo, Fresh, Alphaville",Grande São Paulo,1,54.0,15.38,0,0,0,0,0,0,0,0
-900707081,"Turbo, Fresh, Vila Olimpia",Grande São Paulo,1,133.0,10.7,0,0,0,0,0,0,0,0
-900699350,"Turbo PicPay, Lapa",Grande São Paulo,1,27.0,6.33,0,0,0,0,0,0,0,0
-900739736,"Turbo 20, Market PA Centro",Porto Alegre,1,78.0,15.8,0,0,0,0,0,0,0,0
-900561595,"Turbo, Fresh, Ipanema",Rio De Janeiro,1,171.0,14.85,0,0,0,0,0,0,0,0
-900739852,"Turbo 20, Market Vila Mascote",Grande São Paulo,1,34.0,17.05,0,0,0,0,0,0,0,0
-900706754,"Turbo, Fresh, Bonfinglioli",Grande São Paulo,1,33.0,3.02,0,0,0,0,0,0,0,0
-900699340,"Heineken, Aflitos",Recife,1,43.0,4.65,0,0,0,0,0,0,0,0
-900723147,"Turbo, Catete II",Rio De Janeiro,1,80.0,10.23,0,0,0,0,0,0,0,0
-900707092,"Turbo, fresh, Castelo",Belo Horizonte,1,136.0,8.17,0,0,0,0,0,0,0,0
-900706590,"Turbo, Fresh, Tijuca",Rio De Janeiro,1,63.0,11.15,0,0,0,0,0,0,0,0
-900685613,Despensa - Alphaville,Grande São Paulo,1,139.0,13.75,0,0,0,0,0,0,0,0
-900689033,Rappi Bebidas - Vila Prudente,Grande São Paulo,1,209.0,12.65,0,0,0,0,0,0,0,0
-900739977,"Turbo, Vila Andrade",Grande São Paulo,1,24.0,10.02,0,0,0,0,0,0,0,0
-900706763,"Turbo, Fresh, Santo Amaro",Grande São Paulo,1,23.0,7.78,0,0,0,0,0,0,0,0
-900706593,"Turbo, Fresh, Carrão",Grande São Paulo,1,133.0,15.03,0,0,0,0,0,0,0,0
-900739865,"Turbo 20, Market Alto do XV",Curitiba,1,49.0,5.07,0,0,0,0,0,0,0,0
-900739869,"Turbo 20, Market Aldeota",Fortaleza,1,22.0,12.15,0,0,0,0,0,0,0,0
-900707026,"Turbo, Fresh, Vila Izabel",Curitiba,1,131.0,9.08,0,0,0,0,0,0,0,0
-900706918,"Turbo, Fresh, Bonfinglioli",Grande São Paulo,1,30.0,4.18,0,0,0,0,0,0,0,0
-900706733,"Turbo, Fresh, Santana",Grande São Paulo,1,206.0,7.83,0,0,0,0,0,0,0,0
-900731556,"Turbo Fresh, Jardins",Grande São Paulo,1,36.0,2.6,0,0,0,0,0,0,0,0
-900706520,"Turbo, Fresh, Brooklin",Grande São Paulo,1,123.0,7.48,0,0,0,0,0,0,0,0
-900706594,"Turbo, Fresh, Barra da Tijuca 2",Rio De Janeiro,1,78.0,5.72,0,0,0,0,0,0,0,0
-900683277,"Heineken, Santana",Grande São Paulo,1,137.0,3.28,0,0,0,0,0,0,0,0
-900706950,"Turbo, Fresh, Barra da Tijuca 3",Rio De Janeiro,1,89.0,9.65,0,0,0,0,0,0,0,0
-900699323,"Heineken, Vila Izabel",Curitiba,1,191.0,14.18,0,0,0,0,0,0,0,0
-900699349,"Heineken, Alto do XV",Curitiba,1,164.0,10.2,0,0,0,0,0,0,0,0
-900739868,"Turbo 20, Market Santa Efigênia",Belo Horizonte,1,18.0,15.32,0,0,0,0,0,0,0,0
-900683252,"Heineken, Estoril",Belo Horizonte,1,23.0,9.1,0,0,0,0,0,0,0,0
-900739967,"Turbo, Vila Andrade",Grande São Paulo,1,25.0,5.45,0,0,0,0,0,0,0,0
-900632438,"Turbo, Alphaville",Grande São Paulo,1,16.0,6.62,0,0,0,0,0,0,0,0
-900706542,"Turbo Fresh, Estoril",Belo Horizonte,1,17.0,9.42,0,0,0,0,0,0,0,0
-900707105,"Turbo, Fresh, Vila Izabel",Curitiba,1,137.0,7.32,0,0,0,0,0,0,0,0
-900706706,"Turbo, Fresh, Bonfinglioli",Grande São Paulo,1,32.0,4.38,0,0,0,0,0,0,0,0
-900739671,Turbo 20 Market Jardins,Grande São Paulo,1,16.0,3.92,0,0,0,0,0,0,0,0
-900723148,"Turbo, Catete II",Rio De Janeiro,1,195.0,16.4,0,0,0,0,0,0,0,0
-900739933,"Turbo, Vila Andrade",Grande São Paulo,1,16.0,11.65,0,0,0,0,0,0,0,0
-900739867,"Turbo 20, Market Carrão",Grande São Paulo,1,61.0,10.2,0,0,0,0,0,0,0,0
-900706963,"Turbo, Fresh, Morumbi",Grande São Paulo,1,94.0,8.4,0,0,0,0,0,0,0,0
-900706600,"Turbo, fresh, Castelo",Belo Horizonte,1,121.0,6.18,0,0,0,0,0,0,0,0
-900706587,"Turbo, Fresh, Bonfinglioli",Grande São Paulo,1,69.0,3.83,0,0,0,0,0,0,0,0
-900739971,"Turbo, Vila Andrade",Grande São Paulo,1,17.0,9.97,0,0,0,0,0,0,0,0
-900706962,"Turbo, Fresh, Nova Recreio",Rio De Janeiro,1,52.0,2.63,0,0,0,0,0,0,0,0
-900706673,"Turbo, Fresh, Barra da Tijuca 2",Rio De Janeiro,1,84.0,6.88,0,0,0,0,0,0,0,0
-900706927,"Turbo, Fresh, Santo Amaro",Grande São Paulo,1,21.0,6.07,0,0,0,0,0,0,0,0
-900561607,"Turbo, Fresh, Nova Recreio",Rio De Janeiro,1,70.0,5.9,0,0,0,0,0,0,0,0
-900739839,"Turbo 20, Market Recife Sul",Recife,1,26.0,10.02,0,0,0,0,0,0,0,0
-900739984,"Turbo, Osasco",Grande São Paulo,1,44.0,12.8,0,0,0,0,0,0,0,0
-900706882,"Turbo, Fresh, Tijuca",Rio De Janeiro,1,82.0,5.47,0,0,0,0,0,0,0,0
-900706931,"Turbo, fresh, Castelo",Belo Horizonte,1,45.0,4.4,0,0,0,1,0,0,0,0
-900724372,Rappi Bebidas -Botafogo II,Rio De Janeiro,1,191.0,6.05,0,0,0,0,0,0,0,0
-900739870,"Turbo 20, Market Cambui",Campinas,1,48.0,10.72,0,0,0,0,0,0,0,0
-900706911,"Turbo, Fresh, Alphaville",Grande São Paulo,1,204.0,8.4,0,0,0,0,0,0,0,0
-900706548,"Turbo, Fresh, Nova Recreio",Rio De Janeiro,1,114.0,7.68,0,0,0,0,0,0,0,0
-900707088,"Turbo, Fresh, Santo Amaro",Grande São Paulo,1,119.0,12.37,0,0,0,0,0,0,0,0
-900706736,"Turbo, Fresh, Ipanema",Rio De Janeiro,1,83.0,5.87,0,0,0,0,0,0,0,0
-900683305,"Heineken, Santo André",Grande São Paulo,1,73.0,11.63,0,0,0,0,0,0,0,0
-900683276,"Heineken, BARRA 2",Rio De Janeiro,1,94.0,6.32,0,0,0,0,0,0,0,0
-900706698,"Turbo, Fresh, Barra da Tijuca 3",Rio De Janeiro,1,110.0,8.62,0,0,0,0,0,0,0,0
-900699317,"Heineken, Vila Prudente",Grande São Paulo,1,25.0,8.6,0,0,0,0,0,0,0,0
-900706768,"Turbo, Fresh, Vila Prudente",Grande São Paulo,1,53.0,3.92,0,0,0,0,0,0,0,0
-900739820,"Turbo, Osasco",Grande São Paulo,1,32.0,11.75,0,0,0,0,0,0,0,0
-900699341,"Heineken, Santana",Grande São Paulo,1,28.0,11.98,0,0,0,0,0,0,0,0
-900707082,"Turbo, Fresh, Tijuca",Rio De Janeiro,1,95.0,9.55,0,0,0,0,0,0,0,0
-900706907,"Turbo, Fresh, Alto do XV",Curitiba,1,175.0,10.33,0,0,0,0,0,0,0,0
-900723139,"Turbo, Catete II",Rio De Janeiro,1,88.0,11.2,0,0,0,0,0,0,0,0
-900683294,"Heineken, Vila Prudente",Grande São Paulo,1,31.0,8.45,0,0,0,0,0,0,0,0
-900689044,Rappi Bebidas - Santo André,Grande São Paulo,1,220.0,9.62,0,0,0,0,0,0,0,0
-900706579,"Turbo, Fresh, Barra da Tijuca 3",Rio De Janeiro,1,166.0,11.12,0,0,0,0,0,0,0,0
-900706881,"Turbo, Fresh, Vila Olimpia",Grande São Paulo,1,20.0,5.72,0,0,0,0,0,0,0,0
-900706630,"Turbo, Fresh, Tijuca",Rio De Janeiro,1,86.0,9.73,0,0,0,0,0,0,0,0
-900706883,"Turbo, Fresh, Nova Recreio",Rio De Janeiro,1,148.0,7.48,0,0,0,0,0,0,0,0
-900706984,"Turbo, Fresh, Vila Izabel",Curitiba,1,16.0,6.13,0,0,0,0,0,0,0,0
-900689022,Rappi Bebidas - Aclimação,Grande São Paulo,1,103.0,5.0,0,0,0,0,0,0,0,0
-900689036,Rappi Bebidas - Brooklin,Grande São Paulo,1,185.0,6.77,0,0,0,0,0,0,0,0
-900706780,"Turbo, Fresh, Vila Izabel",Curitiba,1,87.0,0.55,0,0,0,0,0,0,0,0
-900699316,"Heineken, PA Centro",Porto Alegre,1,140.0,9.98,0,0,0,0,0,0,0,0
-900706628,"Turbo, Fresh, Vila Mascote",Grande São Paulo,1,213.0,8.92,0,0,0,0,0,0,0,0
-900706569,"Turbo, Fresh, Moema",Grande São Paulo,1,216.0,4.7,0,0,0,0,0,0,0,0
+store_id,store_name,store_city,users,avg_days_since_last_turbo,avg_last_deliver_to_user_min,avg_purchase_frequency_month_before_last,high_frequency_users,frequency_out_of_pattern_users,cancel_streak_users,cancel_streak_orders,delayed_last_users,dr_last_purchase_users,ops_store_delay_users,rt_delay_users,mixed_delay_users,no_breakdown_delay_users
+900574966,"Turbo, Fresh, Santa Cecília",Grande São Paulo,986,23.3,6.44,1.61,435,522,13,15,4,6,0,4,0,0
+900730894,"Turbo Fresh, Jardins",Grande São Paulo,938,23.3,7.18,1.53,382,460,4,8,9,7,0,9,0,0
+900574964,"Turbo, Fresh, Vila Olimpia",Grande São Paulo,841,23.4,7.08,1.59,356,435,3,4,6,7,0,6,0,0
+900574958,"Turbo, Fresh, Vila Madalena",Grande São Paulo,759,23.4,6.32,1.64,346,421,9,11,0,7,0,0,0,0
+900574963,"Turbo, Fresh, Moema",Grande São Paulo,786,23.1,6.32,1.51,319,393,5,6,6,10,0,6,0,0
+900574960,"Turbo, Fresh, Bela Vista",Grande São Paulo,840,23.0,8.7,1.49,311,375,9,21,8,8,0,8,0,0
+900574967,"Turbo, Fresh, Brooklin",Grande São Paulo,720,23.2,6.53,1.49,281,332,1,5,2,3,0,2,0,0
+900561331,"Turbo, Fresh, Leblon",Rio De Janeiro,542,23.1,5.6,1.44,197,241,2,2,2,3,0,2,0,0
+900574943,"Turbo, Fresh, Vila Clementino",Grande São Paulo,510,23.3,6.37,1.5,194,238,4,7,4,5,0,4,0,0
+900561336,"Turbo, Fresh, Aflitos",Recife,559,23.4,9.87,1.34,184,235,21,32,41,2,0,41,0,0
+900721381,"Turbo, Fresh Botafogo II",Rio De Janeiro,479,23.4,8.3,1.47,171,223,4,13,12,4,0,12,0,0
+900561322,"Turbo, Fresh, Aldeota",Fortaleza,472,23.3,7.56,1.31,157,199,6,14,2,3,0,2,0,0
+900574956,"Turbo, Fresh, Lapa",Grande São Paulo,424,23.3,8.11,1.45,150,192,5,11,5,8,0,5,0,0
+900580719,"Turbo, Fresh, Santa Efigênia",Belo Horizonte,426,23.4,10.82,1.24,125,176,21,33,23,6,1,19,3,0
+900561335,"Turbo Fresh, Estoril",Belo Horizonte,370,23.3,8.59,1.46,138,173,16,19,10,3,0,9,1,0
+900561330,"Turbo, Fresh, Ipanema",Rio De Janeiro,343,23.2,5.02,1.53,141,168,0,0,4,3,0,4,0,0
+900536629,"Turbo, Fresh, Vila Mascote",Grande São Paulo,372,23.1,7.38,1.37,121,158,10,11,1,8,0,1,0,0
+900574962,"Turbo, Fresh, Santo Amaro",Grande São Paulo,298,23.2,6.41,1.48,113,142,5,9,1,4,0,1,0,0
+900561339,"Turbo, Fresh, Barra da Tijuca 2",Rio De Janeiro,329,23.2,6.0,1.35,113,141,1,1,2,3,0,2,0,0
+900574949,"Turbo, Fresh, Alto do Ipiranga",Grande São Paulo,314,23.2,7.49,1.43,113,141,3,4,10,4,1,9,0,0
+900574961,"Turbo, Fresh, Morumbi",Grande São Paulo,282,23.4,7.57,1.48,110,132,6,20,3,5,0,3,0,0
+900561318,"Turbo, Fresh, Recife Sul",Recife,307,23.5,7.42,1.3,95,128,7,14,3,2,0,3,0,0
+900561328,"Turbo, Fresh, PA Centro",Porto Alegre,263,23.4,7.66,1.41,96,124,7,18,0,0,0,0,0,0
+900602957,"Turbo, Fresh, Vila Izabel",Curitiba,290,23.2,8.57,1.3,94,123,10,15,10,0,0,10,0,0
+900561338,"Turbo, Fresh, Tijuca",Rio De Janeiro,270,23.6,7.79,1.38,93,119,1,3,6,5,0,6,0,0
+900722640,"Turbo, Catete II",Rio De Janeiro,259,22.9,8.43,1.45,95,117,5,15,5,4,0,5,0,0
+900574944,"Turbo, Fresh, Aclimação",Grande São Paulo,254,23.2,7.17,1.54,101,117,6,16,3,4,0,3,0,0
+900574954,"Turbo, Fresh, Santana",Grande São Paulo,233,23.2,10.13,1.44,85,103,6,6,11,2,0,11,0,0
+900739646,"Turbo, Vila Andrade",Grande São Paulo,249,22.8,7.43,1.36,78,102,4,22,2,1,0,2,0,0
+900602958,"Turbo, Fresh, Alto do XV",Curitiba,258,23.1,8.43,1.33,83,101,11,14,6,0,0,6,0,0
+900601551,"Turbo, Fresh, Santo André",Grande São Paulo,222,23.2,8.45,1.47,92,101,11,13,8,5,0,8,0,0
+900574938,"Turbo, Fresh, Vila Prudente",Grande São Paulo,244,23.7,8.1,1.35,80,99,3,5,8,4,0,8,0,0
+900581196,"Turbo, Fresh, Carrão",Grande São Paulo,203,23.1,8.76,1.5,81,95,5,6,3,4,0,3,0,0
+900561332,"Turbo, Fresh, Nova Recreio",Rio De Janeiro,208,23.1,7.64,1.43,72,90,4,6,3,4,0,3,0,0
+900578430,"Turbo, Fresh, Barra da Tijuca 3",Rio De Janeiro,204,23.2,7.19,1.43,72,87,6,7,2,0,0,2,0,0
+900581708,"Turbo, Fresh, Cambui",Campinas,168,23.4,7.54,1.52,63,82,3,3,2,0,0,2,0,0
+900604367,"Turbo, Fresh, Bonfinglioli",Grande São Paulo,135,23.6,7.1,1.65,62,71,3,3,0,3,0,0,0,0
+900581226,"Turbo, Fresh, Alphaville",Grande São Paulo,129,23.4,8.83,1.47,53,62,0,0,2,0,0,2,0,0
+900714349,Doce aquarella vila olimpia,Grande São Paulo,203,22.9,7.37,1.07,46,58,1,1,6,1,0,6,0,0
+900580711,"Turbo, fresh, Castelo",Belo Horizonte,116,22.8,6.43,1.36,41,52,5,7,0,1,0,0,0,0
+900732329,"Doce aquarella, Jardins",Grande São Paulo,149,23.1,7.43,1.19,42,51,2,2,2,0,0,2,0,0
+900737731,"Turbo 20, Market Recife Sul",Recife,97,23.1,11.11,1.34,35,42,0,0,1,1,0,1,0,0
+900737732,"Turbo 20, Market Cambui",Campinas,89,23.9,12.14,1.49,33,42,4,15,3,0,0,3,0,0
+900714353,Doce aquarella brooklin,Grande São Paulo,125,23.7,7.46,1.12,27,41,0,0,2,1,0,2,0,0
+900737730,"Turbo 20, Market Aflitos",Recife,90,22.8,16.75,1.29,29,36,6,12,23,2,0,23,0,0
+900714355,Doce aquarella bela vista,Grande São Paulo,127,23.6,9.54,0.87,23,35,0,0,3,0,0,3,0,0
+900737733,"Turbo 20, Market Aldeota",Fortaleza,83,23.0,12.12,1.32,28,33,1,1,1,1,0,1,0,0
+900714348,Doce aquarella moema,Grande São Paulo,100,23.5,6.5,1.02,24,32,0,0,0,0,0,0,0,0
+900737737,"Turbo 20, Market Estoril",Belo Horizonte,85,23.9,10.78,1.16,22,31,7,11,1,1,0,1,0,0
+900737750,"Turbo 20, Market Vila Olimpia",Grande São Paulo,65,22.6,10.65,1.53,25,31,3,3,1,0,0,1,0,0
+900739791,"Turbo, Fresh Botafogo II",Rio De Janeiro,71,23.4,11.44,1.3,24,29,0,0,4,1,0,4,0,0
+900737751,"Turbo 20, Market Morumbi",Grande São Paulo,65,23.6,11.18,1.23,20,26,0,0,2,0,0,2,0,0
+900737748,"Turbo 20, Market Carrão",Grande São Paulo,60,23.3,14.65,1.39,23,26,5,12,7,2,0,7,0,0
+900737735,"Turbo 20, Market Santa Efigênia",Belo Horizonte,68,22.9,16.38,1.21,18,25,4,10,17,0,0,14,3,0
+900737756,"Turbo 20, Market Santana",Grande São Paulo,66,23.0,14.55,1.25,20,25,4,4,7,1,0,7,0,0
+900714347,Doce aquarella santa cecília,Grande São Paulo,83,23.4,7.39,1.04,21,24,1,1,0,1,0,0,0,0
+900714354,Doce aquarella vila clementino,Grande São Paulo,68,24.1,7.05,0.99,16,23,2,2,0,0,0,0,0,0
+900737757,"Turbo 20, Market Vila Prudente",Grande São Paulo,56,22.5,14.08,1.33,20,22,2,3,6,1,0,6,0,0
+900737762,"Turbo 20, Market Brooklin",Grande São Paulo,49,23.4,11.74,1.48,21,22,0,0,2,0,0,2,0,0
+900737759,"Turbo 20, Market Santo André",Grande São Paulo,76,23.1,14.07,0.93,17,21,2,10,12,2,0,12,0,0
+900737734,"Turbo 20, Market Vila Izabel",Curitiba,52,22.8,13.2,1.24,19,20,7,10,3,1,0,3,0,0
+900737764,"Turbo 20, Market Santo Amaro",Grande São Paulo,47,23.6,11.02,1.3,18,20,3,3,4,1,0,4,0,0
+900737754,"Turbo 20, Market Vila Mascote",Grande São Paulo,40,23.4,12.05,1.33,14,19,0,0,2,1,0,2,0,0
+900714346,Doce aquarella vila madalena,Grande São Paulo,71,22.6,6.49,1.02,15,18,0,0,0,0,0,0,0,0
+900739645,"Turbo, Osasco",Grande São Paulo,59,23.5,16.41,1.1,15,18,1,1,14,2,0,14,0,0
+900737736,"Turbo 20, Market Alto do XV",Curitiba,52,22.5,12.34,1.1,11,15,1,1,4,1,0,4,0,0
+900739798,"Turbo, Fresh, PA Centro",Porto Alegre,17,28.9,12.09,2.27,14,15,0,0,0,0,0,0,0,0
+900714342,Doce aquarella lapa,Grande São Paulo,39,23.7,7.52,1.01,7,14,0,0,0,2,0,0,0,0
+900714352,Doce aquarella santo amaro,Grande São Paulo,38,24.5,7.0,1.01,9,14,0,0,0,1,0,0,0,0
+900737761,"Turbo 20, Market Bonfinglioli",Grande São Paulo,27,23.4,10.74,1.37,8,13,0,0,1,0,0,1,0,0
+900737755,"Turbo 20, Market Alphaville",Grande São Paulo,45,23.5,12.62,1.01,9,12,0,0,3,3,0,3,0,0
+900737766,"Turbo 20, Market Alto do Ipiranga",Grande São Paulo,40,23.0,13.68,0.94,8,12,2,4,4,1,0,4,0,0
+900688579,Mercado Rappi - Santa Cecília,Grande São Paulo,30,22.5,9.15,1.22,10,11,0,0,1,1,0,1,0,0
+900737758,"Turbo 20, Market Santa Cecília",Grande São Paulo,27,25.6,10.39,1.28,6,11,1,2,0,1,0,0,0,0
+900737741,"Turbo 20, Market Castelo",Belo Horizonte,23,22.4,12.81,1.3,7,11,2,2,2,1,0,1,1,0
+900737763,"Turbo 20, Market Lapa",Grande São Paulo,30,23.5,12.63,1.16,7,8,0,0,1,0,0,1,0,0
+900714343,Doce aquarella morumbi,Grande São Paulo,22,24.0,7.56,1.01,4,7,0,0,0,0,0,0,0,0
+900731571,"Turbo Fresh, Jardins",Grande São Paulo,15,21.5,10.43,1.69,5,7,0,0,0,1,0,0,0,0
+900737753,"Turbo 20, Market Aclimação",Grande São Paulo,23,21.9,13.33,1.26,5,6,0,0,2,1,0,2,0,0
+900737765,"Turbo 20, Market Moema",Grande São Paulo,21,21.8,9.01,1.44,6,6,0,0,0,1,0,0,0,0
+900737729,"Turbo 20, Market Vila Madalena",Grande São Paulo,14,22.3,9.26,1.83,6,6,0,0,0,0,0,0,0,0
+900739787,"Turbo, Fresh, Santa Efigênia",Belo Horizonte,7,27.7,14.69,1.76,4,6,0,0,0,0,0,0,0,0
+900685595,Mercado Rappi - PA Centro,Porto Alegre,6,23.7,6.14,2.61,5,6,0,0,0,0,0,0,0,0
+900733456," Doce Aquarella, Cambui",Campinas,26,24.4,9.08,0.72,1,5,0,0,0,0,0,0,0,0
+900714356,Doce aquarella vila mascote,Grande São Paulo,19,23.6,7.17,0.81,3,5,0,0,0,0,0,0,0,0
+900688588,Mercado Rappi - Vila Madalena,Grande São Paulo,14,22.1,7.38,1.29,5,5,0,0,0,0,0,0,0,0
+900731570,"Turbo Fresh, Jardins",Grande São Paulo,11,23.0,13.04,1.3,5,5,0,0,1,0,0,1,0,0
+900714338,Doce aquarella santana,Grande São Paulo,17,23.6,10.62,1.12,4,4,0,0,0,0,0,0,0,0
+900722108,"Turbo, Fresh Botafogo II",Rio De Janeiro,11,22.9,10.99,1.03,3,4,0,0,1,0,0,1,0,0
+900707209,"Turbo, Fresh, Brooklin",Grande São Paulo,7,27.4,7.5,1.48,2,4,0,0,0,0,0,0,0,0
+900739670,"Turbo 20, Market Aldeota",Fortaleza,7,22.7,14.48,1.71,3,4,0,0,1,0,0,1,0,0
+900706708,"Turbo, Fresh, Vila Olimpia",Grande São Paulo,6,23.2,6.87,1.22,2,4,0,0,0,0,0,0,0,0
+900739676,"Turbo 20, Market Santana",Grande São Paulo,6,20.3,11.36,1.78,4,4,0,0,0,0,0,0,0,0
+900580720,"Turbo, Bebidas, Santa Efignênia",Belo Horizonte,6,20.2,11.34,1.78,4,4,0,0,0,0,0,0,0,0
+900707218,"Turbo, Fresh, Vila Madalena",Grande São Paulo,5,23.8,5.94,2.27,4,4,0,0,0,0,0,0,0,0
+900561631,"Turbo, Fresh, Aflitos",Recife,16,22.2,11.42,1.04,2,3,1,2,2,0,0,2,0,0
+900714344,Doce aquarella carrão,Grande São Paulo,13,23.7,6.99,0.85,3,3,1,2,0,0,0,0,0,0
+900561547,"Turbo, Fresh, Aldeota",Fortaleza,12,22.7,7.82,0.69,2,3,0,0,0,1,0,0,0,0
+900688565,Mercado Rappi - Leblon,Rio De Janeiro,11,22.1,5.61,0.88,2,3,0,0,0,0,0,0,0,0
+900724371,Mercado Rappi - Botafogo II,Rio De Janeiro,11,23.8,7.89,0.76,1,3,0,0,0,0,0,0,0,0
+900707198,"Turbo, Fresh, Nova Recreio",Rio De Janeiro,10,24.6,11.58,0.83,1,3,0,0,1,0,0,1,0,0
+900714345,Doce aquarella santo andré,Grande São Paulo,10,23.8,11.96,0.83,1,3,0,0,2,0,0,2,0,0
+900707224,"Turbo, Fresh, Ipanema",Rio De Janeiro,10,25.1,5.17,0.97,3,3,0,0,0,0,0,0,0,0
+900685582,Mercado Rappi - Recife Sul,Recife,9,23.0,6.39,1.11,2,3,0,0,0,0,0,0,0,0
+900714350,Doce aquarella aclimação,Grande São Paulo,9,25.1,9.3,1.0,2,3,0,0,0,0,0,0,0,0
+900714341,Doce aquarella vila prudente,Grande São Paulo,8,25.6,13.24,0.62,1,3,0,0,0,1,0,0,0,0
+900707213,"Turbo, Fresh, Lapa",Grande São Paulo,8,24.8,8.63,1.17,2,3,0,0,0,0,0,0,0,0
+900688575,Mercado Rappi - Vila Olimpia,Grande São Paulo,8,21.9,7.98,1.25,3,3,0,0,0,0,0,0,0,0
+900707222,"Turbo, Fresh, Alto do XV",Curitiba,7,23.7,12.84,1.57,3,3,0,0,0,0,0,0,0,0
+900739981,"Adega Rappi, Vila Andrade",Grande São Paulo,7,22.0,7.13,1.38,3,3,0,0,0,0,0,0,0,0
+900685589,Mercado Rappi - Estoril,Belo Horizonte,6,26.2,7.0,1.11,1,3,1,4,0,0,0,0,0,0
+900706921,"Turbo, Fresh, Tijuca",Rio De Janeiro,6,24.8,11.29,1.22,1,3,0,0,1,0,0,1,0,0
+900685611,Mercado Rappi - Morumbi,Grande São Paulo,6,22.7,7.08,1.67,3,3,0,0,0,0,0,0,0,0
+900731572,"Turbo Fresh, Jardins",Grande São Paulo,6,22.5,9.8,1.17,1,3,0,0,0,0,0,0,0,0
+900739989,"Turbo, Vila Andrade",Grande São Paulo,6,21.8,7.75,1.56,3,3,0,0,0,1,0,0,0,0
+900707220,"Turbo, Fresh, Vila Izabel",Curitiba,4,23.0,8.22,2.17,3,3,0,0,0,0,0,0,0,0
+900706815,"Turbo, Fresh, Bela Vista",Grande São Paulo,3,23.3,6.55,2.56,3,3,0,0,0,0,0,0,0,0
+900714339,Doce aquarella alphaville,Grande São Paulo,16,22.8,10.68,0.77,2,2,0,0,2,0,0,2,0,0
+900707205,"Turbo, Fresh, Aflitos",Recife,14,24.6,8.36,0.55,2,2,0,0,0,0,0,0,0,0
+900714351,Doce aquarella alto do ipiranga,Grande São Paulo,12,25.6,10.13,0.81,2,2,0,0,1,0,0,1,0,0
+900707197,"Turbo, Fresh, Tijuca",Rio De Janeiro,9,25.2,11.16,0.81,2,2,0,0,0,0,0,0,0,0
+900685590,Mercado Rappi - Santa Efigênia,Belo Horizonte,9,23.7,8.84,1.0,1,2,0,0,0,0,0,0,0,0
+900737752,"Turbo 20, Market Bela Vista",Grande São Paulo,9,21.8,8.61,0.85,2,2,0,0,0,1,0,0,0,0
+900731574,"Turbo Fresh, Jardins",Grande São Paulo,8,25.6,9.45,0.96,2,2,0,0,0,1,0,0,0,0
+900581710,"Turbo, Fresh, Cambui",Campinas,8,23.1,7.12,0.67,0,2,0,0,0,0,0,0,0,0
+900739816,"Turbo, Vila Andrade",Grande São Paulo,8,21.1,11.28,0.83,1,2,0,0,1,0,0,1,0,0
+900739817,"Turbo, Fresh, Alto do XV",Curitiba,7,28.0,14.49,0.81,1,2,0,0,0,0,0,0,0,0
+900685550,Mercado Rappi - Aldeota,Fortaleza,7,26.1,7.16,0.86,1,2,0,0,0,0,0,0,0,0
+900561523,"Turbo, Fresh, Recife Sul",Recife,7,21.9,7.88,0.86,2,2,0,0,0,0,0,0,0,0
+900707196,"Turbo, Fresh, Vila Olimpia",Grande São Paulo,6,23.5,6.95,1.39,2,2,0,0,0,0,0,0,0,0
+900707201,"Turbo, Fresh, Barra da Tijuca 2",Rio De Janeiro,6,24.8,6.32,1.22,2,2,0,0,0,0,0,0,0,0
+900688567,Mercado Rappi - Barra da Tijuca 2,Rio De Janeiro,6,21.8,4.56,1.28,2,2,0,0,0,0,0,0,0,0
+900581709,"Turbo, Fresh, Cambui",Campinas,6,20.8,8.63,0.94,2,2,0,0,0,0,0,0,0,0
+900688583,Mercado Rappi - Vila Prudente,Grande São Paulo,6,22.7,5.98,1.05,1,2,1,6,0,0,0,0,0,0
+900575124,"Turbo, Fresh, Morumbi",Grande São Paulo,6,20.5,6.19,1.5,2,2,0,0,0,0,0,0,0,0
+900707219,"Turbo, Fresh, Moema",Grande São Paulo,5,23.8,7.85,1.87,2,2,0,0,0,0,0,0,0,0
+900731563,"Turbo Fresh, Jardins",Grande São Paulo,5,25.4,8.63,1.0,2,2,0,0,0,0,0,0,0,0
+900706729,"Turbo, Fresh, Santa Cecília",Grande São Paulo,5,24.6,7.58,1.13,1,2,0,0,0,0,0,0,0,0
+900575050,"Turbo, Bebidas, Alto do Ipiranga",Grande São Paulo,5,21.2,6.16,1.8,2,2,0,0,0,0,0,0,0,0
+900731568,"Turbo Fresh, Jardins",Grande São Paulo,5,22.2,9.87,1.67,2,2,1,1,0,0,0,0,0,0
+900685574,Mercado Rappi - Cambui,Campinas,5,24.2,9.17,1.07,1,2,0,0,0,1,0,0,0,0
+900739973,"Turbo, Vila Andrade",Grande São Paulo,5,20.6,8.5,1.53,2,2,0,0,0,0,0,0,0,0
+900685594,Mercado Rappi - Alto do XV,Curitiba,5,21.2,8.02,1.6,2,2,0,0,0,0,0,0,0,0
+900707223,"Turbo, Fresh, PA Centro",Porto Alegre,5,21.6,4.75,1.13,2,2,0,0,0,0,0,0,0,0
+900739717,"Turbo 20, Market Vila Olimpia",Grande São Paulo,5,21.8,7.25,1.2,2,2,0,0,0,0,0,0,0,0
+900739790,"Turbo, Fresh, Aflitos",Recife,4,28.0,17.45,1.17,1,2,0,0,2,0,0,2,0,0
+900723149,"Turbo, Catete II",Rio De Janeiro,4,23.8,7.61,1.08,1,2,0,0,0,0,0,0,0,0
+900739713,"Turbo 20, Market Aldeota",Fortaleza,4,24.5,9.18,1.08,1,2,0,0,0,0,0,0,0,0
+900739979,"Turbo, Vila Andrade",Grande São Paulo,4,22.5,6.91,0.92,1,2,0,0,0,0,0,0,0,0
+900739711,"Turbo 20, Market Vila Mascote",Grande São Paulo,3,24.7,7.54,1.56,1,2,0,0,0,0,0,0,0,0
+900739724,"Turbo 20, Market Alto do XV",Curitiba,3,24.3,7.63,1.89,2,2,0,0,0,0,0,0,0,0
+900739683,"Turbo 20, Market Alphaville",Grande São Paulo,3,24.3,14.14,1.56,2,2,0,0,0,0,0,0,0,0
+900706820,"Turbo, Fresh, Moema",Grande São Paulo,3,27.3,5.69,1.11,0,2,0,0,0,0,0,0,0,0
+900707128,"Turbo, Fresh, Barra da Tijuca 2",Rio De Janeiro,3,23.0,4.31,1.0,1,2,0,0,0,0,0,0,0,0
+900739991,"Turbo, Vila Andrade",Grande São Paulo,3,24.3,10.85,1.89,2,2,0,0,0,0,0,0,0,0
+900739719,"Turbo 20, Market Alphaville",Grande São Paulo,3,23.0,10.71,2.22,2,2,0,0,0,0,0,0,0,0
+900601553,"Turbo, Bebidas, Santo André",Grande São Paulo,3,20.7,13.2,1.56,2,2,0,0,0,0,0,0,0,0
+900739700,"Turbo 20, Market Castelo",Belo Horizonte,3,21.7,8.45,1.67,2,2,0,0,0,0,0,0,0,0
+900575122,"Turbo, Bebidas, Morumbi",Grande São Paulo,3,20.0,6.72,1.67,2,2,0,0,0,0,0,0,0,0
+900706814,"Turbo, Fresh, Lapa",Grande São Paulo,2,28.5,6.49,1.67,1,2,0,0,0,0,0,0,0,0
+900731560,"Turbo Fresh, Jardins",Grande São Paulo,2,27.0,14.95,2.83,2,2,0,0,0,0,0,0,0,0
+900707191,"Turbo, Fresh, Aldeota",Fortaleza,13,23.6,8.41,0.33,0,1,0,0,0,0,0,0,0,0
+900688569,Mercado Rappi - Ipanema,Rio De Janeiro,10,24.8,5.46,0.57,1,1,0,0,0,0,0,0,0,0
+900561629,"Turbo, Fresh, Aflitos",Recife,9,21.8,8.01,0.52,1,1,0,0,0,1,0,0,0,0
+900739705,"Turbo 20, Market Aflitos",Recife,9,20.1,15.62,1.04,1,1,3,4,2,0,0,2,0,0
+900707212,"Turbo, Fresh, Vila Clementino",Grande São Paulo,8,25.8,6.57,0.33,0,1,0,0,0,0,0,0,0,0
+900707188,"Turbo, Fresh, Recife Sul",Recife,6,22.8,8.8,0.67,1,1,0,0,0,0,0,0,0,0
+900739702,"Turbo 20, Market Vila Izabel",Curitiba,6,22.0,9.26,1.11,1,1,1,1,0,0,0,0,0,0
+900739687,"Turbo 20, Market Santa Efigênia",Belo Horizonte,6,19.0,14.22,1.22,1,1,1,1,0,1,0,0,0,0
+900739674,"Turbo 20, Market Vila Mascote",Grande São Paulo,6,18.3,8.97,1.17,1,1,0,0,0,0,0,0,0,0
+900707214,"Turbo, Fresh, Bela Vista",Grande São Paulo,5,25.6,9.86,0.87,0,1,0,0,0,0,0,0,0,0
+900707215,"Turbo, Fresh, Santa Efigênia",Belo Horizonte,5,24.8,9.89,0.87,1,1,0,0,0,0,0,0,0,0
+900737760,Turbo 20 Market Jardins,Grande São Paulo,5,23.4,6.66,0.8,1,1,0,0,0,1,0,0,0,0
+900731576,"Turbo Fresh, Jardins",Grande São Paulo,5,23.4,8.64,1.07,1,1,0,0,0,0,0,0,0,0
+900723137,"Turbo, Catete II",Rio De Janeiro,5,24.4,9.1,0.66,1,1,0,0,0,0,0,0,0,0
+900731564,"Turbo Fresh, Jardins",Grande São Paulo,5,22.6,9.07,0.87,1,1,0,0,0,0,0,0,0,0
+900707216,"Turbo, Fresh, Santo André",Grande São Paulo,5,23.8,7.11,0.67,1,1,2,11,0,0,0,0,0,0
+900739709,"Turbo 20, Market Recife Sul",Recife,5,20.0,6.5,1.07,0,1,0,0,0,0,0,0,0,0
+900574986,"Turbo, Fresh, Vila Prudente",Grande São Paulo,5,22.6,6.12,1.0,1,1,0,0,0,0,0,0,0,0
+900561521,"Turbo, Fresh, Recife Sul",Recife,5,19.0,8.81,0.73,1,1,0,0,0,0,0,0,0,0
+900739693,"Turbo 20, Market Santa Cecília",Grande São Paulo,4,23.0,5.09,1.5,1,1,0,0,0,0,0,0,0,0
+900739729,"Turbo 20, Market Santa Cecília",Grande São Paulo,4,26.8,7.99,0.83,0,1,0,0,0,0,0,0,0,0
+900706940,"Turbo, Fresh, Santo André",Grande São Paulo,4,26.0,6.84,0.83,0,1,2,3,0,0,0,0,0,0
+900602970,"Turbo, Fresh, Alto do XV",Curitiba,4,21.8,10.16,0.75,1,1,0,0,0,0,0,0,0,0
+900739993,"Turbo, Vila Andrade",Grande São Paulo,4,25.5,8.09,0.92,1,1,1,1,0,0,0,0,0,0
+900706468,"Turbo, Fresh, Vila Olimpia",Grande São Paulo,4,24.2,6.65,0.33,0,1,0,0,0,0,0,0,0,0
+900707133,"Turbo, Fresh, Alto do Ipiranga",Grande São Paulo,4,25.8,8.79,0.58,0,1,0,0,0,0,0,0,0,0
+900601554,"Turbo, Fresh, Santo André",Grande São Paulo,4,22.0,8.52,0.5,0,1,0,0,0,0,0,0,0,0
+900706948,"Turbo, Fresh, Ipanema",Rio De Janeiro,4,24.2,3.97,0.92,1,1,0,0,0,0,0,0,0,0
+900731548,Rappi Bebida Jardins,Grande São Paulo,4,24.8,9.28,1.08,1,1,0,0,0,0,0,0,0,0
+900575152,"Turbo, Bebidas, Santa Cecilia",Grande São Paulo,4,20.5,6.96,1.33,1,1,0,0,0,0,0,0,0,0
+900707203,"Turbo, Fresh, Santo Amaro",Grande São Paulo,4,22.8,7.18,0.67,0,1,0,0,0,0,0,0,0,0
+900707140,"Turbo, Fresh, Lapa",Grande São Paulo,4,22.8,7.55,1.08,1,1,0,0,0,0,0,0,0,0
+900739739,"Turbo 20, Market Santo André",Grande São Paulo,4,22.8,9.55,0.33,0,1,0,0,0,0,0,0,0,0
+900739955,"Turbo, Vila Andrade",Grande São Paulo,4,22.8,8.79,0.75,1,1,0,0,0,0,0,0,0,0
+900707221,"Turbo, Fresh, Santana",Grande São Paulo,4,22.8,7.45,1.17,1,1,0,0,0,0,0,0,0,0
+900689021,Rappi Bebidas - Vila Mascote,Grande São Paulo,4,22.8,8.3,0.75,1,1,0,0,0,0,0,0,0,0
+900706477,"Turbo, Fresh, Aflitos",Recife,4,23.2,10.05,0.83,1,1,1,1,0,0,0,0,0,0
+900688564,Mercado Rappi - Recreio,Rio De Janeiro,4,23.0,6.93,1.75,1,1,0,0,0,0,0,0,0,0
+900731565,"Turbo Fresh, Jardins",Grande São Paulo,4,19.0,6.92,1.08,1,1,0,0,0,0,0,0,0,0
+900731559,"Turbo Fresh, Jardins",Grande São Paulo,3,27.3,14.9,1.11,1,1,0,0,1,0,0,1,0,0
+900536647,"Turbo, Fresh, Vila Mascote",Grande São Paulo,3,27.0,5.73,0.78,1,1,0,0,0,0,0,0,0,0
+900707199,"Turbo, Fresh, Morumbi",Grande São Paulo,3,24.7,9.51,0.67,0,1,0,0,0,0,0,0,0,0
+900602971,"Turbo, Fresh, Alto do XV",Curitiba,3,26.0,6.97,0.78,0,1,0,0,0,0,0,0,0,0
+900706648,"Turbo, Fresh, Santa Efigênia",Belo Horizonte,3,26.7,8.78,0.66,0,1,0,0,0,0,0,0,0,0
+900706730,"Turbo, Fresh, Vila Madalena",Grande São Paulo,3,25.7,6.99,1.56,1,1,0,0,0,0,0,0,0,0
+900731577,"Turbo Fresh, Jardins",Grande São Paulo,3,24.0,8.23,0.89,1,1,0,0,0,0,0,0,0,0
+900685592,Mercado Rappi - Castelo,Belo Horizonte,3,24.7,6.55,1.34,1,1,0,0,0,0,0,0,0,0
+900706816,"Turbo, Fresh, Santa Efigênia",Belo Horizonte,3,24.7,25.29,1.33,1,1,0,0,1,0,0,1,0,0
+900688582,Mercado Rappi - Vila Clementino,Grande São Paulo,3,23.7,7.96,1.22,1,1,0,0,0,1,0,0,0,0
+900706584,"Turbo, Fresh, Aldeota",Fortaleza,3,22.3,7.41,1.11,1,1,0,0,0,0,0,0,0,0
+900737749,"Turbo 20, Market Vila Clementino",Grande São Paulo,3,22.7,14.93,0.89,1,1,0,0,1,0,0,1,0,0
+900706807,"Turbo, Fresh, Alto do Ipiranga",Grande São Paulo,3,23.3,7.68,0.33,0,1,0,0,0,0,0,0,0,0
+900706731,"Turbo, Fresh, Moema",Grande São Paulo,3,23.3,6.3,1.11,1,1,0,0,0,0,0,0,0,0
+900706481,"Turbo, Fresh, Brooklin",Grande São Paulo,3,22.3,5.74,1.22,1,1,0,0,0,0,0,0,0,0
+900707192,"Turbo Fresh, Estoril",Belo Horizonte,3,21.3,13.64,1.0,1,1,0,0,1,0,0,1,0,0
+900707189,"Turbo, Fresh, Aclimação",Grande São Paulo,3,22.0,10.29,1.11,1,1,0,0,0,0,0,0,0,0
+900575051,"Turbo, Fresh, Alto do Ipiranga",Grande São Paulo,3,22.7,5.67,0.89,1,1,0,0,0,0,0,0,0,0
+900739975,"Turbo, Vila Andrade",Grande São Paulo,3,20.3,7.26,1.33,1,1,0,0,0,0,0,0,0,0
+900739696,"Turbo 20, Market Alto do Ipiranga",Grande São Paulo,3,20.3,6.19,1.44,1,1,0,0,0,0,0,0,0,0
+900575116,"Turbo, Bebidas, Bela Vista",Grande São Paulo,3,18.7,7.05,1.45,1,1,0,0,0,0,0,0,0,0
+900580712,"Turbo, Bebidas, Castelo",Belo Horizonte,3,18.7,4.66,1.11,1,1,0,0,0,0,0,0,0,0
+900739731,"Turbo 20, Market Santa Efigênia",Belo Horizonte,2,29.5,7.84,0.67,0,1,0,0,0,0,0,0,0,0
+900706474,"Turbo, Fresh, Leblon",Rio De Janeiro,2,25.0,6.12,2.0,1,1,0,0,0,0,0,0,0,0
+900707151,"Turbo, Fresh, Ipanema",Rio De Janeiro,2,28.5,3.71,0.67,0,1,0,0,0,0,0,0,0,0
+900707137,"Turbo, Fresh, Cambui",Campinas,2,25.0,6.02,1.33,1,1,0,0,0,1,0,0,0,0
+900706818,"Turbo, Fresh, Santa Cecília",Grande São Paulo,2,28.0,7.17,1.33,1,1,0,0,0,0,0,0,0,0
+900707200,"Turbo, Fresh, Carrão",Grande São Paulo,2,29.0,9.84,1.5,1,1,0,0,0,0,0,0,0,0
+900706789,"Turbo, Fresh, Recife Sul",Recife,2,28.5,8.16,0.5,0,1,0,0,0,0,0,0,0,0
+900739733,"Turbo 20, Market Estoril",Belo Horizonte,2,24.0,13.71,1.17,1,1,0,0,0,0,0,0,0,0
+900602969,"Turbo, Bebidas, Alto do XV",Curitiba,2,29.0,9.05,0.67,0,1,0,0,0,0,0,0,0,0
+900706810,"Turbo, Fresh, Brooklin",Grande São Paulo,2,27.5,6.4,1.33,1,1,0,0,0,0,0,0,0,0
+900731569,"Turbo Fresh, Jardins",Grande São Paulo,2,25.5,4.63,0.5,0,1,0,0,0,0,0,0,0,0
+900706876,"Turbo, Fresh, Aldeota",Fortaleza,2,27.5,4.98,1.5,1,1,0,0,0,0,0,0,0,0
+900739725,"Turbo 20, Market Santo Amaro",Grande São Paulo,2,27.0,6.47,0.83,0,1,0,0,0,0,0,0,0,0
+900685607,Mercado Rappi - Tijuca,Rio De Janeiro,2,26.5,4.35,2.17,1,1,0,0,0,0,0,0,0,0
+900739744,"Turbo 20, Market Recife Sul",Recife,2,24.5,13.12,1.67,1,1,0,0,0,0,0,0,0,0
+900739985,"Turbo, Vila Andrade",Grande São Paulo,2,27.0,10.01,1.0,1,1,1,1,0,0,0,0,0,0
+900739740,"Turbo 20, Market Brooklin",Grande São Paulo,2,26.0,8.73,1.83,1,1,0,0,0,0,0,0,0,0
+900602964,"Turbo, Fresh, Vila Izabel",Curitiba,2,22.5,8.81,1.33,1,1,0,0,0,0,0,0,0,0
+900706726,"Turbo, Fresh, Bela Vista",Grande São Paulo,2,24.0,5.65,1.5,1,1,0,0,0,0,0,0,0,0
+900739691,"Turbo 20, Market Cambui",Campinas,2,23.0,8.19,1.0,0,1,0,0,0,0,0,0,0,0
+900739718,Turbo 20 Market Jardins,Grande São Paulo,2,25.0,14.02,1.17,1,1,0,0,0,0,0,0,0,0
+900706467,"Turbo, Fresh, Vila Mascote",Grande São Paulo,2,23.5,7.78,1.67,1,1,0,0,0,0,0,0,0,0
+900739678,"Turbo 20, Market Lapa",Grande São Paulo,2,22.0,10.34,1.0,0,1,0,0,0,0,0,0,0,0
+900685610,Mercado Rappi - Lapa,Grande São Paulo,2,24.5,7.65,0.67,0,1,0,0,0,0,0,0,0,0
+900575140,"Turbo, Bebidas, Vila Olimpia",Grande São Paulo,2,22.0,6.58,1.5,1,1,1,1,0,0,0,0,0,0
+900706687,"Turbo, Fresh, Santa Efigênia",Belo Horizonte,2,24.5,15.19,1.5,1,1,0,0,1,0,0,0,1,0
+900739715,"Turbo 20, Market Santana",Grande São Paulo,2,22.5,9.93,2.0,1,1,0,0,0,0,0,0,0,0
+900739732,"Turbo 20, Market Carrão",Grande São Paulo,2,23.0,13.23,1.5,1,1,0,0,0,0,0,0,0,0
+900706777,"Turbo, Fresh, Santa Cecília",Grande São Paulo,2,22.5,7.11,2.0,1,1,0,0,0,0,0,0,0,0
+900601555,"Turbo, Fresh, Santo André",Grande São Paulo,2,23.5,7.21,2.17,1,1,0,0,0,0,0,0,0,0
+900706804,"Turbo, Fresh, Santo Amaro",Grande São Paulo,2,21.5,9.6,1.33,1,1,0,0,0,0,0,0,0,0
+900581199,"Turbo, Fresh, Carrão",Grande São Paulo,2,21.0,26.99,1.67,1,1,1,1,1,0,0,1,0,0
+900739959,"Turbo, Vila Andrade",Grande São Paulo,2,22.0,6.98,1.5,1,1,0,0,0,0,0,0,0,0
+900739688,"Turbo 20, Market Aclimação",Grande São Paulo,2,20.5,9.82,2.0,1,1,0,0,0,0,0,0,0,0
+900707186,"Turbo, Fresh, Barra da Tijuca 3",Rio De Janeiro,2,21.0,4.86,1.83,1,1,0,0,0,0,0,0,0,0
+900561581,"Turbo, Bebidas, PA Centro",Porto Alegre,2,19.5,9.63,1.5,1,1,0,0,0,0,0,0,0,0
+900739931,"Turbo, Vila Andrade",Grande São Paulo,2,18.5,24.6,2.0,1,1,0,0,2,0,0,2,0,0
+900731566,"Turbo Fresh, Jardins",Grande São Paulo,2,18.5,5.74,1.0,1,1,0,0,0,0,0,0,0,0
+900739986,"Turbo, Osasco",Grande São Paulo,1,30.0,13.88,2.33,1,1,1,1,0,0,0,0,0,0
+900706668,"Turbo, Fresh, Vila Olimpia",Grande São Paulo,1,30.0,10.35,1.0,0,1,0,0,0,0,0,0,0,0
+900706486,"Turbo, Fresh, Bela Vista",Grande São Paulo,1,30.0,6.98,3.0,1,1,0,0,0,0,0,0,0,0
+900739851,"Turbo 20, Market Vila Clementino",Grande São Paulo,1,30.0,4.93,2.0,1,1,0,0,0,0,0,0,0,0
+900706783,"Turbo, Fresh, PA Centro",Porto Alegre,1,30.0,10.2,3.0,1,1,0,0,0,0,0,0,0,0
+900707106,"Turbo, Fresh, Santana",Grande São Paulo,1,30.0,5.82,2.67,1,1,0,0,0,0,0,0,0,0
+900706923,"Turbo, Fresh, Morumbi",Grande São Paulo,1,30.0,7.08,2.0,1,1,0,0,0,0,0,0,0,0
+900706694,"Turbo, Fresh, Alto do XV",Curitiba,1,29.0,9.43,1.67,0,1,0,0,0,0,0,0,0,0
+900650614,"Turbo, Fresh, Vila Olimpia",Grande São Paulo,1,29.0,9.23,1.67,0,1,0,0,0,0,0,0,0,0
+900707130,"Turbo, Fresh, Santo Amaro",Grande São Paulo,1,28.0,7.62,2.0,1,1,0,0,0,0,0,0,0,0
+900561625,"Turbo Fresh, Estoril",Belo Horizonte,1,28.0,10.45,2.0,1,1,0,0,0,0,0,0,0,0
+900706903,"Turbo, Fresh, Vila Madalena",Grande São Paulo,1,28.0,6.48,1.67,0,1,0,0,0,0,0,0,0,0
+900739860,"Turbo 20, Market Vila Olimpia",Grande São Paulo,1,27.0,8.6,2.67,1,1,0,0,0,0,0,0,0,0
+900707126,"Turbo, Fresh, Morumbi",Grande São Paulo,1,27.0,5.73,3.0,1,1,0,0,0,0,0,0,0,0
+900739857,"Turbo 20, Market Vila Madalena",Grande São Paulo,1,27.0,4.17,1.67,0,1,0,0,0,0,0,0,0,0
+900650615,"Turbo, Fresh, Carrão",Grande São Paulo,1,27.0,8.27,2.67,1,1,0,0,0,0,0,0,0,0
+900707011,"Turbo, Fresh, Aflitos",Recife,1,26.0,11.08,3.0,1,1,0,0,0,0,0,0,0,0
+900575159,"Turbo, Fresh, Brooklin",Grande São Paulo,1,26.0,3.93,1.67,0,1,0,0,0,0,0,0,0,0
+900739681,"Turbo 20, Market Vila Madalena",Grande São Paulo,1,26.0,7.85,1.33,0,1,0,0,0,0,0,0,0,0
+900706769,"Turbo, Fresh, Brooklin",Grande São Paulo,1,25.0,6.68,3.0,1,1,0,0,0,0,0,0,0,0
+900722116,"Turbo, Fresh Botafogo II",Rio De Janeiro,1,25.0,8.57,2.0,1,1,0,0,0,0,0,0,0,0
+900706616,"Turbo, Fresh, PA Centro",Porto Alegre,1,23.0,4.35,2.67,1,1,0,0,0,0,0,0,0,0
+900650537,"Turbo, Fresh, Santa Cecília",Grande São Paulo,1,23.0,5.58,2.0,1,1,0,0,0,0,0,0,0,0
+900739176,"Itigo Poke, Turbo",Grande São Paulo,1,22.0,11.37,2.67,1,1,1,1,0,0,0,0,0,0
+900575016,"Turbo, Fresh, Vila Clementino",Grande São Paulo,1,22.0,5.9,3.0,1,1,0,0,0,0,0,0,0,0
+900706942,"Turbo, Fresh, Vila Madalena",Grande São Paulo,1,21.0,4.3,2.33,1,1,0,0,0,0,0,0,0,0
+900707194,"Turbo, Fresh, Bonfinglioli",Grande São Paulo,1,21.0,11.53,2.67,1,1,0,0,0,0,0,0,0,0
+900706691,"Turbo, Fresh, Moema",Grande São Paulo,1,21.0,7.25,2.67,1,1,0,0,0,0,0,0,0,0
+900706941,"Turbo, Fresh, Santa Cecília",Grande São Paulo,1,19.0,7.37,2.0,1,1,0,0,0,0,0,0,0,0
+900706490,"Turbo, Fresh, Vila Madalena",Grande São Paulo,1,19.0,7.7,3.0,1,1,0,0,0,0,0,0,0,0
+900706817,"Turbo, Fresh, Santo André",Grande São Paulo,1,19.0,9.98,2.67,1,1,0,0,0,0,0,0,0,0
+900706582,"Turbo, Fresh, Aclimação",Grande São Paulo,1,18.0,9.92,2.33,1,1,0,0,0,0,0,0,0,0
+900706672,"Turbo, Fresh, Carrão",Grande São Paulo,1,18.0,8.37,2.33,1,1,0,0,0,0,0,0,0,0
+900706717,"Turbo, Fresh, Aflitos",Recife,1,18.0,6.42,3.0,1,1,0,0,0,0,0,0,0,0
+900632438,"Turbo, Alphaville",Grande São Paulo,1,18.0,6.62,2.33,1,1,0,0,0,0,0,0,0,0
+900602965,"Turbo, Fresh, Vila Izabel",Curitiba,1,18.0,8.7,2.33,1,1,0,0,0,0,0,0,0,0
+900575052,"Turbo, Fresh, Alto do Ipiranga",Grande São Paulo,1,18.0,4.17,2.67,1,1,0,0,0,0,0,0,0,0
+900575015,"Turbo, Fresh, Vila Clementino",Grande São Paulo,1,18.0,12.13,3.0,1,1,0,0,0,0,0,0,0,0
+900688578,Mercado Rappi - Moema,Grande São Paulo,10,23.9,6.61,0.23,0,0,0,0,0,1,0,0,0,0
+900731573,"Turbo Fresh, Jardins",Grande São Paulo,8,23.6,9.61,0.5,0,0,0,0,0,0,0,0,0,0
+900688577,Mercado Rappi - Bela Vista,Grande São Paulo,8,21.0,8.04,0.54,0,0,0,0,0,1,0,0,0,0
+900685580,Mercado Rappi - Aflitos,Recife,7,23.4,8.75,0.57,0,0,0,0,1,1,0,1,0,0
+900707195,"Turbo, Fresh, Vila Mascote",Grande São Paulo,7,22.7,7.86,0.52,0,0,0,0,0,0,0,0,0,0
+900561583,"Turbo, Fresh, PA Centro",Porto Alegre,7,22.0,7.54,0.53,0,0,0,0,0,0,0,0,0,0
+900739043,"Turbo 20 Market, Osasco",Grande São Paulo,7,21.7,17.56,0.52,0,0,0,0,2,0,0,2,0,0
+900685593,Mercado Rappi - Vila Izabel,Curitiba,6,24.7,9.8,0.33,0,0,0,0,0,0,0,0,0,0
+900739685,"Turbo 20, Market Alto do XV",Curitiba,6,20.5,7.63,0.61,0,0,0,0,0,0,0,0,0,0
+900739690,"Turbo 20, Market Santo André",Grande São Paulo,6,22.3,11.6,0.67,0,0,0,0,0,0,0,0,0,0
+900575118,"Turbo, Fresh, Bela Vista",Grande São Paulo,6,21.3,6.24,1.11,0,0,0,0,0,0,0,0,0,0
+900706926,"Turbo, Fresh, Leblon",Rio De Janeiro,6,23.2,7.33,0.55,0,0,0,0,0,0,0,0,0,0
+900731567,"Turbo Fresh, Jardins",Grande São Paulo,5,24.6,9.87,0.67,0,0,1,1,0,0,0,0,0,0
+900574984,"Turbo, Bebidas, Vila Prudente",Grande São Paulo,5,23.6,5.34,0.47,0,0,0,0,0,0,0,0,0,0
+900707202,"Turbo, Fresh, Leblon",Rio De Janeiro,5,23.8,9.78,0.6,0,0,0,0,1,0,0,1,0,0
+900714340,Doce aquarella jardim bonfiglioli,Grande São Paulo,5,24.2,7.44,0.87,0,0,0,0,0,0,0,0,0,0
+900739682,"Turbo 20, Market Vila Olimpia",Grande São Paulo,5,21.0,7.22,0.4,0,0,0,0,0,0,0,0,0,0
+900575134,"Turbo, Bebidas, Moema",Grande São Paulo,5,20.4,7.18,0.73,0,0,0,0,0,0,0,0,0,0
+900731561,"Turbo Fresh, Jardins",Grande São Paulo,5,22.4,9.65,0.4,0,0,0,0,0,0,0,0,0,0
+900561522,"Turbo, Fresh, Recife Sul",Recife,4,21.8,10.11,0.33,0,0,0,0,0,0,0,0,0,0
+900581197,"Turbo, Bebidas, Carrão",Grande São Paulo,4,21.8,24.56,0.67,0,0,0,0,1,0,0,1,0,0
+900685609,Mercado Rappi - Carrão,Grande São Paulo,4,21.8,9.01,0.67,0,0,0,0,0,0,0,0,0,0
+900731557,"Turbo Fresh, Jardins",Grande São Paulo,4,26.0,9.54,0.17,0,0,0,0,1,0,0,1,0,0
+900739672,"Turbo 20, Market Vila Prudente",Grande São Paulo,4,22.5,10.46,0.83,0,0,0,0,0,0,0,0,0,0
+900575153,"Turbo, Fresh, Santa Cecilia",Grande São Paulo,4,23.2,8.64,0.83,0,0,0,0,0,1,0,0,0,0
+900707208,"Turbo, Fresh, Vila Prudente",Grande São Paulo,4,22.5,9.61,0.42,0,0,0,0,0,0,0,0,0,0
+900561545,"Turbo, Bebidas, Aldeota",Fortaleza,4,21.2,7.91,0.92,0,0,0,0,0,0,0,0,0,0
+900602963,"Turbo, Bebidas, Vila Izabel",Curitiba,4,19.5,5.09,0.58,0,0,0,0,0,0,0,0,0,0
+900706596,"Turbo, Fresh, Santo Amaro",Grande São Paulo,4,19.5,5.35,0.33,0,0,0,0,0,0,0,0,0,0
+900688573,Mercado Rappi - Santo Amaro,Grande São Paulo,3,25.0,8.89,0.67,0,0,0,0,0,0,0,0,0,0
+900739714,"Turbo 20, Market Lapa",Grande São Paulo,3,24.7,11.5,0.33,0,0,0,0,0,0,0,0,0,0
+900707115,"Turbo, Fresh, Recife Sul",Recife,3,27.0,8.24,0.11,0,0,0,0,0,0,0,0,0,0
+900739792,"Turbo, Fresh, Barra da Tijuca 3",Rio De Janeiro,3,27.0,8.48,0.44,0,0,0,0,0,0,0,0,0,0
+900706848,"Turbo, Fresh, Aflitos",Recife,3,24.3,11.51,0.11,0,0,0,0,0,0,0,0,0,0
+900688585,Mercado Rappi - Brooklin,Grande São Paulo,3,25.3,6.97,0.78,0,0,0,0,0,0,0,0,0,0
+900650543,"Turbo, Fresh, Bela Vista",Grande São Paulo,3,26.0,6.43,0.67,0,0,0,0,0,0,0,0,0,0
+900561546,"Turbo, Fresh, Aldeota",Fortaleza,3,23.7,12.65,0.56,0,0,0,0,0,0,0,0,0,0
+900706469,"Turbo, Fresh, Tijuca",Rio De Janeiro,3,27.0,9.12,0.22,0,0,0,0,0,0,0,0,0,0
+900706947,"Turbo, Fresh, PA Centro",Porto Alegre,3,24.3,6.05,0.44,0,0,0,0,0,0,0,0,0,0
+900706463,"Turbo, Fresh, Aldeota",Fortaleza,3,23.0,6.36,0.22,0,0,0,0,0,0,0,0,0,0
+900706929,"Turbo, Fresh, Aflitos",Recife,3,25.7,9.1,0.33,0,0,0,0,0,0,0,0,0,0
+900707142,"Turbo, Fresh, Santa Efigênia",Belo Horizonte,3,25.0,16.05,0.22,0,0,0,0,1,0,0,1,0,0
+900575142,"Turbo, Fresh, Vila Olimpia",Grande São Paulo,3,23.0,6.88,0.67,0,0,0,0,0,0,0,0,0,0
+900604380,"Turbo, Fresh, Bonfinglioli",Grande São Paulo,3,21.7,4.13,0.11,0,0,0,0,0,0,0,0,0,0
+900707141,"Turbo, Fresh, Bela Vista",Grande São Paulo,3,24.7,7.77,0.0,0,0,0,0,0,2,0,0,0,0
+900706494,"Turbo, Fresh, Alto do XV",Curitiba,3,23.7,6.02,0.22,0,0,0,0,0,0,0,0,0,0
+900575117,"Turbo, Fresh, Bela Vista",Grande São Paulo,3,21.7,9.53,0.89,0,0,0,0,0,0,0,0,0,0
+900724415,Mercado Rappi - Catete II,Rio De Janeiro,3,24.3,10.06,0.33,0,0,0,0,0,0,0,0,0,0
+900688571,Mercado Rappi - Vila Mascote,Grande São Paulo,3,22.7,8.2,0.22,0,0,0,0,0,0,0,0,0,0
+900706735,"Turbo, Fresh, PA Centro",Porto Alegre,3,23.3,9.82,0.11,0,0,0,0,0,0,0,0,0,0
+900706598,"Turbo, Fresh, Aflitos",Recife,3,20.3,6.02,0.78,0,0,0,0,0,0,0,0,0,0
+900688576,Mercado Rappi - Alto Do Ipiranga,Grande São Paulo,3,21.7,5.17,0.89,0,0,0,0,0,0,0,0,0,0
+900739689,"Turbo 20, Market Santo Amaro",Grande São Paulo,3,21.7,11.55,0.56,0,0,0,0,0,0,0,0,0,0
+900706607,"Turbo, Fresh, Bela Vista",Grande São Paulo,3,19.3,9.72,0.55,0,0,0,0,0,0,0,0,0,0
+900739675,"Turbo 20, Market Moema",Grande São Paulo,3,19.3,4.72,0.55,0,0,0,0,0,0,0,0,0,0
+900706581,"Turbo, Fresh, Recife Sul",Recife,3,19.3,8.12,0.67,0,0,0,0,0,0,0,0,0,0
+900706774,"Turbo, Fresh, Bela Vista",Grande São Paulo,2,25.5,8.32,0.0,0,0,0,0,0,0,0,0,0,0
+900707118,"Turbo, Fresh, Aldeota",Fortaleza,2,30.0,8.32,0.17,0,0,0,0,0,0,0,0,0,0
+900706912,"Turbo, Fresh, Recife Sul",Recife,2,27.5,4.86,0.17,0,0,0,0,0,0,0,0,0,0
+900707122,"Turbo, Fresh, Vila Mascote",Grande São Paulo,2,25.5,8.47,0.0,0,0,0,0,0,0,0,0,0,0
+900706924,"Turbo, Fresh, Carrão",Grande São Paulo,2,28.0,6.2,0.0,0,0,0,0,0,0,0,0,0,0
+900706489,"Turbo, Fresh, Santa Cecília",Grande São Paulo,2,29.5,6.74,0.17,0,0,0,0,0,0,0,0,0,0
+900706516,"Turbo, Fresh, Aflitos",Recife,2,24.0,10.05,0.83,0,0,0,0,0,0,0,0,0,0
+900706707,"Turbo, Fresh, Vila Mascote",Grande São Paulo,2,25.0,9.95,0.34,0,0,0,0,0,1,0,0,0,0
+900706932,"Turbo, Fresh, Vila Prudente",Grande São Paulo,2,25.5,4.83,0.5,0,0,0,0,0,0,0,0,0,0
+900706475,"Turbo, Fresh, Santo Amaro",Grande São Paulo,2,26.0,7.58,0.5,0,0,0,0,0,1,0,0,0,0
+900707136,"Turbo, Fresh, Brooklin",Grande São Paulo,2,24.5,7.71,0.5,0,0,0,0,0,0,0,0,0,0
+900706488,"Turbo, Fresh, Santo André",Grande São Paulo,2,25.0,7.1,0.34,0,0,0,0,0,0,0,0,0,0
+900707124,"Turbo, Fresh, Tijuca",Rio De Janeiro,2,24.0,6.78,0.0,0,0,0,0,0,0,0,0,0,0
+900739845,"Turbo 20, Market Aflitos",Recife,2,24.0,10.45,0.34,0,0,0,0,0,0,0,0,0,0
+900739825,"Turbo, fresh, Castelo",Belo Horizonte,2,29.0,10.39,0.33,0,0,0,0,0,0,0,0,0,0
+900707029,"Turbo, Fresh, PA Centro",Porto Alegre,2,28.5,10.66,0.17,0,0,0,0,0,0,0,0,0,0
+900723158,"Turbo, Catete II",Rio De Janeiro,2,25.5,8.47,0.33,0,0,0,0,0,0,0,0,0,0
+900723145,"Turbo, Catete II",Rio De Janeiro,2,25.0,11.71,0.17,0,0,0,0,0,0,0,0,0,0
+900739957,"Turbo, Vila Andrade",Grande São Paulo,2,28.0,7.67,0.17,0,0,0,0,0,0,0,0,0,0
+900706686,"Turbo, Fresh, Bela Vista",Grande São Paulo,2,23.5,6.61,1.0,0,0,0,0,0,0,0,0,0,0
+900739721,"Turbo 20, Market Vila Prudente",Grande São Paulo,2,27.0,8.34,0.34,0,0,0,0,0,0,0,0,0,0
+900739983,"Turbo, Vila Andrade",Grande São Paulo,2,27.5,7.57,0.5,0,0,0,0,0,0,0,0,0,0
+900575135,"Turbo, Fresh, Moema",Grande São Paulo,2,25.5,9.37,0.34,0,0,0,0,0,0,0,0,0,0
+900706922,"Turbo, Fresh, Nova Recreio",Rio De Janeiro,2,25.0,13.5,0.0,0,0,0,0,1,0,0,1,0,0
+900707150,"Turbo, Fresh, PA Centro",Porto Alegre,2,25.5,7.02,0.17,0,0,0,0,0,0,0,0,0,0
+900739743,"Turbo 20, Market Aflitos",Recife,2,26.5,20.61,0.34,0,0,0,0,1,0,0,1,0,0
+900689029,Rappi Bebidas - Santa Cecília,Grande São Paulo,2,24.0,5.62,0.83,0,0,0,0,0,0,0,0,0,0
+900699318,"Heineken, Vila Madalena",Grande São Paulo,2,24.5,9.71,0.17,0,0,0,0,0,0,0,0,0,0
+900575022,"Turbo, Fresh, Aclimação",Grande São Paulo,2,24.5,4.58,0.67,0,0,0,0,0,0,0,0,0,0
+900575092,"Turbo, Bebidas, Lapa",Grande São Paulo,2,22.5,9.38,0.67,0,0,0,0,0,0,0,0,0,0
+900706472,"Turbo, Fresh, Carrão",Grande São Paulo,2,25.0,10.82,0.0,0,0,0,0,0,0,0,0,0,0
+900561624,"Turbo Fresh, Estoril",Belo Horizonte,2,23.0,8.97,0.67,0,0,0,0,0,0,0,0,0,0
+900581228,"Turbo, Bebidas, Alphaville",Grande São Paulo,2,24.5,7.67,0.5,0,0,0,0,0,0,0,0,0,0
+900685608,Mercado Rappi - Santana,Grande São Paulo,2,23.0,11.25,0.17,0,0,0,0,0,1,0,0,0,0
+900739716,"Turbo 20, Market Morumbi",Grande São Paulo,2,23.0,7.71,0.34,0,0,0,0,0,0,0,0,0,0
+900706680,"Turbo, Fresh, Vila Prudente",Grande São Paulo,2,25.5,6.47,1.0,0,0,0,0,0,0,0,0,0,0
+900706460,"Turbo, Fresh, Recife Sul",Recife,2,24.0,10.27,0.0,0,0,0,0,0,0,0,0,0,0
+900706642,"Turbo, Fresh, Brooklin",Grande São Paulo,2,24.0,4.85,0.0,0,0,0,0,0,0,0,0,0,0
+900581198,"Turbo, Fresh, Carrão",Grande São Paulo,2,23.5,8.24,1.0,0,0,0,0,0,1,0,0,0,0
+900707210,"Turbo, Fresh, Cambui",Campinas,2,24.5,8.47,0.17,0,0,0,0,0,0,0,0,0,0
+900707147,"Turbo, Fresh, Vila Izabel",Curitiba,2,23.0,8.91,0.0,0,0,0,0,0,0,0,0,0,0
+900706491,"Turbo, Fresh, Moema",Grande São Paulo,2,23.5,5.75,0.0,0,0,0,0,0,0,0,0,0,0
+900739961,"Turbo, Vila Andrade",Grande São Paulo,2,24.5,5.06,0.83,0,0,0,0,0,0,0,0,0,0
+900706613,"Turbo, Fresh, Vila Izabel",Curitiba,2,21.5,8.72,0.34,0,0,0,0,0,0,0,0,0,0
+900706653,"Turbo, Fresh, Vila Izabel",Curitiba,2,23.5,4.8,0.5,0,0,0,0,0,0,0,0,0,0
+900707006,"Turbo, Fresh, Carrão",Grande São Paulo,2,22.5,8.68,0.0,0,0,0,0,0,0,0,0,0,0
+900739695,"Turbo 20, Market Carrão",Grande São Paulo,2,20.5,21.91,1.17,0,0,0,0,1,0,0,1,0,0
+900706461,"Turbo, Fresh, Aclimação",Grande São Paulo,2,22.5,5.35,0.0,0,0,0,0,0,0,0,0,0,0
+900739677,"Turbo 20, Market Morumbi",Grande São Paulo,2,20.5,7.32,1.33,0,0,0,0,0,0,0,0,0,0
+900706703,"Turbo, Fresh, Aldeota",Fortaleza,2,23.0,9.1,0.83,0,0,0,0,0,0,0,0,0,0
+900575104,"Turbo, Bebidas, Vila Madalena",Grande São Paulo,2,20.5,5.29,1.33,0,0,0,0,0,0,0,0,0,0
+900706915,"Turbo, Fresh, Aldeota",Fortaleza,2,22.0,12.0,0.0,0,0,0,0,0,0,0,0,0,0
+900706601,"Turbo, Fresh, Vila Prudente",Grande São Paulo,2,20.5,9.02,0.83,0,0,0,0,0,0,0,0,0,0
+900707113,"Turbo, Fresh, Barra da Tijuca 3",Rio De Janeiro,2,22.0,7.17,0.5,0,0,0,0,0,0,0,0,0,0
+900706487,"Turbo, Fresh, Santa Efigênia",Belo Horizonte,2,21.0,10.71,0.17,0,0,0,0,0,0,0,0,0,0
+900707125,"Turbo, Fresh, Nova Recreio",Rio De Janeiro,2,22.5,7.74,0.67,0,0,0,0,0,0,0,0,0,0
+900575136,"Turbo, Fresh, Moema",Grande São Paulo,2,20.5,6.8,1.33,0,0,0,0,0,0,0,0,0,0
+900706638,"Turbo, Fresh, Aflitos",Recife,2,20.5,13.26,0.0,0,0,0,0,0,0,0,0,0,0
+900706624,"Turbo, Fresh, Aldeota",Fortaleza,2,21.5,9.12,0.17,0,0,0,0,0,0,0,0,0,0
+900707149,"Turbo, Fresh, Alto do XV",Curitiba,2,20.0,4.33,0.34,0,0,0,0,0,0,0,0,0,0
+900580721,"Turbo, Fresh, Santa Efignênia",Belo Horizonte,2,20.0,9.88,0.5,0,0,1,2,0,0,0,0,0,0
+900707132,"Turbo, Fresh, Aflitos",Recife,2,20.5,6.09,0.17,0,0,0,0,0,0,0,0,0,0
+900706961,"Turbo, Fresh, Tijuca",Rio De Janeiro,2,20.5,12.39,0.17,0,0,0,0,0,0,0,0,0,0
+900739990,"Turbo, Osasco",Grande São Paulo,2,20.0,11.62,0.83,0,0,0,0,0,0,0,0,0,0
+900739980,"Adega Rappi, Osasco",Grande São Paulo,2,20.0,10.42,0.67,0,0,0,0,0,0,0,0,0,0
+900575154,"Turbo, Fresh, Santa Cecilia",Grande São Paulo,2,19.5,5.54,1.0,0,0,0,0,0,0,0,0,0,0
+900575021,"Turbo, Fresh, Aclimação",Grande São Paulo,2,19.0,6.32,0.5,0,0,0,0,0,0,0,0,0,0
+900650538,"Turbo, Fresh, Alto do Ipiranga",Grande São Paulo,2,19.0,5.83,0.0,0,0,0,0,0,0,0,0,0,0
+900706614,"Turbo, Fresh, Santana",Grande São Paulo,2,18.5,10.53,0.83,0,0,1,1,0,0,0,0,0,0
+900706831,"Turbo, Fresh, Recife Sul",Recife,2,19.0,9.43,1.33,0,0,0,0,0,0,0,0,0,0
+900685552,Mercado Rappi- Barra da Tijuca 3,Rio De Janeiro,2,18.5,8.26,1.33,0,0,0,0,0,0,0,0,0,0
+900707207,"Turbo, fresh, Castelo",Belo Horizonte,2,18.5,7.27,1.0,0,0,0,0,0,0,0,0,0,0
+900561582,"Turbo, Fresh, PA Centro",Porto Alegre,2,18.0,4.58,1.33,0,0,0,0,0,0,0,0,0,0
+900706865,"Turbo, Fresh, Alto do XV",Curitiba,1,30.0,5.27,0.33,0,0,0,0,0,0,0,0,0,0
+900706603,"Turbo, Fresh, Cambui",Campinas,1,30.0,10.05,0.0,0,0,0,0,0,0,0,0,0,0
+900739742,"Turbo 20, Market Vila Izabel",Curitiba,1,30.0,9.23,0.0,0,0,0,0,0,0,0,0,0,0
+900706647,"Turbo, Fresh, Bela Vista",Grande São Paulo,1,30.0,4.47,0.0,0,0,0,0,0,0,0,0,0,0
+900706718,"Turbo, Fresh, Alto do Ipiranga",Grande São Paulo,1,30.0,7.7,0.33,0,0,0,0,0,0,0,0,0,0
+900706933,"Turbo, Fresh, Brooklin",Grande São Paulo,1,30.0,16.58,0.67,0,0,0,0,0,0,0,0,0,0
+900706458,"Turbo, Fresh, Barra da Tijuca 3",Rio De Janeiro,1,30.0,3.77,0.67,0,0,0,0,0,0,0,0,0,0
+900739978,"Turbo, Osasco",Grande São Paulo,1,30.0,18.6,0.0,0,0,0,0,0,0,0,0,0,0
+900706913,"Turbo, Fresh, Aclimação",Grande São Paulo,1,30.0,6.65,0.33,0,0,0,0,0,0,0,0,0,0
+900699341,"Heineken, Santana",Grande São Paulo,1,30.0,11.98,0.0,0,0,0,0,0,0,0,0,0,0
+900707095,"Turbo, Fresh, Cambui",Campinas,1,30.0,11.02,0.33,0,0,0,0,0,0,0,0,0,0
+900722120,"Turbo, Fresh Botafogo II",Rio De Janeiro,1,30.0,12.12,0.33,0,0,0,0,0,0,0,0,0,0
+900689025,Rappi Bebidas - Vila Olimpia,Grande São Paulo,1,30.0,8.83,0.0,0,0,0,0,0,0,0,0,0,0
+900683260,"Heineken, Aldeota",Fortaleza,1,30.0,2.35,0.67,0,0,0,0,0,0,0,0,0,0
+900707022,"Turbo, Fresh, Santo André",Grande São Paulo,1,29.0,10.48,0.33,0,0,0,0,0,0,0,0,0,0
+900650584,"Turbo, Fresh, Aldeota",Fortaleza,1,29.0,11.33,0.33,0,0,0,0,0,0,0,0,0,0
+900650577,"Turbo, Fresh, Vila Mascote",Grande São Paulo,1,29.0,2.87,0.33,0,0,0,0,0,0,0,0,0,0
+900707144,"Turbo, Fresh, Santa Cecília",Grande São Paulo,1,29.0,11.88,0.33,0,0,0,0,0,0,0,0,0,0
+900685612,Mercado Rappi - Bonfiglioli,Grande São Paulo,1,29.0,10.08,0.33,0,0,0,0,0,0,0,0,0,0
+900706937,"Turbo, Fresh, Lapa",Grande São Paulo,1,29.0,7.83,0.33,0,0,0,0,0,0,0,0,0,0
+900683257,"Heineken, Alto do XV",Curitiba,1,29.0,5.45,0.0,0,0,0,0,0,0,0,0,0,0
+900699350,"Turbo PicPay, Lapa",Grande São Paulo,1,29.0,6.33,0.33,0,0,0,0,0,0,0,0,0,0
+900707143,"Turbo, Fresh, Santo André",Grande São Paulo,1,29.0,16.45,0.0,0,0,0,0,0,0,0,0,0,0
+900706952,"Turbo, Fresh, Recife Sul",Recife,1,29.0,6.82,0.67,0,0,0,0,0,0,0,0,0,0
+900731575,"Turbo Fresh, Jardins",Grande São Paulo,1,29.0,9.95,0.67,0,0,0,0,0,0,0,0,0,0
+900561623,"Turbo Fresh, Estoril",Belo Horizonte,1,29.0,5.95,0.0,0,0,0,0,0,0,0,0,0,0
+900707100,"Turbo, Fresh, Santa Efigênia",Belo Horizonte,1,28.0,20.68,0.33,0,0,0,0,1,0,0,1,0,0
+900706837,"Turbo, Fresh, Bonfinglioli",Grande São Paulo,1,28.0,5.13,0.0,0,0,0,0,0,0,0,0,0,0
+900706908,"Turbo, Fresh, PA Centro",Porto Alegre,1,28.0,12.83,0.0,0,0,0,0,0,0,0,0,0,0
+900706556,"Turbo, Fresh, Alto do Ipiranga",Grande São Paulo,1,28.0,4.6,0.33,0,0,0,0,0,0,0,0,0,0
+900739954,"Turbo, Osasco",Grande São Paulo,1,28.0,9.3,0.67,0,0,0,0,0,0,0,0,0,0
+900650611,"Turbo, Fresh, Vila Prudente",Grande São Paulo,1,28.0,17.3,0.33,0,0,0,0,0,0,0,0,0,0
+900706526,"Turbo, Fresh, Santa Efigênia",Belo Horizonte,1,28.0,18.07,0.33,0,0,0,0,0,0,0,0,0,0
+900739824,"Turbo, Fresh, Aldeota",Fortaleza,1,28.0,12.05,0.0,0,0,0,0,0,0,0,0,0,0
+900706752,"Turbo Fresh, Estoril",Belo Horizonte,1,28.0,8.2,0.33,0,0,0,0,0,0,0,0,0,0
+900739839,"Turbo 20, Market Recife Sul",Recife,1,28.0,10.02,0.0,0,0,0,0,0,0,0,0,0,0
+900739728,"Turbo 20, Market Cambui",Campinas,1,28.0,10.38,0.67,0,0,0,0,0,0,0,0,0,0
+900706893,"Turbo, Fresh, Vila Prudente",Grande São Paulo,1,28.0,11.58,0.0,0,0,0,0,0,0,0,0,0,0
+900706470,"Turbo, Fresh, Nova Recreio",Rio De Janeiro,1,28.0,8.58,0.67,0,0,0,0,0,0,0,0,0,0
+900706473,"Turbo, Fresh, Barra da Tijuca 2",Rio De Janeiro,1,28.0,6.23,0.0,0,0,0,0,0,0,0,0,0,0
+900706496,"Turbo, Fresh, Ipanema",Rio De Janeiro,1,28.0,3.58,0.33,0,0,0,0,0,0,0,0,0,0
+900706495,"Turbo, Fresh, PA Centro",Porto Alegre,1,27.0,11.07,0.0,0,0,0,0,0,0,0,0,0,0
+900580723,"Turbo, Fresh, Santa Efigênia",Belo Horizonte,1,27.0,17.75,0.67,0,0,0,0,0,0,0,0,0,0
+900706900,"Turbo, Fresh, Santa Efigênia",Belo Horizonte,1,27.0,4.5,0.0,0,0,0,0,0,0,0,0,0,0
+900650573,"Turbo, Fresh, Bonfinglioli",Grande São Paulo,1,27.0,8.63,0.0,0,0,0,0,0,0,0,0,0,0
+900706482,"Turbo, Fresh, Cambui",Campinas,1,27.0,9.73,0.0,0,0,0,0,0,0,0,0,0,0
+900739967,"Turbo, Vila Andrade",Grande São Paulo,1,27.0,5.45,0.0,0,0,0,0,0,0,0,0,0,0
+900699317,"Heineken, Vila Prudente",Grande São Paulo,1,27.0,8.6,0.0,0,0,0,0,0,0,0,0,0,0
+900706690,"Turbo, Fresh, Vila Madalena",Grande São Paulo,1,26.0,7.1,0.67,0,0,0,0,0,0,0,0,0,0
+900739977,"Turbo, Vila Andrade",Grande São Paulo,1,26.0,10.02,0.0,0,0,0,0,0,0,0,0,0,0
+900536646,"Turbo, Fresh, Vila Mascote",Grande São Paulo,1,26.0,7.78,0.0,0,0,0,0,0,0,0,0,0,0
+900706585,"Turbo Fresh, Estoril",Belo Horizonte,1,26.0,6.08,0.0,0,0,0,0,0,0,0,0,0,0
+900706570,"Turbo, Fresh, Vila Izabel",Curitiba,1,26.0,7.0,0.67,0,0,0,0,0,0,0,0,0,0
+900706765,"Turbo, Fresh, Aflitos",Recife,1,25.0,5.33,0.0,0,0,1,1,0,0,0,0,0,0
+900707084,"Turbo, Fresh, Morumbi",Grande São Paulo,1,25.0,11.22,0.33,0,0,1,1,0,0,0,0,0,0
+900706732,"Turbo, Fresh, Vila Izabel",Curitiba,1,25.0,6.98,1.0,0,0,0,0,0,0,0,0,0,0
+900706701,"Turbo, Fresh, Aclimação",Grande São Paulo,1,25.0,6.45,0.0,0,0,0,0,0,0,0,0,0,0
+900706724,"Turbo, Fresh, Vila Clementino",Grande São Paulo,1,25.0,5.48,0.33,0,0,0,0,0,0,0,0,0,0
+900706646,"Turbo, Fresh, Lapa",Grande São Paulo,1,25.0,10.58,0.67,0,0,0,0,0,0,0,0,0,0
+900561630,"Turbo, Fresh, Aflitos",Recife,1,25.0,8.0,0.67,0,0,0,0,0,0,0,0,0,0
+900706793,"Turbo Fresh, Estoril",Belo Horizonte,1,25.0,4.38,1.0,0,0,0,0,0,0,0,0,0,0
+900650603,"Turbo, Fresh, Santana",Grande São Paulo,1,25.0,5.95,0.33,0,0,0,0,0,0,0,0,0,0
+900707099,"Turbo, Fresh, Bela Vista",Grande São Paulo,1,25.0,7.25,0.0,0,0,0,0,0,0,0,0,0,0
+900706751,"Turbo, Fresh, Aldeota",Fortaleza,1,25.0,6.22,0.67,0,0,0,0,0,0,0,0,0,0
+900707206,"Turbo, Fresh, Alto do Ipiranga",Grande São Paulo,1,25.0,1.88,1.0,0,0,0,0,0,0,0,0,0,0
+900706763,"Turbo, Fresh, Santo Amaro",Grande São Paulo,1,25.0,7.78,0.33,0,0,0,0,0,0,0,0,0,0
+900739965,"Turbo, Vila Andrade",Grande São Paulo,1,25.0,7.62,0.67,0,0,0,0,0,0,0,0,0,0
+900604381,"Turbo, Fresh, Bonfinglioli",Grande São Paulo,1,25.0,5.22,0.0,0,0,0,0,0,0,0,0,0,0
+900683252,"Heineken, Estoril",Belo Horizonte,1,25.0,9.1,0.67,0,0,0,0,0,0,0,0,0,0
+900706916,"Turbo Fresh, Estoril",Belo Horizonte,1,25.0,5.87,1.33,0,0,0,0,0,0,0,0,0,0
+900706945,"Turbo, Fresh, Santana",Grande São Paulo,1,25.0,8.28,0.33,0,0,0,0,0,0,0,0,0,0
+900706728,"Turbo, Fresh, Santo André",Grande São Paulo,1,25.0,10.25,0.33,0,0,0,0,0,0,0,0,0,0
+900650541,"Turbo, Fresh, Vila Madalena",Grande São Paulo,1,24.0,6.65,0.0,0,0,1,3,0,0,0,0,0,0
+900707187,"Turbo, Fresh, Alphaville",Grande São Paulo,1,24.0,12.08,0.0,0,0,0,0,0,0,0,0,0,0
+900707025,"Turbo, Fresh, Moema",Grande São Paulo,1,24.0,4.0,1.67,0,0,0,0,0,0,0,0,0,0
+900739697,"Turbo 20, Market Brooklin",Grande São Paulo,1,24.0,19.73,0.67,0,0,0,0,0,0,0,0,0,0
+900706860,"Turbo, Fresh, Santa Cecília",Grande São Paulo,1,24.0,8.35,0.33,0,0,0,0,0,0,0,0,0,0
+900706704,"Turbo Fresh, Estoril",Belo Horizonte,1,24.0,9.22,0.0,0,0,0,0,0,0,0,0,0,0
+900706766,"Turbo, Fresh, Alto do Ipiranga",Grande São Paulo,1,24.0,3.33,0.67,0,0,0,0,0,0,0,0,0,0
+900650602,"Turbo, Fresh, Moema",Grande São Paulo,1,24.0,4.67,0.33,0,0,0,0,0,0,0,0,0,0
+900706641,"Turbo, Fresh, Vila Prudente",Grande São Paulo,1,24.0,6.62,1.0,0,0,0,0,0,0,0,0,0,0
+900739707,"Turbo 20 Market, Osasco",Grande São Paulo,1,24.0,13.67,0.33,0,0,0,0,0,0,0,0,0,0
+900739869,"Turbo 20, Market Aldeota",Fortaleza,1,24.0,12.15,0.33,0,0,0,0,0,0,0,0,0,0
+900575094,"Turbo, Fresh, Lapa",Grande São Paulo,1,24.0,7.63,0.0,0,0,0,0,0,1,0,0,0,0
+900706666,"Turbo, Fresh, Bonfinglioli",Grande São Paulo,1,24.0,8.45,0.67,0,0,0,0,0,0,0,0,0,0
+900706934,"Turbo, Fresh, Cambui",Campinas,1,24.0,4.72,1.33,0,0,0,0,0,0,0,0,0,0
+900688572,Mercado Rappi - Aclimação,Grande São Paulo,1,24.0,7.88,0.67,0,0,0,0,0,0,0,0,0,0
+900722107,"Turbo, Fresh Botafogo II",Rio De Janeiro,1,24.0,7.25,1.67,0,0,0,0,0,0,0,0,0,0
+900650606,"Turbo, Fresh, Santo André",Grande São Paulo,1,24.0,8.2,0.0,0,0,0,0,0,0,0,0,0,0
+900706636,"Turbo, Fresh, Santo Amaro",Grande São Paulo,1,24.0,4.32,0.67,0,0,0,0,0,0,0,0,0,0
+900706689,"Turbo, Fresh, Santa Cecília",Grande São Paulo,1,24.0,6.05,1.0,0,0,0,0,0,0,0,0,0,0
+900683268,"Heineken, Aflitos",Recife,1,24.0,7.15,0.0,0,0,0,0,0,0,0,0,0,0
+900739708,"Turbo 20, Market Moema",Grande São Paulo,1,23.0,7.15,0.0,0,0,0,0,0,0,0,0,0,0
+900706832,"Turbo, Fresh, Aclimação",Grande São Paulo,1,23.0,6.92,1.33,0,0,0,0,0,0,0,0,0,0
+900706953,"Turbo, Fresh, Aclimação",Grande São Paulo,1,23.0,8.5,0.0,0,0,0,0,0,0,0,0,0,0
+900706792,"Turbo, Fresh, Aldeota",Fortaleza,1,23.0,9.28,0.33,0,0,0,0,0,0,0,0,0,0
+900706980,"Turbo, Fresh, Santo André",Grande São Paulo,1,23.0,7.1,0.33,0,0,0,0,0,0,0,0,0,0
+900706927,"Turbo, Fresh, Santo Amaro",Grande São Paulo,1,23.0,6.07,0.0,0,0,0,0,0,0,0,0,0,0
+900706479,"Turbo, fresh, Castelo",Belo Horizonte,1,22.0,22.07,0.33,0,0,0,0,1,0,0,1,0,0
+900650564,"Turbo, Fresh, Aflitos",Recife,1,22.0,23.77,1.0,0,0,0,0,1,0,0,1,0,0
+900739712,"Turbo 20, Market Bonfinglioli",Grande São Paulo,1,22.0,5.12,1.33,0,0,0,0,0,0,0,0,0,0
+900575105,"Turbo, Fresh, Vila Madalena",Grande São Paulo,1,22.0,7.43,1.67,0,0,0,0,0,0,0,0,0,0
+900707116,"Turbo, Fresh, Aclimação",Grande São Paulo,1,22.0,10.97,0.0,0,0,0,0,0,0,0,0,0,0
+900706553,"Turbo, Fresh, Santo Amaro",Grande São Paulo,1,22.0,4.77,0.33,0,0,0,0,0,0,0,0,0,0
+900706850,"Turbo, fresh, Castelo",Belo Horizonte,1,22.0,2.87,0.67,0,0,0,0,0,0,0,0,0,0
+900650604,"Turbo, Fresh, Brooklin",Grande São Paulo,1,22.0,6.23,0.0,0,0,0,0,0,0,0,0,0,0
+900706531,"Turbo, Fresh, Vila Izabel",Curitiba,1,22.0,8.82,0.0,0,0,0,0,0,0,0,0,0,0
+900706881,"Turbo, Fresh, Vila Olimpia",Grande São Paulo,1,22.0,5.72,0.0,0,0,0,0,0,0,0,0,0,0
+900739952,"Turbo, Osasco",Grande São Paulo,1,21.0,8.72,0.67,0,0,1,1,0,0,0,0,0,0
+900706606,"Turbo, Fresh, Lapa",Grande São Paulo,1,21.0,12.82,0.33,0,0,1,1,0,0,0,0,0,0
+900706695,"Turbo, Fresh, PA Centro",Porto Alegre,1,21.0,19.65,0.67,0,0,0,0,0,0,0,0,0,0
+900706605,"Turbo, Fresh, Vila Clementino",Grande São Paulo,1,21.0,11.25,0.33,0,0,0,0,0,0,0,0,0,0
+900739969,"Turbo, Vila Andrade",Grande São Paulo,1,21.0,9.25,0.0,0,0,0,0,0,0,0,0,0,0
+900706677,"Turbo, Fresh, Aflitos",Recife,1,21.0,8.22,0.0,0,0,0,0,0,0,0,0,0,0
+900706652,"Turbo, Fresh, Moema",Grande São Paulo,1,21.0,8.28,0.0,0,0,0,0,0,0,0,0,0,0
+900706877,"Turbo Fresh, Estoril",Belo Horizonte,1,21.0,8.62,0.0,0,0,0,0,0,0,0,0,0,0
+900706852,"Turbo, Fresh, Brooklin",Grande São Paulo,1,21.0,7.88,0.67,0,0,0,0,0,0,0,0,0,0
+900706493,"Turbo, Fresh, Santana",Grande São Paulo,1,21.0,6.82,1.33,0,0,0,0,0,0,0,0,0,0
+900706811,"Turbo, Fresh, Cambui",Campinas,1,21.0,13.25,0.0,0,0,0,0,0,0,0,0,0,0
+900707148,"Turbo, Fresh, Santana",Grande São Paulo,1,21.0,12.53,0.33,0,0,0,0,0,0,0,0,0,0
+900706946,"Turbo, Fresh, Alto do XV",Curitiba,1,21.0,3.62,0.0,0,0,0,0,0,0,0,0,0,0
+900575106,"Turbo, Fresh, Vila Madalena",Grande São Paulo,1,21.0,3.6,1.67,0,0,0,0,0,0,0,0,0,0
+900706471,"Turbo, Fresh, Morumbi",Grande São Paulo,1,21.0,8.82,0.33,0,0,0,0,0,0,0,0,0,0
+900706842,"Turbo, Fresh, Morumbi",Grande São Paulo,1,20.0,8.35,0.0,0,0,0,0,0,0,0,0,0,0
+900739727,"Turbo 20, Market Bela Vista",Grande São Paulo,1,20.0,10.02,1.0,0,0,0,0,0,0,0,0,0,0
+900706693,"Turbo, Fresh, Santana",Grande São Paulo,1,20.0,14.2,0.67,0,0,0,0,0,0,0,0,0,0
+900706682,"Turbo, Fresh, Cambui",Campinas,1,20.0,14.92,1.0,0,0,0,0,0,0,0,0,0,0
+900575123,"Turbo, Fresh, Morumbi",Grande São Paulo,1,20.0,4.7,0.0,0,0,0,0,0,0,0,0,0,0
+900739735,"Turbo 20, Market Aclimação",Grande São Paulo,1,20.0,4.88,0.33,0,0,0,0,0,0,0,0,0,0
+900706813,"Turbo, Fresh, Vila Clementino",Grande São Paulo,1,20.0,6.35,0.33,0,0,0,0,0,0,0,0,0,0
+900739868,"Turbo 20, Market Santa Efigênia",Belo Horizonte,1,20.0,15.32,0.33,0,0,0,0,0,0,0,0,0,0
+900689001,Rappi Bebidas - Aldeota,Fortaleza,1,20.0,7.23,0.0,0,0,0,0,0,0,0,0,0,0
+900650619,"Turbo, Fresh, Recife Sul",Recife,1,20.0,11.52,0.67,0,0,0,0,0,0,0,0,0,0
+900706997,"Turbo, Fresh, Aldeota",Fortaleza,1,20.0,11.35,0.0,0,0,0,0,0,0,0,0,0,0
+900581711,"Turbo, Fresh, Cambui",Campinas,1,20.0,13.02,0.0,0,0,0,0,0,0,0,0,0,0
+900650540,"Turbo, Fresh, Lapa",Grande São Paulo,1,19.0,4.7,0.33,0,0,0,0,0,0,0,0,0,0
+900706901,"Turbo, Fresh, Santo André",Grande São Paulo,1,19.0,4.33,0.0,0,0,0,0,0,0,0,0,0,0
+900706612,"Turbo, Fresh, Moema",Grande São Paulo,1,19.0,10.98,1.0,0,0,0,0,0,0,0,0,0,0
+900706565,"Turbo, Fresh, Santa Efigênia",Belo Horizonte,1,19.0,8.57,0.67,0,0,0,0,0,0,0,0,0,0
+900575014,"Turbo, Bebidas, Vila Clementino",Grande São Paulo,1,19.0,6.55,0.67,0,0,0,0,0,0,0,0,0,0
+900706685,"Turbo, Fresh, Lapa",Grande São Paulo,1,19.0,15.48,0.33,0,0,0,0,0,0,0,0,0,0
+900689008,Rappi Bebidas - Recife Sul,Recife,1,19.0,3.55,0.0,0,0,0,0,0,0,0,0,0,0
+900575160,"Turbo, Fresh, Brooklin",Grande São Paulo,1,19.0,6.43,1.67,0,0,0,0,0,0,0,0,0,0
+900706943,"Turbo, Fresh, Moema",Grande São Paulo,1,19.0,10.32,0.67,0,0,0,0,0,0,0,0,0,0
+900689041,Rappi Bebidas - Vila Madalena,Grande São Paulo,1,19.0,7.12,0.0,0,0,0,0,0,0,0,0,0,0
+900707013,"Turbo, fresh, Castelo",Belo Horizonte,1,19.0,6.58,0.67,0,0,0,0,0,0,0,0,0,0
+900706542,"Turbo Fresh, Estoril",Belo Horizonte,1,19.0,9.42,0.0,0,0,0,0,0,0,0,0,0,0
+900739971,"Turbo, Vila Andrade",Grande São Paulo,1,19.0,9.97,0.67,0,0,0,0,0,0,0,0,0,0
+900706588,"Turbo, Fresh, Vila Mascote",Grande São Paulo,1,19.0,5.93,1.0,0,0,0,0,0,0,0,0,0,0
+900706639,"Turbo, Fresh, Alto do Ipiranga",Grande São Paulo,1,19.0,2.97,1.67,0,0,0,0,0,0,0,0,0,0
+900706464,"Turbo Fresh, Estoril",Belo Horizonte,1,19.0,3.8,0.67,0,0,0,0,0,0,0,0,0,0
+900575082,"Turbo, Fresh, Santana",Grande São Paulo,1,18.0,8.9,0.33,0,0,0,0,0,0,0,0,0,0
+900706930,"Turbo, Fresh, Alto do Ipiranga",Grande São Paulo,1,18.0,6.03,1.67,0,0,0,0,0,0,0,0,0,0
+900706480,"Turbo, Fresh, Vila Prudente",Grande São Paulo,1,18.0,5.77,0.0,0,0,0,0,0,0,0,0,0,0
+900739720,"Turbo 20, Market Vila Clementino",Grande São Paulo,1,18.0,6.08,0.0,0,0,0,0,0,0,0,0,0,0
+900739671,Turbo 20 Market Jardins,Grande São Paulo,1,18.0,3.92,0.0,0,0,0,0,0,0,0,0,0,0
+900739933,"Turbo, Vila Andrade",Grande São Paulo,1,18.0,11.65,1.67,0,0,0,0,0,0,0,0,0,0
+900707134,"Turbo, fresh, Castelo",Belo Horizonte,1,18.0,16.53,0.33,0,0,0,0,0,0,0,0,0,0
+900575130,"Turbo, Fresh, Santo Amaro",Grande São Paulo,1,18.0,4.75,0.67,0,0,0,0,0,0,0,0,0,0
+900706984,"Turbo, Fresh, Vila Izabel",Curitiba,1,18.0,6.13,0.67,0,0,0,0,0,0,0,0,0,0
+900706599,"Turbo, Fresh, Alto do Ipiranga",Grande São Paulo,1,18.0,10.57,0.67,0,0,0,0,0,0,0,0,0,0
+900739982,"Turbo, Osasco",Grande São Paulo,1,18.0,13.33,0.33,0,0,0,0,0,0,0,0,0,0
+900739668,"Turbo 20, Market Bonfinglioli",Grande São Paulo,1,18.0,13.48,0.0,0,0,0,0,0,0,0,0,0,0

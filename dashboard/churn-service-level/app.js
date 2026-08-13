@@ -12,9 +12,14 @@ const numberFields = new Set([
   "ops_store_minutes",
   "rt_minutes",
   "orders_checked",
+  "completed_orders_prev_90d",
+  "purchase_frequency_month_before_last",
   "users",
   "avg_days_since_last_turbo",
   "avg_last_deliver_to_user_min",
+  "avg_purchase_frequency_month_before_last",
+  "high_frequency_users",
+  "frequency_out_of_pattern_users",
   "cancel_streak_users",
   "cancel_streak_orders",
   "delayed_last_users",
@@ -119,7 +124,6 @@ function getFilters() {
     city: byId("cityFilter").value,
     store: byId("storeFilter").value,
     flag: byId("flagFilter").value,
-    minDays: toNumber(byId("minDays").value),
     sortKey: byId("sortKey").value,
   };
 }
@@ -131,10 +135,11 @@ function filterData() {
       if (filters.serviceLevel !== "Todos" && row.service_level !== filters.serviceLevel) return false;
       if (filters.city !== "Todos" && row.user_city !== filters.city) return false;
       if (filters.store !== "Todos" && row.last_purchase_store !== filters.store) return false;
-      if (toNumber(row.days_since_last_turbo) < filters.minDays) return false;
       if (filters.flag === "Cancelados" && toNumber(row.consecutive_cancelled_orders) === 0) return false;
       if (filters.flag === "Atrasados >20" && !yes(row.last_purchase_over_20_min)) return false;
       if (filters.flag === "DR" && !yes(row.last_purchase_dr)) return false;
+      if (filters.flag === "Frequência fora do padrão" && row.frequency_pattern_status !== "Fora do padrão") return false;
+      if (filters.flag === "Frequência alta" && row.frequency_band_before_last !== "Alta") return false;
       if (filters.flag === "Ops loja" && row.delay_root_cause !== "Ops loja") return false;
       if (filters.flag === "RT" && row.delay_root_cause !== "RT") return false;
       if (!filters.query) return true;
@@ -143,6 +148,8 @@ function filterData() {
         row.user_city,
         row.last_purchase_store,
         row.service_level,
+        row.frequency_band_before_last,
+        row.frequency_pattern_status,
         row.delay_root_cause,
         row.delay_detail,
       ].join(" ").toLowerCase().includes(filters.query);
@@ -160,6 +167,8 @@ function renderKpis() {
   const cancelUsers = state.filteredUsers.filter((row) => toNumber(row.consecutive_cancelled_orders) > 0).length;
   const delayed = state.filteredUsers.filter((row) => yes(row.last_purchase_over_20_min));
   const dr = state.filteredUsers.filter((row) => yes(row.last_purchase_dr)).length;
+  const frequencyOut = state.filteredUsers.filter((row) => row.frequency_pattern_status === "Fora do padrão").length;
+  const highFrequency = state.filteredUsers.filter((row) => row.frequency_band_before_last === "Alta").length;
   const avgDays = total ? state.filteredUsers.reduce((sum, row) => sum + toNumber(row.days_since_last_turbo), 0) / total : 0;
   const rt = delayed.filter((row) => row.delay_root_cause === "RT").length;
   const ops = delayed.filter((row) => row.delay_root_cause === "Ops loja").length;
@@ -169,6 +178,8 @@ function renderKpis() {
   byId("kpiCancel").textContent = formatNumber(cancelUsers);
   byId("kpiDelayed").textContent = formatNumber(delayed.length);
   byId("kpiDr").textContent = formatNumber(dr);
+  byId("kpiFrequencyOut").textContent = formatNumber(frequencyOut);
+  byId("kpiHighFrequency").textContent = formatNumber(highFrequency);
   byId("kpiRoots").textContent = `${formatNumber(rt)} / ${formatNumber(ops)}`;
 }
 
@@ -181,6 +192,8 @@ function renderTables() {
       <td>${row.user_city}</td>
       <td>${row.days_since_last_turbo}</td>
       <td>${row.last_purchase_store}</td>
+      <td>${formatNumber(toNumber(row.purchase_frequency_month_before_last), 2)}</td>
+      <td><span class="pill ${row.frequency_pattern_status === "Fora do padrão" ? "dangerBg" : ""}">${row.frequency_pattern_status || "-"}</span></td>
       <td><span class="pill ${row.service_level === ">20 min" ? "dangerBg" : ""}">${row.service_level}</span></td>
       <td>${row.consecutive_cancelled_orders}</td>
       <td>${yes(row.last_purchase_dr) ? "Sim" : "Nao"}</td>
@@ -193,6 +206,8 @@ function renderTables() {
       <td>${row.store_name}</td>
       <td>${row.users}</td>
       <td>${row.avg_days_since_last_turbo}</td>
+      <td>${formatNumber(toNumber(row.avg_purchase_frequency_month_before_last), 2)}</td>
+      <td>${row.frequency_out_of_pattern_users}</td>
       <td>${row.delayed_last_users}</td>
       <td>${row.dr_last_purchase_users}</td>
       <td>${row.cancel_streak_users}</td>
@@ -241,7 +256,7 @@ function downloadExcel(rows, filename) {
 }
 
 function bindEvents() {
-  ["query", "serviceLevel", "cityFilter", "storeFilter", "flagFilter", "minDays", "sortKey"].forEach((id) => {
+  ["query", "serviceLevel", "cityFilter", "storeFilter", "flagFilter", "sortKey"].forEach((id) => {
     byId(id).addEventListener("input", render);
     byId(id).addEventListener("change", render);
   });
@@ -262,7 +277,7 @@ async function init() {
     state.stores = stores;
     populateFilters();
     render();
-    byId("loadStatus").textContent = `${formatNumber(users.length)} usuarios carregados`;
+    byId("loadStatus").textContent = `${formatNumber(users.length)} usuarios 15-30 dias carregados`;
   } catch (error) {
     byId("loadStatus").textContent = "Erro ao carregar dados";
     console.error(error);
